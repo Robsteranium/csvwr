@@ -1,0 +1,21 @@
+{
+  "@context": "http://www.w3.org/ns/csvw",
+  "tables": [{
+    "url": "computer-scientists.csv",
+    "tableSchema": {
+      "columns": [{
+        "name": "name",
+        "titles": "Name",
+        "datatype": "string",
+        "propertyUrl": "foaf:name"
+      }, {
+        "name": "dob",
+        "titles": "Date of Birth",
+        "datatype": "date",
+        "propertyUrl": "schema:birthDate"
+      }],
+      "aboutUrl": "http://example.org/computer-scientsts/{#name}",
+      "primaryKey": "name"
+    }
+  }]
+}

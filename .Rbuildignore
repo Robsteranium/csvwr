@@ -1,0 +1,6 @@
+^packrat/
+^\.Rprofile$
+^.*\.Rproj$
+^\.Rproj\.user$
+csvwr.Rproj
+tests/csvw-tests/reports/.earl
