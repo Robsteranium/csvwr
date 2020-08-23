@@ -28,10 +28,9 @@ test_that("Metadata can be derived from a csv", {
       list(
         url="http://example.net/computer-scientists.csv",
         tableSchema=list(
-          columns=list(
-            list(name="Name", titles="Name", datatype="string"),
-            list(name="Date.Of.Birth", titles="Date Of Birth", datatype="string")
-          )
+          columns=data.frame(name=c("Name","Date.Of.Birth"),
+                             titles=c("Name","Date Of Birth"),
+                             datatype="string")
         )
       )
     )
