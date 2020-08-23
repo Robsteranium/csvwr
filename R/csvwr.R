@@ -14,20 +14,20 @@ base_uri <- function() {
 
 #' Read CSV on the Web
 #'
-#' If the argument to `file` is a json metadata document, this will be used to find csv files for
+#' If the argument to `filename` is a json metadata document, this will be used to find csv files for
 #' each table using the value of `csvw:url`.
 #'
-#' If the argument to `file` is a csv file, and no metadata is provided, an attempt is made to
+#' If the argument to `filename` is a csv file, and no metadata is provided, an attempt is made to
 #' derive metadata.
 #'
-#' If the argument to `file` is a csv file, and the metadata is provided, then the given csv will
+#' If the argument to `filename` is a csv file, and the metadata is provided, then the given csv will
 #' override the value of `csvw:url`.
 #'
 #' The csvw metadata is returned as a list. In each table in the table group, an element named
 #' `dataframe` is added which provides the contents of the csv table parsed into a data frame using
 #' the table schema.
 #'
-#' @param file a path for a csv table or a json metadata document
+#' @param filename a path for a csv table or a json metadata document
 #' @param metadata optional user metadata
 #' @return csvw metdata list, with a `dataframe` property added to each table
 #' @examples
@@ -35,25 +35,27 @@ base_uri <- function() {
 #' read_csvw("metadata.json")
 #' read_csvw("table.csv", "metadata.json")
 #' }
-read_csvw <- function(file, metadata=NULL) {
-  if (!is.null(metadata)) {
-    metadata <- jsonlite::read_json(metadata)
-    schema <- metadata$tables[[1]]$tableSchema  # TODO: multiple tables
-    column_names <- sapply(schema$columns, function(x) x[["name"]])
-    column_types <- sapply(schema$columns, function(x) {
-      switch(x[["datatype"]],
-             "string" = "character",
-             "date" = "Date")
-    })
-    url <- metadata$url
-    df <- utils::read.csv(file, stringsAsFactors = F, strip.white=T, col.names= column_names, colClasses=column_types)
+read_csvw <- function(filename, metadata=NULL) {
+  if(is.null(metadata)) {
+    metadata <- derive_metadata(filename)
   } else {
-    url <- paste0(base_uri(), file)
-    df <- utils::read.csv(file, stringsAsFactors = F, strip.white=T, colClasses="character")
+    metadata <- jsonlite::read_json(metadata)
   }
+
+  schema <- metadata$tables[[1]]$tableSchema  # TODO: multiple tables
+  column_names <- sapply(schema$columns, function(x) x[["name"]])
+  column_types <- sapply(schema$columns, function(x) {
+    switch(x[["datatype"]],
+           "string" = "character",
+           "date" = "Date")
+  })
+  dtf <- utils::read.csv(filename, stringsAsFactors = F, strip.white=T, col.names=column_names, colClasses=column_types)
+
+#  url <- metadata$url
   # TODO: multiple tables
-  csvw <- list(tables=list(list(url=url, dataframe=df)))
-  return(csvw)
+  metadata$tables[[1]]$dataframe <- dtf
+#  csvw <- list(tables=list(list(url=url, dataframe=dtf)))
+  return(metadata)
 }
 
 first_dataframe <- function(csvw) {
@@ -62,6 +64,43 @@ first_dataframe <- function(csvw) {
 
 validate_csvw <- function(csvw) {
   T
+}
+
+
+#' Derive csvw metadata from a csv file
+#'
+#' @param file a csv file
+#' @return a list of csvw metadata
+#' @examples
+#' \dontrun{
+#' derive_metadata("example.csv")
+#' }
+derive_metadata <- function(filename) {
+  data_sample <- utils::read.csv(filename, nrows=1, check.names=F)
+  list(
+    "@context"="http://www.w3.org/ns/csvw",
+    tables = list(
+      list(
+        url = paste0(base_uri(), filename),
+        tableSchema=derive_table_schema(data_sample)
+      )
+    )
+  )
+}
+
+#' Derive csvw table schema from a data frame
+#'
+#' @param d a data frame
+#' @return csvw:tableSchema in a list
+#' @examples
+#' \dontrun{
+#' derive_table_schema(data.frame(a=1,b=2))
+#' }
+derive_table_schema <- function(d) {
+  list(
+    columns=lapply(colnames(d),
+                   function(c) list(name=make.names(c), titles=c, datatype="string"))
+  )
 }
 
 #' Check for blank values
@@ -108,4 +147,4 @@ csvw_to_list <- function(csvw) {
 }
 
 #csvw_triples <- function(csvw) # returns vector of triples/ s-p-o data.frame
-#derive_metadata <- function(filename) # returns metadata list
+

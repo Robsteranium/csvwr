@@ -8,7 +8,7 @@ test_that("Basic parsing works", {
   expect_equal(result[5, "Surname"], "Maggie")
 })
 
-result <- first_dataframe(read_csvw("../computer-scientists.csv", metadata="../computer-scientists.json"))
+result <- first_dataframe(read_csvw("computer-scientists.csv", metadata="computer-scientists.json"))
 
 test_that("Variables names taken from metadata", {
   expect_equal(colnames(result), c("name","dob"))
@@ -18,6 +18,25 @@ test_that("Datatypes taken from metadata", {
   types <- lapply(result, class)
   expect_equal(types$name, "character")
   expect_equal(types$dob, "Date")
+})
+
+test_that("Metadata can be derived from a csv", {
+  metadata <- derive_metadata("computer-scientists.csv")
+  expected <- list(
+    "@context"="http://www.w3.org/ns/csvw",
+    tables=list(
+      list(
+        url="http://example.net/computer-scientists.csv",
+        tableSchema=list(
+          columns=list(
+            list(name="Name", titles="Name", datatype="string"),
+            list(name="Date.Of.Birth", titles="Date Of Birth", datatype="string")
+          )
+        )
+      )
+    )
+  )
+  expect_equal(metadata, expected)
 })
 
 # test:

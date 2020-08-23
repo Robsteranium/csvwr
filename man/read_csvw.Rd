@@ -4,10 +4,10 @@
 \alias{read_csvw}
 \title{Read CSV on the Web}
 \usage{
-read_csvw(file, metadata = NULL)
+read_csvw(filename, metadata = NULL)
 }
 \arguments{
-\item{file}{a path for a csv table or a json metadata document}
+\item{filename}{a path for a csv table or a json metadata document}
 
 \item{metadata}{optional user metadata}
 }
@@ -15,14 +15,14 @@ read_csvw(file, metadata = NULL)
 csvw metdata list, with a `dataframe` property added to each table
 }
 \description{
-If the argument to `file` is a json metadata document, this will be used to find csv files for
+If the argument to `filename` is a json metadata document, this will be used to find csv files for
 each table using the value of `csvw:url`.
 }
 \details{
-If the argument to `file` is a csv file, and no metadata is provided, an attempt is made to
+If the argument to `filename` is a csv file, and no `metadata` is provided, an attempt is made to
 derive metadata.
 
-If the argument to `file` is a csv file, and the metadata is provided, then the given csv will
+If the argument to `filename` is a csv file, and the `metadata` is provided, then the given csv will
 override the value of `csvw:url`.
 
 The csvw metadata is returned as a list. In each table in the table group, an element named
