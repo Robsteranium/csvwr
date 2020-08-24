@@ -8,19 +8,29 @@ test_that("Basic parsing works", {
   expect_equal(result[5, "Surname"], "Maggie")
 })
 
-result <- read_csvw_dataframe("computer-scientists.csv", metadata="computer-scientists.json")
+compsci_csv <- system.file("extdata", "computer-scientists.csv", package = "csvwr", mustWork = TRUE)
+compsci_json <- system.file("extdata", "computer-scientists.json", package = "csvwr", mustWork = TRUE)
 
-test_that("Variables names taken from metadata", {
-  expect_equal(colnames(result), c("name","dob"))
-})
+test_that("Target features", {
+  result <- read_csvw_dataframe(compsci_csv, metadata=compsci_json)
 
-test_that("Datatypes taken from metadata", {
-  types <- lapply(result, class)
-  expect_equal(types$name, "character")
-  expect_equal(types$dob, "Date")
+  expect_s3_class(result, "data.frame")
+
+  test_that("Variables names taken from metadata", {
+    expect_equal(colnames(result), c("name","dob"))
+  })
+
+  test_that("Datatypes taken from metadata", {
+    types <- lapply(result, class)
+    expect_equal(types$name, "character")
+    expect_equal(types$dob, "Date")
+  })
 })
 
 test_that("Metadata can be derived from a csv", {
+  orig_dir <- setwd(system.file("extdata", ".", package = "csvwr", mustWork = TRUE))
+  on.exit(setwd(orig_dir), add=T, after=F)
+
   metadata <- derive_metadata("computer-scientists.csv")
   expected <- list(
     "@context"="http://www.w3.org/ns/csvw",

@@ -4,3 +4,4 @@ packrat
 .Rprofile
 csvwr.Rproj
 packrat/lib*/
+inst/doc

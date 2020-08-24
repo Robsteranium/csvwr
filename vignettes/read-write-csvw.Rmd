@@ -1,0 +1,92 @@
+---
+title: Read and Write CSVW in R"
+author: Robin Gower
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{read-write-csvw}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+## What is CSV on the Web?
+
+The W3C's CSV on the Web Working Group produced a series of recommendations for working with tabular data on the web.
+
+- The [Model for Tabular Data and Metadata on the Web](https://w3c.github.io/csvw/syntax/) describes how to annotate tables with metadata, and how processing applications should locate metadata and parse annotated tables.
+- The [Metadata Vocabulary for Tabular Data](https://w3c.github.io/csvw/metadata/) provides a specification for annotating tables with metadata at various levels, from groups of tables and how they relate to each other down to individual cells within a table. 
+- This vocabulary provides a mapping so that annotated tables can be transform from CSV to other formats: [csv2json](https://w3c.github.io/csvw/csv2json/) and [csv2rdf](https://w3c.github.io/csvw/csv2rdf/)
+
+The `csvwr` library implements parts of this standard in R. The overall goal of the project is to support reading and writing of annotated CSV tables, in order to ensure consistent processing and reduce the amount of manual work needed to parse and prepare data before it can be used in analysis.
+
+Practically speaking, you annotate a csv file by providing an accompanying json document containing the metadata. We benefit from annotating tables with csvw benefit because:
+
+- the csv dialect (i.e. the choice of field separator or quoting characters) is explicitly defined, helping to avoid parsing mistakes
+- columns can be given syntactically-valid variable names (while retaining human-readable labels for display)
+- cell type are declared, obviating the need to e.g. parse dates (and figure-out formatting strings)
+
+This package includes some example csv and json for you to explore. Here is the csv file:
+
+```{r setup}
+library(csvwr)
+
+compsci_csv <- system.file("extdata", "computer-scientists.csv", package = "csvwr", mustWork = TRUE)
+
+cat(readLines(compsci_csv),sep="\n")
+```
+
+Here is the annotation:
+
+```{r}
+compsci_json <- system.file("extdata", "computer-scientists.json", package = "csvwr", mustWork = TRUE)
+
+cat(readLines(compsci_json),sep="\n")
+```
+
+## How do I read a table annotated with CSVW?
+
+You can get up and running quickly using the `read_csvw_dataframe` function:
+
+```{r}
+d <- read_csvw_dataframe(compsci_csv, compsci_json)
+```
+
+
+This parses the csvw metadata, and uses that to parse and interpret the csv file. A data frame is returned with columns that are named and typed accordingly to the specifications in the table's schema. Here you can see the "Date Of Birth" field has been given a syntactically valid variable name, and parsed into a date vector automatically:
+
+```{r}
+str(d)
+
+knitr::kable(d)
+```
+
+
+This function assumes that you're only interested in one table, and that you don't want to work with the csvw metadata itself. The metadata vocabulary allows us to describe groups of tables (useful to lookup tables). You can get the complete annotations using the `read_csvw` function:
+
+```{r}
+csvw <- read_csvw(compsci_csv, compsci_json)
+```
+
+This returns a nested list, which broadly follows the structure of the metadata.
+
+As you can see from the json above, the `tables` element provides a list of tables and the annotation for each table provides a `url` (this can be used to locate csv files from the json metadata alone) and a `tableSchema`. Within the `tableSchema` we have annotations for each column. We parse this into a data frame (instead of a list of lists which is how the `jsonlite` library would ordinarily interpret a json array of objects). This is much more idiomatic for manipulation in R.
+
+```{r}
+csvw$tables[[1]]$tableSchema$columns
+```
+
+We also introduce another element to each table, named `dataframe`. This provides the result of parsing the csv table using the schema provided in the json:
+
+```{r}
+csvw$tables[[1]]$dataframe
+```
+
+The function `read_csvw_dataframe` is just a convience wrapper for calling `read_csvw` and extracting this data frame.

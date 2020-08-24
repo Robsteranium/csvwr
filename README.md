@@ -1,6 +1,6 @@
 # CSV on the Web R Package (csvwr)
 
-Create data.frames from csvw - csv files and json metadata specifications.
+Read and write CSV on the web.
 
 The csvw tabular metadata standard describes a group of csv tables and can be used to ensure they are interpreted properly.
 
