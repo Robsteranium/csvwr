@@ -61,6 +61,15 @@ read_csvw <- function(filename, metadata=NULL) {
   return(metadata)
 }
 
+#' Read a data frame from the first table in a csvw
+#'
+#' Wrapper around `read_csvw` convenient when you're only interested in the data and there's only one table
+#' @param filename a path for a csv table or a json metadata document
+#' @param metadata optional user metadata
+#' @return a data frame parsed using the table schema
+read_csvw_dataframe <- function(filename, metadata=NULL) {
+  read_csvw(filename, metadata)$tables[[1]]$dataframe
+}
 
 
 #' Read and parse CSVW Metadata
@@ -88,9 +97,6 @@ list_of_lists_to_df <- function(ll) {
   purrr::transpose(ll, .names=nms) %>% purrr::simplify_all() %>% as.data.frame(stringsAsFactors=F)
 }
 
-first_dataframe <- function(csvw) {
-  csvw$tables[[1]]$dataframe
-}
 
 validate_csvw <- function(csvw) {
   T

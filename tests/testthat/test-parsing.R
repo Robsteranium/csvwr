@@ -1,14 +1,14 @@
 csvw_test_path <- "../csvw-tests"
 
 test_that("Basic parsing works", {
-  result <- first_dataframe(read_csvw(file.path(csvw_test_path, "test001.csv")))
+  result <- read_csvw_dataframe(file.path(csvw_test_path, "test001.csv"))
 
   expect_equal(nrow(result), 8)
   expect_equal(colnames(result), c("Surname","FamilyName"))
   expect_equal(result[5, "Surname"], "Maggie")
 })
 
-result <- first_dataframe(read_csvw("computer-scientists.csv", metadata="computer-scientists.json"))
+result <- read_csvw_dataframe("computer-scientists.csv", metadata="computer-scientists.json")
 
 test_that("Variables names taken from metadata", {
   expect_equal(colnames(result), c("name","dob"))
