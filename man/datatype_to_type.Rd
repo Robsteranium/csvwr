@@ -10,7 +10,7 @@ datatype_to_type(x)
 \item{x}{a character vector of datatypes}
 }
 \value{
-a character vector of types
+compact string representation for `readr::cols` with one character per column-type
 }
 \description{
 Map csvw datatypes to R types

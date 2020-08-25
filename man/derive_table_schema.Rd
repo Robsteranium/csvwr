@@ -10,7 +10,7 @@ derive_table_schema(d)
 \item{d}{a data frame}
 }
 \value{
-csvw:tableSchema in a list
+a list describing a `csvw:tableSchema`
 }
 \description{
 Derive csvw table schema from a data frame

@@ -5,7 +5,7 @@ test_that("Basic parsing works", {
 
   expect_equal(nrow(result), 8)
   expect_equal(colnames(result), c("Surname","FamilyName"))
-  expect_equal(result[5, "Surname"], "Maggie")
+  expect_equal(result[5, ]$Surname, "Maggie")
 })
 
 compsci_csv <- system.file("extdata", "computer-scientists.csv", package = "csvwr", mustWork = TRUE)
@@ -40,7 +40,8 @@ test_that("Metadata can be derived from a csv", {
         tableSchema=list(
           columns=data.frame(name=c("Name","Date.Of.Birth"),
                              titles=c("Name","Date Of Birth"),
-                             datatype="string")
+                             datatype="string",
+                             stringsAsFactors = F)
         )
       )
     )

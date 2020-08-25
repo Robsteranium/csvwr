@@ -15,11 +15,11 @@ base_uri <- function() {
 #' Map csvw datatypes to R types
 #'
 #' @param x a character vector of datatypes
-#' @return a character vector of types
+#' @return compact string representation for `readr::cols` with one character per column-type
 datatype_to_type <- function(x) {
-  mapping  <- c("string" = "character",
-                "date" = "Date")
-  unname(mapping[x])
+  mapping  <- c("string" = "c",
+                "date" = "D")
+  paste0(mapping[x],collapse="")
 }
 
 #' Read CSV on the Web
@@ -55,7 +55,11 @@ read_csvw <- function(filename, metadata=NULL) {
   schema <- metadata$tables[[1]]$tableSchema  # TODO: multiple tables
   column_names <- schema$columns$name
   column_types <- datatype_to_type(schema$columns$datatype)
-  dtf <- utils::read.csv(filename, stringsAsFactors = F, strip.white=T, col.names=column_names, colClasses=column_types)
+  dtf <- readr::read_csv(filename,
+                         trim_ws=T,
+                         skip=1,
+                         col_names=column_names,
+                         col_types=column_types)
   metadata$tables[[1]]$dataframe <- dtf
 
   return(metadata)
@@ -132,7 +136,7 @@ derive_metadata <- function(filename) {
 derive_table_schema <- function(d) {
   cols <- colnames(d)
   list(
-    columns=data.frame(name=make.names(cols), titles=cols, datatype="string")
+    columns=data.frame(name=make.names(cols), titles=cols, datatype="string", stringsAsFactors = F)
   )
 }
 
