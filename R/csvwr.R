@@ -112,22 +112,19 @@ validate_csvw <- function(csvw) {
 #' derive_metadata("example.csv")
 #' }
 derive_metadata <- function(filename) {
-  data_sample <- utils::read.csv(filename, nrows=1, check.names=F)
-  list(
-    "@context"="http://www.w3.org/ns/csvw",
-    tables = list(
-      list(
-        url = paste0(base_uri(), filename),
-        tableSchema=derive_table_schema(data_sample)
-      )
+  data_sample <- readr::read_csv(filename, n_max=1, col_types=readr::cols())
+  create_metadata(tables=list(
+    list(
+      url = paste0(base_uri(), filename),
+      tableSchema=derive_table_schema(data_sample)
     )
-  )
+  ))
 }
 
 #' Derive csvw table schema from a data frame
 #'
 #' @param d a data frame
-#' @return csvw:tableSchema in a list
+#' @return a list describing a `csvw:tableSchema`
 #' @examples
 #' \dontrun{
 #' derive_table_schema(data.frame(a=1,b=2))
@@ -138,6 +135,19 @@ derive_table_schema <- function(d) {
     columns=data.frame(name=make.names(cols), titles=cols, datatype="string")
   )
 }
+
+
+#' Create tabular metadata from a list of tables
+#'
+#' The table annotations should each be a list with keys for `url` and `tableSchema`.
+#' You can use `derive_table_schema` to derive a schema from a data frame.
+#'
+#' @param tables a list of `csvw:table` annotations
+#' @return a list describing a tabular metadata annotation
+create_metadata <- function(tables) {
+  list("@context"="http://www.w3.org/ns/csvw", tables = tables)
+}
+
 
 #' Check for blank values
 #'
