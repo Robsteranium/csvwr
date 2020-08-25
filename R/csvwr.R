@@ -1,3 +1,33 @@
+#' csvwr: Read and write CSV on the Web (CSVW)
+#'
+#' Read and write csv tables annotated with
+#' \href{https://w3c.github.io/csvw/metadata/}{csvw metadata}. This helps to
+#' ensure consistent processing and reduce the amount of manual work needed to
+#' parse and prepare data before it can be used in analysis.
+#'
+#' @section Getting started:
+#'
+#' The best place to start is the \link[=../doc/read-write-csvw.html]{Reading and writing CSVW vignette}.
+#'
+#' @section Reading annotated tables:
+#' \itemize{
+#'   \item \code{\link{read_csvw}} Parse a table group
+#'   \item \code{\link{read_csvw_dataframe}} Parse a table group and extract the first
+#'     data frame
+#' }
+#'
+#' @section Writing table annotations:
+#' \itemize{
+#'   \item \code{\link{derive_table_schema}} Derive table schema from a data frame
+#'   \item \code{\link{create_metadata}} Create a table group annotation
+#'   \item \code{\link{derive_metadata}} Derive an annotation from a csv file
+#' }
+#'
+#' @docType package
+#' @name csvwr
+#' @importFrom magrittr %>%
+NULL # roxygen needs to document something! https://r-pkgs.org/man.html#man-packages
+
 #' Retreive the base URI from configuration
 #'
 #' @return returns the value of `csvwr_base_uri` option, defaulting to `example.net`
@@ -95,7 +125,6 @@ read_metadata <- function(filename) {
 #'
 #' @param ll a list of lists
 #' @return a data frame with a row per list
-#' @importFrom magrittr %>%
 list_of_lists_to_df <- function(ll) {
   nms <- ll %>% purrr::map(names) %>% purrr::reduce(union) # need to get all names, not just use those from first column
   purrr::transpose(ll, .names=nms) %>% purrr::simplify_all() %>% as.data.frame(stringsAsFactors=F)
