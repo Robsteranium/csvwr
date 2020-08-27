@@ -49,6 +49,43 @@ test_that("Metadata can be derived from a csv", {
   expect_equal(metadata, expected)
 })
 
+test_that("Metadata may be found from a filename", {
+  csvw_test_path <- "../csvw-tests"
+  orig_dir <- setwd(csvw_test_path)
+  on.exit(setwd(orig_dir), add=T, after=F)
+
+  metadata <- find_metadata("test011/tree-ops.csv")
+  expect_equal(metadata, "test011/tree-ops.csv-metadata.json")
+})
+
+test_that("URI Templates may be rendered", {
+  # https://w3c.github.io/csvw/syntax/#default-locations-and-site-wide-location-configuration
+  expect_equal(render_uri_templates(c("{+url}-metadata.json", "csv-metadata.json"),
+                                    url="http://example.org/south-west/devon.csv"),
+               c("http://example.org/south-west/devon.csv-metadata.json",
+                 "http://example.org/south-west/csv-metadata.json"))
+
+  expect_equal(render_uri_templates(c("{+url}.json", "csvm.json", "/csvm?file={url}.json"), # last is modified from spec
+                                    url="http://example.org/south-west/devon.csv"),
+               c("http://example.org/south-west/devon.csv.json",
+                 "http://example.org/south-west/csvm.json",
+                 "http://example.org/csvm?file=http://example.org/south-west/devon.csv.json"))
+
+  # filesystem tests
+  expect_equal(render_uri_templates(c("{+url}-metadata.json", "csv-metadata.json"),
+                                    url=file.path(csvw_test_path, "test011/tree-ops.csv")),
+               c("../csvw-tests/test011/tree-ops.csv-metadata.json",
+                 "../csvw-tests/test011/csv-metadata.json"))
+
+  csvw_test_path <- "../csvw-tests"
+  orig_dir <- setwd(csvw_test_path)
+  on.exit(setwd(orig_dir), add=T, after=F)
+  expect_equal(render_uri_templates(c("{+url}-metadata.json", "csv-metadata.json"),
+                                    url="test011/tree-ops.csv"),
+               c("test011/tree-ops.csv-metadata.json",
+                 "test011/csv-metadata.json"))
+})
+
 # test:
 # - unit test type coercion
 # - multiple tables
