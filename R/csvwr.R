@@ -78,17 +78,35 @@ datatype_to_type <- function(x) {
 read_csvw <- function(filename, metadata=NULL) {
   metadata <- locate_metadata(filename, metadata)
 
-  schema <- metadata$tables[[1]]$tableSchema  # TODO: multiple tables
+  metadata$tables <- lapply(metadata$tables, add_dataframe, filename=filename, default_schema=metadata$tableSchema)
+
+  return(metadata)
+}
+
+#' Add data frame to csvw table annotation
+#'
+#' @param table a `csvw:Table` annotation
+#' @param filename a filename/ URL for the csv table
+#' @param default_schema an optional fallback used if the table specification
+#' doesn't include a tableSchema
+#' @return a table annotation with a `dataframe` attribute added with data frame
+#' holding the contents of the table
+add_dataframe <- function(table, filename, default_schema) {
+  if(is.null(table$tableSchema)) {
+    schema <- default_schema
+  } else {
+    schema <- table$tableSchema
+  }
+  csv_url <- filename # or table$url
   column_names <- schema$columns$name
   column_types <- datatype_to_type(schema$columns$datatype)
-  dtf <- readr::read_csv(filename,
+  dtf <- readr::read_csv(csv_url,
                          trim_ws=T,
                          skip=1,
                          col_names=column_names,
                          col_types=column_types)
-  metadata$tables[[1]]$dataframe <- dtf
-
-  return(metadata)
+  table$dataframe <- dtf
+  table
 }
 
 #' Read a data frame from the first table in a csvw
@@ -215,10 +233,27 @@ find_metadata <- function(filename) {
 #' @return csvw metdata list
 read_metadata <- function(filename) {
   metadata <- jsonlite::read_json(filename)
+  metadata <- normalise_metadata(metadata)
   metadata$tables <- lapply(metadata$tables, function(t) {
     t$tableSchema$columns <- list_of_lists_to_df(t$tableSchema$columns)
     t
   })
+#' Normalise metadata
+#'
+#' The spec defines a [normalisation process](https://w3c.github.io/csvw/metadata/#normalization).
+#' So far this function just coerces the metadata to ensure it describes a table group.
+#'
+#' @param metadata a csvw metadata list
+#' @return metadata coerced into a [table group description](https://www.w3.org/TR/tabular-metadata/#dfn-table-group-description)
+#' @md
+normalise_metadata <- function(metadata) {
+  if(is.null(metadata$tables)) {
+    if(is.null(metadata$url)) {
+      stop("Metadata doesn't define any tables, or a url to build a table definition from")
+    } else {
+      metadata$tables <- list(list(url=metadata$url))
+    }
+  }
   metadata
 }
 
@@ -297,13 +332,18 @@ is_blank <- function(value) {
 }
 
 #' @importFrom magrittr %>%
-table_to_list <- function(table) {
+table_to_list <- function(table, default_schema) {
+  schema <- if(is.null(table$tableSchema)) {
+    default_schema
+  } else {
+    table$tableSchema
+  }
   row_num <- 0
   rows <- purrr::transpose(table$dataframe) %>%
     purrr::map(function(r) {
       row_num <<- row_num + 1
       url <- paste0(table$url, "#row=", row_num+1)  # ought to check for header, this is row num on original table
-      names(r) <- table$tableSchema$columns$titles
+      names(r) <- schema$columns$titles
       list(url=url, rownum=row_num, describes=list(purrr::discard(r, .p=is_blank)))
     })
   list(url=table$url, row=rows)
@@ -318,7 +358,7 @@ table_to_list <- function(table) {
 #' csvw_to_list(read_csvw("example.csv")))
 #' }
 csvw_to_list <- function(csvw) {
-  list(tables=lapply(csvw$tables, table_to_list))
+  list(tables=lapply(csvw$tables, table_to_list, default_schema=csvw$tableSchema))
 }
 
 #csvw_triples <- function(csvw) # returns vector of triples/ s-p-o data.frame
