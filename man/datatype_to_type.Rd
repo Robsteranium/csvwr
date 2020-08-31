@@ -4,14 +4,19 @@
 \alias{datatype_to_type}
 \title{Map csvw datatypes to R types}
 \usage{
-datatype_to_type(x)
+datatype_to_type(datatypes)
 }
 \arguments{
-\item{x}{a character vector of datatypes}
+\item{datatypes}{a list of csvw datatypes}
 }
 \value{
-compact string representation for `readr::cols` with one character per column-type
+a \code{readr::cols} specification - a list of collectors
 }
 \description{
-Map csvw datatypes to R types
+Translate \href{https://www.w3.org/TR/tabular-metadata/#datatypes}{csvw datatypes} to R types.
+This implementation currently targets \link[readr:cols]{readr::cols} column specifications.
+}
+\examples{
+cspec <- datatype_to_type(list("double", list(base="date", format="yyyy-MM-dd")))
+readr::read_csv(readr::readr_example("challenge.csv"), col_types=col_types)
 }

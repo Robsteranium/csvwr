@@ -86,6 +86,28 @@ test_that("URI Templates may be rendered", {
                  "test011/csv-metadata.json"))
 })
 
+test_that("Date Formats may be transformed", {
+  expect_equal(transform_date_format("M/d/yyyy"), "%m/%d/%Y")
+  examples <- list(
+    c(fmt="yyyy-MM-dd",  eg="2015-03-22"),
+    c(fmt="yyyyMMdd",  eg="20150322"),
+    c(fmt="dd-MM-yyyy",  eg="22-03-2015"),
+    c(fmt="d-M-yyyy",  eg="22-3-2015"),
+    c(fmt="MM-dd-yyyy",  eg="03-22-2015"),
+    c(fmt="M-d-yyyy",  eg="3-22-2015"),
+    c(fmt="dd/MM/yyyy",  eg="22/03/2015"),
+    c(fmt="d/M/yyyy",  eg="22/3/2015"),
+    c(fmt="MM/dd/yyyy",  eg="03/22/2015"),
+    c(fmt="M/d/yyyy",  eg="3/22/2015"),
+    c(fmt="dd.MM.yyyy",  eg="22.03.2015"),
+    c(fmt="d.M.yyyy",  eg="22.3.2015"),
+    c(fmt="MM.dd.yyyy",  eg="03.22.2015"),
+    c(fmt="M.d.yyyy",  eg="3.22.2015"))
+  lapply(examples, function(e) {
+    fmt <- transform_date_format(e["fmt"])
+    expect_equal(unname(strptime(!!e["eg"], format=!!fmt)), as.POSIXlt("2015-03-22"))
+  })
+})
 # test:
 # - unit test type coercion
 # - multiple tables

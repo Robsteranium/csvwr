@@ -42,14 +42,54 @@ base_uri <- function() {
   getOption("csvwr_base_uri", "http://example.net/")
 }
 
+#' Transform date format string from
+#'
+#' As per the [csvw specification for date and time formats](https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#h-formats-for-dates-and-times)
+#' we accept format strings using the [date field symbols defined in unicode TR35](www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table).
+#' These are converted to POSIX 1003.1 date format strings for use in [base::strptime()] or [readr::parse_date()].
+#'
+#' @param format_string a UAX35 date format string
+#' @return a POSIX date format string
+#' @examples
+#' fmt <- transform_date_format("dd.MM.yyyy")
+#' strptime("01.01.2001", format=fmt)
+#' @md
+transform_date_format <- function(format_string) {
+  format_string %>%
+    gsub("yyyy", "%Y", .) %>%
+    gsub("dd", "%d", .) %>%
+    gsub("MM", "%m", .) %>%
+    gsub("(?<!%)d", "%d", ., perl=T) %>%
+    gsub("(?<!%)M", "%m", ., perl=T)
+}
+
+
 #' Map csvw datatypes to R types
 #'
-#' @param x a character vector of datatypes
-#' @return compact string representation for `readr::cols` with one character per column-type
-datatype_to_type <- function(x) {
-  mapping  <- c("string" = "c",
-                "date" = "D")
-  paste0(mapping[x],collapse="")
+#' Translate [csvw datatypes](https://www.w3.org/TR/tabular-metadata/#datatypes) to R types.
+#' This implementation currently targets [readr::cols] column specifications.
+#'
+#' @param datatypes a list of csvw datatypes
+#' @return a `readr::cols` specification - a list of collectors
+#' @examples
+#' cspec <- datatype_to_type(list("double", list(base="date", format="yyyy-MM-dd")))
+#' readr::read_csv(readr::readr_example("challenge.csv"), col_types=col_types)
+#' @md
+datatype_to_type <- function(datatypes) {
+  datatypes %>% purrr::map(function(datatype) {
+    if(is.list(datatype)) {
+      # complex types (list)
+      switch(datatype$base,
+             date = readr::col_date(format=transform_date_format(datatype$format)))
+    } else {
+      # simple types (string)
+      switch(datatype,
+             integer = readr::col_integer(),
+             double = readr::col_double(),
+             string = readr::col_character(),
+             date = readr::col_date())
+    }
+  })
 }
 
 #' Read CSV on the Web
@@ -235,9 +275,17 @@ read_metadata <- function(filename) {
   metadata <- jsonlite::read_json(filename)
   metadata <- normalise_metadata(metadata)
   metadata$tables <- lapply(metadata$tables, function(t) {
-    t$tableSchema$columns <- list_of_lists_to_df(t$tableSchema$columns)
+    if(!is.null(t$tableSchema)) {
+      t$tableSchema$columns <- parse_columns(t$tableSchema$columns)
+    }
     t
   })
+  if(!is.null(metadata$tableSchema)) {
+    metadata$tableSchema$columns <- parse_columns(metadata$tableSchema$columns)
+  }
+  metadata
+}
+
 #' Normalise metadata
 #'
 #' The spec defines a [normalisation process](https://w3c.github.io/csvw/metadata/#normalization).
@@ -257,13 +305,30 @@ normalise_metadata <- function(metadata) {
   metadata
 }
 
+#' Parse columns schema
+#'
+#' @param columns a list of lists specification of columns
+#' @return a data frame with a row per column specification
+parse_columns <- function(ll) {
+  d <- list_of_lists_to_df(ll)
+  if(is.null(d$required)) {
+    d$required <- F
+  } else {
+    d$required <- sapply(d$required, function(x) ifelse(is.null(x),F,T))
+  }
+  d
+}
+
 #' Parse list of lists specification into a data frame
 #'
 #' @param ll a list of lists
 #' @return a data frame with a row per list
 list_of_lists_to_df <- function(ll) {
   nms <- ll %>% purrr::map(names) %>% purrr::reduce(union) # need to get all names, not just use those from first column
-  purrr::transpose(ll, .names=nms) %>% purrr::simplify_all() %>% as.data.frame(stringsAsFactors=F)
+  purrr::transpose(ll, .names=nms) %>%
+    purrr::simplify_all() %>%
+    purrr::map_if(is.list, I) %>% # prevents lists being split into columns (allows cells to have lists)
+    as.data.frame(stringsAsFactors=F, col.names=nms)
 }
 
 
