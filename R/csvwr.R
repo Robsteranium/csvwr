@@ -7,7 +7,8 @@
 #'
 #' @section Getting started:
 #'
-#' The best place to start is the \link[=../doc/read-write-csvw.html]{Reading and writing CSVW vignette}.
+#' The best place to start is the
+#' \link[=../doc/read-write-csvw.html]{Reading and writing CSVW vignette}.
 #'
 #' @section Reading annotated tables:
 #' \itemize{
@@ -44,9 +45,12 @@ base_uri <- function() {
 
 #' Transform date format string from
 #'
-#' As per the [csvw specification for date and time formats](https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#h-formats-for-dates-and-times)
-#' we accept format strings using the [date field symbols defined in unicode TR35](www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table).
-#' These are converted to POSIX 1003.1 date format strings for use in [base::strptime()] or [readr::parse_date()].
+#' As per the [csvw specification for date and time
+#' formats](https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#h-formats-for-dates-and-times)
+#' we accept format strings using the [date field symbols defined in unicode
+#' TR35](www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table).
+#' These are converted to POSIX 1003.1 date format strings for use in
+#' [base::strptime()] or [readr::parse_date()].
 #'
 #' @param format_string a UAX35 date format string
 #' @return a POSIX date format string
@@ -118,7 +122,10 @@ datatype_to_type <- function(datatypes) {
 read_csvw <- function(filename, metadata=NULL) {
   metadata <- locate_metadata(filename, metadata)
 
-  metadata$tables <- lapply(metadata$tables, add_dataframe, filename=filename, default_schema=metadata$tableSchema)
+  metadata$tables <- lapply(metadata$tables,
+                            add_dataframe,
+                            filename=filename,
+                            default_schema=metadata$tableSchema)
 
   return(metadata)
 }
@@ -292,7 +299,8 @@ read_metadata <- function(filename) {
 #' So far this function just coerces the metadata to ensure it describes a table group.
 #'
 #' @param metadata a csvw metadata list
-#' @return metadata coerced into a [table group description](https://www.w3.org/TR/tabular-metadata/#dfn-table-group-description)
+#' @return metadata coerced into a
+#'   [table group description](https://www.w3.org/TR/tabular-metadata/#dfn-table-group-description)
 #' @md
 normalise_metadata <- function(metadata) {
   if(is.null(metadata$tables)) {
@@ -324,10 +332,13 @@ parse_columns <- function(ll) {
 #' @param ll a list of lists
 #' @return a data frame with a row per list
 list_of_lists_to_df <- function(ll) {
-  nms <- ll %>% purrr::map(names) %>% purrr::reduce(union) # need to get all names, not just use those from first column
+  # need to get all names, not just use those from first column
+  nms <- ll %>% purrr::map(names) %>% purrr::reduce(union)
+
   purrr::transpose(ll, .names=nms) %>%
     purrr::simplify_all() %>%
-    purrr::map_if(is.list, I) %>% # prevents lists being split into columns (allows cells to have lists)
+    # prevents lists being split into columns (allows cells to be lists)
+    purrr::map_if(is.list, I) %>%
     as.data.frame(stringsAsFactors=F, col.names=nms)
 }
 
@@ -407,7 +418,8 @@ table_to_list <- function(table, default_schema) {
   rows <- purrr::transpose(table$dataframe) %>%
     purrr::map(function(r) {
       row_num <<- row_num + 1
-      url <- paste0(table$url, "#row=", row_num+1)  # ought to check for header, this is row num on original table
+      # ought to check for header, this is row num on original table
+      url <- paste0(table$url, "#row=", row_num+1)
       names(r) <- schema$columns$titles
       list(url=url, rownum=row_num, describes=list(purrr::discard(r, .p=is_blank)))
     })
