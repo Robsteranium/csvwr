@@ -8,7 +8,7 @@
 #' @section Getting started:
 #'
 #' The best place to start is the
-#' \link[=../doc/read-write-csvw.html]{Reading and writing CSVW vignette}.
+#' \link[=../doc/read-write-csvw.html]{Reading and Writing CSVW} vignette.
 #'
 #' @section Reading annotated tables:
 #' \itemize{
@@ -28,6 +28,11 @@
 #' @name csvwr
 #' @importFrom magrittr %>%
 NULL # roxygen needs to document something! https://r-pkgs.org/man.html#man-packages
+
+# https://github.com/tidyverse/magrittr/issues/29
+# Otherwise R Check complains:
+# > no visible binding for global variable ‘.’
+globalVariables(".")
 
 #' Retreive the base URI from configuration
 #'
@@ -77,7 +82,7 @@ transform_date_format <- function(format_string) {
 #' @return a `readr::cols` specification - a list of collectors
 #' @examples
 #' cspec <- datatype_to_type(list("double", list(base="date", format="yyyy-MM-dd")))
-#' readr::read_csv(readr::readr_example("challenge.csv"), col_types=col_types)
+#' readr::read_csv(readr::readr_example("challenge.csv"), col_types=cspec)
 #' @md
 datatype_to_type <- function(datatypes) {
   datatypes %>% purrr::map(function(datatype) {
@@ -228,6 +233,8 @@ set_uri_base <- function(t, url) {
 #'
 #' @param templates a character vector with URI templates
 #' @param ... bindings for variables to be interpolated into templates
+#' @importFrom string str_replace
+#' @importFrom string str_glue_data
 render_uri_templates <- function(templates, ...) {
   bindings <- list(...)
   templates %>%
@@ -317,8 +324,8 @@ normalise_metadata <- function(metadata) {
 #'
 #' @param columns a list of lists specification of columns
 #' @return a data frame with a row per column specification
-parse_columns <- function(ll) {
-  d <- list_of_lists_to_df(ll)
+parse_columns <- function(columns) {
+  d <- list_of_lists_to_df(columns)
   if(is.null(d$required)) {
     d$required <- F
   } else {

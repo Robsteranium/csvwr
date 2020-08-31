@@ -4,7 +4,7 @@
 \alias{parse_columns}
 \title{Parse columns schema}
 \usage{
-parse_columns(ll)
+parse_columns(columns)
 }
 \arguments{
 \item{columns}{a list of lists specification of columns}

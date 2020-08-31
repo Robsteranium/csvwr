@@ -4,3 +4,5 @@
 ^\.Rproj\.user$
 csvwr.Rproj
 tests/csvw-tests/reports/.earl
+^doc$
+^Meta$

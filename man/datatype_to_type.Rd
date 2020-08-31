@@ -18,5 +18,5 @@ This implementation currently targets \link[readr:cols]{readr::cols} column spec
 }
 \examples{
 cspec <- datatype_to_type(list("double", list(base="date", format="yyyy-MM-dd")))
-readr::read_csv(readr::readr_example("challenge.csv"), col_types=col_types)
+readr::read_csv(readr::readr_example("challenge.csv"), col_types=cspec)
 }

@@ -13,7 +13,8 @@ parse and prepare data before it can be used in analysis.
 \section{Getting started}{
 
 
-The best place to start is the \link[=../doc/read-write-csvw.html]{Reading and writing CSVW vignette}.
+The best place to start is the
+\link[=../doc/read-write-csvw.html]{Reading and Writing CSVW} vignette.
 }
 
 \section{Reading annotated tables}{

@@ -1,5 +1,5 @@
 ---
-title: Read and Write CSVW in R"
+title: Read and Write CSVW in R
 author: Robin Gower
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
