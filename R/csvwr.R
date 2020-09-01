@@ -385,9 +385,10 @@ derive_metadata <- function(filename) {
 #' derive_table_schema(data.frame(a=1,b=2))
 #' }
 derive_table_schema <- function(d) {
+  # TODO: derive snake-case names, datatypes from column types
   cols <- colnames(d)
   list(
-    columns=data.frame(name=make.names(cols), titles=cols, datatype="string", stringsAsFactors = F)
+    columns=data.frame(name=cols, titles=cols, datatype="string", stringsAsFactors = F)
   )
 }
 
@@ -430,7 +431,7 @@ table_to_list <- function(table, default_schema) {
       row_num <<- row_num + 1
       # ought to check for header, this is row num on original table
       url <- paste0(table$url, "#row=", row_num+1)
-      names(r) <- schema$columns$titles
+      names(r) <- schema$columns$name
       list(url=url, rownum=row_num, describes=list(purrr::discard(r, .p=is_blank)))
     })
   list(url=table$url, row=rows)
