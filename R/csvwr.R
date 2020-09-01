@@ -349,7 +349,10 @@ property_type <- function(property) {
 }
 
 base_url <- function(metadata, location) {
-  base <- metadata$`@context`[2]$`@base`
+  context <- metadata$`@context`
+  base <- if(is.list(context)) {
+    context[2]$`@base`
+  }
   if(is.null(base)) {
     base <- base_uri()
   }
