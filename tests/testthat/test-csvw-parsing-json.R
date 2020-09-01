@@ -19,12 +19,13 @@ describe("CSVW Parsing Tests (JSON)", {
   on.exit(setwd(orig_dir), add=T, after=F)
 
   test_manifest <- jsonlite::read_json(file.path(csvw_test_path, "manifest-json.jsonld"))
-  entries <- test_manifest$entries[1:7]
+  entries <- test_manifest$entries[1:8]
 
   lapply(entries, test_parsing)
 })
 
-# need to use implicit to set-up a mock directory, perhaps `with_mock(list.files=file_that_can_only_find_implicits)`
+# need to use implicit to set-up a mock directory, perhaps
+# `with_mock(list.files=file_that_can_only_find_implicits)`
 # https://www.rdocumentation.org/packages/testthat/versions/2.3.2/topics/with_mock
 
 #actual <- csvw_to_list(read_csvw(file.path(csvw_test_path, "test005.csv")))

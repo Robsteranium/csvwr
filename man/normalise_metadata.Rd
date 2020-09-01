@@ -4,10 +4,12 @@
 \alias{normalise_metadata}
 \title{Normalise metadata}
 \usage{
-normalise_metadata(metadata)
+normalise_metadata(metadata, location)
 }
 \arguments{
 \item{metadata}{a csvw metadata list}
+
+\item{location}{the location of the metadata}
 }
 \value{
 metadata coerced into a

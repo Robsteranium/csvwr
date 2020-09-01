@@ -295,7 +295,7 @@ find_metadata <- function(filename) {
 #' @return csvw metdata list
 read_metadata <- function(filename) {
   metadata <- jsonlite::read_json(filename)
-  metadata <- normalise_metadata(metadata)
+  metadata <- normalise_metadata(metadata, location=filename)
   metadata$tables <- lapply(metadata$tables, function(t) {
     if(!is.null(t$tableSchema)) {
       t$tableSchema$columns <- parse_columns(t$tableSchema$columns)
@@ -308,21 +308,104 @@ read_metadata <- function(filename) {
   metadata
 }
 
+#' Identify the type of an annotation property
+#'
+#' This can be done from the name of the property. The
+#' [metadata descriptor diagram](https://w3c.github.io/csvw/metadata/properties.svg)
+#' provides a succinct summary of the types of each property and how they fit together
+#'
+#'  @param property a named list element
+#'  @return a string defining the property type
+#'  @examples
+#'  property_type(list(url="http://example.net"))
+#'  @md
+property_type <- function(property) {
+  stopifnot(length(property)==1)
+  switch(names(property),
+         "tables"="array",
+         "transformations"="array",
+         "notes"="array",
+         "@context"="array",
+         "foreignKeys"="array",
+         "columns"="array",
+         "lineTerminators"="array",
+         "url"="link",
+         "@id"="link",
+         "resource"="link",
+         "schemaReference"="link",
+         "targetFormat"="link",
+         "scriptFormat"="link",
+         "aboutUrl"="uri_template",
+         "propertyUrl"="uri_template",
+         "valueUrl"="uri_template",
+         "primaryKey"="column_reference",
+         "rowTitles"="column_reference",
+         "columnReference"="column_reference",
+         "titles"="natural_language",
+         "tableSchema"="object",
+         "dialect"="object",
+         "reference"="object",
+         "atomic")
+}
+
+base_url <- function(metadata, location) {
+  base <- metadata$`@context`[2]$`@base`
+  if(is.null(base)) {
+    base <- base_uri()
+  }
+  url <- resolve_url(base, location)
+  url
+}
+
+resolve_url <- function(url1, url2) {
+  sep <- ifelse(stringr::str_ends(url1,"/"),"","/")
+  paste(url1, url2, sep=sep)
+}
+
+normalise_url <- function(property, base_url) {
+  resolve_url(base_url, property)
+}
+
+#' Normalise an annotation property
+#'
+#' This follows the [normalisation](https://w3c.github.io/csvw/metadata/#normalization)
+#' process set out in the csvw specification.
+#' @param property an annotation property (a list)
+#' @return a property (list) a
+normalise_property <- function(property, base_url) {
+  normalised_property <- switch(property_type(property),
+         link = normalise_url(property, base_url),
+         property)
+  if(is.list(normalised_property)) {
+    normalised_property
+  } else {
+    # ensure we return a list named as per the input
+    stats::setNames(list(normalised_property), nm=names(property))
+  }
+}
+
 #' Normalise metadata
 #'
 #' The spec defines a [normalisation process](https://w3c.github.io/csvw/metadata/#normalization).
 #' So far this function just coerces the metadata to ensure it describes a table group.
 #'
 #' @param metadata a csvw metadata list
+#' @param location the location of the metadata
 #' @return metadata coerced into a
 #'   [table group description](https://www.w3.org/TR/tabular-metadata/#dfn-table-group-description)
 #' @md
-normalise_metadata <- function(metadata) {
+normalise_metadata <- function(metadata, location) {
+  metadata <- purrr::lmap(metadata, normalise_property, base_url=base_url(metadata, dirname(location)))
+  # coerce to table group description
   if(is.null(metadata$tables)) {
     if(is.null(metadata$url)) {
       stop("Metadata doesn't define any tables, or a url to build a table definition from")
+      # Could still be valid with a top-level schema, dialect or transformation
+      # https://w3c.github.io/csvw/metadata/#top-level-properties
     } else {
-      metadata$tables <- list(list(url=metadata$url))
+      # put context at top level and everything else into a table group description
+      metadata <- list(`@context`=metadata$`@context`,
+                       tables=list(metadata[names(metadata) != "@context"]))
     }
   }
   metadata
@@ -426,23 +509,76 @@ is_blank <- function(value) {
   is.na(value) | (value=="")
 }
 
+is_non_core_annotation <- function(property) {
+  !any(names(property) %in% c("tables","tableScheme","url","@context"))
+}
+
+#' Convert json-ld annotation to json
+#'
+#' Follows the [rules for JSON-LD to JSON conversion set out in the csv2json
+#' standard](https://w3c.github.io/csvw/csv2json/#json-ld-to-json).
+#' @md
+json_ld_to_json <- function(property) {
+  stopifnot(length(property)==1)
+  value <- property[[1]]
+  if(is.list(value)) {
+    value <- compact_json_ld(value)
+  }
+  stats::setNames(list(value), nm=names(property))
+}
+
+#' Compact objects to values
+#'
+#' Follows the [rules for JSON-LD to JSON conversion set out in the csv2json
+#' standard](https://w3c.github.io/csvw/csv2json/#json-ld-to-json).
+#' @md
+compact_json_ld <- function(value) {
+  if(is.list(value)) {
+    if(any(c("@id","@value") %in% names(value))) {
+      value <- value[[1]]
+    } else {
+      lapply(value, compact_json_ld)
+    }
+  } else {
+    value
+  }
+}
+
+
+#' Serialise cell values for JSON representation
+#'
+#' @param cell a typed value
+#' @return a representation comparable with the JSON representation (typically a string)
+render_cell <- function(cell) {
+  switch(class(cell),
+         Date = strftime(cell),
+         cell)
+}
+
 #' @importFrom magrittr %>%
 table_to_list <- function(table, default_schema) {
+  table <- purrr::lmap_if(table, is_non_core_annotation, json_ld_to_json, .else=identity)
   schema <- if(is.null(table$tableSchema)) {
-    default_schema
+    default_schema # TODO: check that normalize doesn't obviate this
   } else {
     table$tableSchema
   }
   row_num <- 0
-  rows <- purrr::transpose(table$dataframe) %>%
+  table$row <- purrr::pmap(table$dataframe, list) %>%
     purrr::map(function(r) {
       row_num <<- row_num + 1
       # ought to check for header, this is row num on original table
       url <- paste0(table$url, "#row=", row_num+1)
       names(r) <- schema$columns$name
-      list(url=url, rownum=row_num, describes=list(purrr::discard(r, .p=is_blank)))
+      r <- lapply(r, render_cell)
+      if(!is.null(schema$aboutUrl)) {
+        template <- paste0("{+url}",schema$aboutUrl)
+        r <- c(list("@id"=render_uri_templates(template,bindings=c(url=table$url,r))),r)
+      }
+      row_description <- list(purrr::discard(r, .p=is_blank))
+      list(url=url, rownum=row_num, describes=row_description)
     })
-  list(url=table$url, row=rows)
+  table[!(names(table) %in% c("tableSchema","dataframe"))]
 }
 
 #' Convert a csvw metadata to a list (csv2json)
