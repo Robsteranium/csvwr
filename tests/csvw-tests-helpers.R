@@ -1,15 +1,15 @@
 # https://w3c.github.io/csvw/tests/
 
 run_entry <- function(entry) {
-  csvw <- read_csvw(entry$action, metadata=entry$options$metadata)
+  csvw <- read_csvw(entry$action, metadata=entry$option$metadata)
   actual <- csvw_to_list(csvw)
   list(csvw=csvw, actual=actual)
 }
 
 name_test <- function(entry) {
-  test_name <- paste0(entry$id, " - ", entry$name, " action: ", entry$action)
-  if(!is.null(entry$options$metadata)) {
-    test_name <- paste0(test_name, ", metadata: ", entry$options$metadata)
+  test_name <- paste0(entry$id, " - ", entry$name, "; action: ", entry$action)
+  if(!is.null(entry$option$metadata)) {
+    test_name <- paste0(test_name, ", metadata: ", entry$option$metadata)
   }
   if(!is.null(entry$result)) {
     test_name <- paste0(test_name, ", result: ", entry$result)
