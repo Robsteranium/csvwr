@@ -425,7 +425,13 @@ parse_columns <- function(columns) {
   if(is.null(d$required)) {
     d$required <- F
   } else {
-    d$required <- sapply(d$required, function(x) ifelse(is.null(x),F,T))
+    d$required <- sapply(d$required, function(x) ifelse(is.null(x),F,x))
+  }
+
+  if(is.null(d$datatype)) {
+    d$datatype <- "string"
+  } else {
+    d$datatype <- lapply(d$datatype, function(x) if(is.null(x)) { "string" } else { x })
   }
 
   d
