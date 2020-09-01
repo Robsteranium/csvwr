@@ -1,31 +1,31 @@
 # CSV on the Web R Package (csvwr)
 
-Read and write CSV on the web.
+Read and write CSV on the Web.
 
-The csvw tabular metadata standard describes how to annotate a group of csv tables to ensure they are interpreted correctly.
+The [csvw model for tabular data](https://w3c.github.io/csvw/syntax/) standard describes how to annotate a group of csv tables to ensure they are interpreted correctly.
 
-This package uses the metadata schema to find tables, identify column names and cast values to the correct types.  
+This package uses the [csvw metadata schema](https://w3c.github.io/csvw/metadata) to find tables, identify column names and cast values to the correct types.
 
 The aim is to reduce the amount of manual work needed to parse and prepare data before it can be used in analysis.
 
 ## Usage
 
-For an introduction to the library please see the vignette [Read and Write CSVW in R](vignettes/read-write-csvw.html). Below we summarise the main usage.
-
-You can use it to read and csv table with json annotations into a data frame:
+You can use `csvwr` to read a csv table with json annotations into a data frame:
 
 ```r
+library(csvwr)
+
 # To load a csvw metadata and parse the table:
 csvw <- read_csvw("data.csv", "metadata.json")
 
-# To extract the parsed table:
+# To extract the parsed table (with syntactic variable names and typed-columns):
 csvw$tables[[1]]$dataframe
 
 # To load the csvw metadata and extract the table in one call:
 read_csvw_dataframe("data.csv", "metadata.json")
 ```
 
-You can also prepare annotations given a data frame:
+You can also prepare annotations for a data frame:
 
 ```r
 # Given a data frame
@@ -44,11 +44,15 @@ j <- jsonlite::toJSON(m)
 cat(j, file="metadata.json")
 ```
 
+For a complete introduction to the library please see the vignette [Read and Write CSVW in R](vignettes/read-write-csvw.html).
+
 ## Installation
 
 You'll need to use devtools to install this package from github:
+
 ```r
-devtools::install_github("robsteranium/csvwr")
+install.packages("devtools")
+devtools::install_github("Robsteranium/csvwr")
 ```
 
 ## Development
@@ -80,4 +84,4 @@ In order to check the vignettes, you need to do `devtools::install(build_vignett
 - vignettes and documentation
 - scripts for running the most useful tools from the command line
 
-It isn't envisaged that this library also perform csv2rdf translation. Some support for csv2json is provided as this is used to test the parsing is done correctly.
+The library isn't intended to be used for csv2rdf or csv2json translation. Some support for csv2json is provided as this is used to test the parsing is done correctly.
