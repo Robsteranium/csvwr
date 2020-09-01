@@ -362,7 +362,8 @@ base_url <- function(metadata, location) {
 
 resolve_url <- function(url1, url2) {
   sep <- ifelse(stringr::str_ends(url1,"/"),"","/")
-  paste(url1, url2, sep=sep)
+  combined <- paste(url1, url2, sep=sep)
+  combined %>% stringr::str_replace("/./","/")
 }
 
 normalise_url <- function(property, base_url) {

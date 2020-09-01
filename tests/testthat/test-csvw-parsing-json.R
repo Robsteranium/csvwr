@@ -19,7 +19,7 @@ describe("CSVW Parsing Tests (JSON)", {
   on.exit(setwd(orig_dir), add=T, after=F)
 
   test_manifest <- jsonlite::read_json(file.path(csvw_test_path, "manifest-json.jsonld"))
-  entries <- test_manifest$entries[1:9]
+  entries <- test_manifest$entries[1:10]
 
   lapply(entries, test_parsing)
 })
