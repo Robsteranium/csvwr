@@ -231,12 +231,20 @@ set_uri_base <- function(t, url) {
 #'
 #' This doesn't yet implement the whole of RFC 6570, just enough to make the tests pass
 #'
+#' You can bind variables by passing a list to the explicit `bindings` argument,
+#' or variadically with `...` by naming arguments according to the variable name you wish to bind.
+#'
 #' @param templates a character vector with URI templates
-#' @param ... bindings for variables to be interpolated into templates
+#' @param bindings a list of variable bindings to be interpolated into templates
+#' @param ... further bindings specified as named function arguments
+#' @examples
+#' render_uri_templates("{+url}/resource?query=value", list(url="http://example.net"))
+#' render_uri_templates("{+url}", url="http://example.net")
 #' @importFrom string str_replace
 #' @importFrom string str_glue_data
-render_uri_templates <- function(templates, ...) {
-  bindings <- list(...)
+#' @md
+render_uri_templates <- function(templates, bindings=NULL, ...) {
+  bindings <- c(bindings, list(...))
   templates %>%
     purrr::map(set_uri_base, url=bindings$url) %>%
     stringr::str_replace("\\+", "") %>%

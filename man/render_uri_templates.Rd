@@ -4,13 +4,23 @@
 \alias{render_uri_templates}
 \title{Render URI templates}
 \usage{
-render_uri_templates(templates, ...)
+render_uri_templates(templates, bindings = NULL, ...)
 }
 \arguments{
 \item{templates}{a character vector with URI templates}
 
-\item{...}{bindings for variables to be interpolated into templates}
+\item{bindings}{a list of variable bindings to be interpolated into templates}
+
+\item{...}{further bindings specified as named function arguments}
 }
 \description{
 This doesn't yet implement the whole of RFC 6570, just enough to make the tests pass
+}
+\details{
+You can bind variables by passing a list to the explicit \code{bindings} argument,
+or variadically with \code{...} by naming arguments according to the variable name you wish to bind.
+}
+\examples{
+render_uri_templates("{+url}/resource?query=value", list(url="http://example.net"))
+render_uri_templates("{+url}", url="http://example.net")
 }
