@@ -8,7 +8,7 @@
 #' @section Getting started:
 #'
 #' The best place to start is the
-#' \link[=../doc/read-write-csvw.html]{Reading and Writing CSVW} vignette.
+#' \href{../doc/read-write-csvw.html}{Reading and Writing CSVW} vignette.
 #'
 #' @section Reading annotated tables:
 #' \itemize{
@@ -209,9 +209,9 @@ locate_metadata <- function(filename, metadata) {
 
 #' Set the base of a URI template
 #'
-#' @param t a URI template (character vector)
+#' @param t a character vector of URI templates
 #' @param url a filename url being used as a context (string)
-#' @return a vector of templates with base paths/ domains set appropriately
+#' @return a character vector of templates with base paths/ domains set appropriately
 set_uri_base <- function(t, url) {
   # prefix current domain if rendered template starts with a `/`
   if(strtrim(t,1)=="/") {
@@ -326,11 +326,14 @@ normalise_metadata <- function(metadata) {
 #' @return a data frame with a row per column specification
 parse_columns <- function(columns) {
   d <- list_of_lists_to_df(columns)
+
+  # required defaults to false
   if(is.null(d$required)) {
     d$required <- F
   } else {
     d$required <- sapply(d$required, function(x) ifelse(is.null(x),F,T))
   }
+
   d
 }
 

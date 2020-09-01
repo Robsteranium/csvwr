@@ -7,12 +7,12 @@
 set_uri_base(t, url)
 }
 \arguments{
-\item{t}{a URI template (character vector)}
+\item{t}{a character vector of URI templates}
 
 \item{url}{a filename url being used as a context (string)}
 }
 \value{
-a vector of templates with base paths/ domains set appropriately
+a character vector of templates with base paths/ domains set appropriately
 }
 \description{
 Set the base of a URI template
