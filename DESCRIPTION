@@ -18,7 +18,8 @@ Imports:
     jsonlite,
     purrr,
     readr,
-    stringr
+    stringr,
+    rlang
 Remotes: r-lib/testthat
 Config/testthat/edition: 3
 RoxygenNote: 7.1.1

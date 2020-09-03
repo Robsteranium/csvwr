@@ -4,18 +4,17 @@
 \alias{add_dataframe}
 \title{Add data frame to csvw table annotation}
 \usage{
-add_dataframe(table, filename, default_schema)
+add_dataframe(table, filename, dialect, group_schema)
 }
 \arguments{
-\item{table}{a `csvw:Table` annotation}
+\item{table}{a \code{csvw:Table} annotation}
 
 \item{filename}{a filename/ URL for the csv table}
 
-\item{default_schema}{an optional fallback used if the table specification
-doesn't include a tableSchema}
+\item{group_schema}{a fallback tableSchema from the table group}
 }
 \value{
-a table annotation with a `dataframe` attribute added with data frame
+a table annotation with a \code{dataframe} attribute added with data frame
 holding the contents of the table
 }
 \description{

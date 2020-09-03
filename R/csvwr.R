@@ -27,6 +27,7 @@
 #' @docType package
 #' @name csvwr
 #' @importFrom magrittr %>%
+#' @importFrom rlang %||%
 NULL # roxygen needs to document something! https://r-pkgs.org/man.html#man-packages
 
 # https://github.com/tidyverse/magrittr/issues/29
@@ -130,7 +131,8 @@ read_csvw <- function(filename, metadata=NULL) {
   metadata$tables <- lapply(metadata$tables,
                             add_dataframe,
                             filename=filename,
-                            default_schema=metadata$tableSchema)
+                            dialect=metadata$dialect,
+                            group_schema=metadata$tableSchema)
 
   return(metadata)
 }
@@ -139,22 +141,23 @@ read_csvw <- function(filename, metadata=NULL) {
 #'
 #' @param table a `csvw:Table` annotation
 #' @param filename a filename/ URL for the csv table
-#' @param default_schema an optional fallback used if the table specification
-#' doesn't include a tableSchema
+#' @param group_schema a fallback tableSchema from the table group
 #' @return a table annotation with a `dataframe` attribute added with data frame
 #' holding the contents of the table
-add_dataframe <- function(table, filename, default_schema) {
-  if(is.null(table$tableSchema)) {
-    schema <- default_schema
-  } else {
-    schema <- table$tableSchema
+#' @md
+add_dataframe <- function(table, filename, dialect, group_schema) {
+  schema <- table$tableSchema %||% group_schema
+  if(is.null(schema)) {
+    # if we need to derive a default schema, then set this on the table itself
+    table$tableSchema <- schema <- default_schema(filename, dialect)
   }
+  dialect <- dialect %||% default_dialect
   csv_url <- filename # or table$url
   column_names <- schema$columns$name
   column_types <- datatype_to_type(schema$columns$datatype)
   dtf <- readr::read_csv(csv_url,
                          trim_ws=T,
-                         skip=1,
+                         skip=dialect$headerRowCount,
                          col_names=column_names,
                          col_types=column_types)
   table$dataframe <- dtf
@@ -367,7 +370,12 @@ resolve_url <- function(url1, url2) {
 }
 
 normalise_url <- function(property, base_url) {
-  resolve_url(base_url, property)
+  # do nothing if the property already includes a URL scheme
+  if(grepl("://", property)) {
+    property
+  } else {
+    resolve_url(base_url, property)
+  }
 }
 
 #' Normalise an annotation property
@@ -412,6 +420,11 @@ normalise_metadata <- function(metadata, location) {
                        tables=list(metadata[names(metadata) != "@context"]))
     }
   }
+
+  # normalise url's in each table
+  metadata$tables <- lapply(metadata$tables, function(table) {
+    purrr::lmap(table, normalise_property, base_url=base_url(metadata, dirname(location)))
+  })
   metadata
 }
 
@@ -468,12 +481,9 @@ validate_csvw <- function(csvw) {
 #' derive_metadata("example.csv")
 #' }
 derive_metadata <- function(filename) {
-  data_sample <- readr::read_csv(filename, n_max=1, col_types=readr::cols())
+  schema <- default_schema(filename, list(header=T))
   create_metadata(tables=list(
-    list(
-      url = paste0(base_uri(), filename),
-      tableSchema=derive_table_schema(data_sample)
-    )
+    list(url = paste0(base_uri(), filename), tableSchema=schema)
   ))
 }
 
@@ -492,6 +502,46 @@ derive_table_schema <- function(d) {
     columns=data.frame(name=cols, titles=cols, datatype="string", stringsAsFactors = F)
   )
 }
+
+
+#' Create a default table schema given a csv file and dialect
+#'
+#' If neither the table nor the group have a `tableSchema` annotation,
+#' then this default schema will used.
+#'
+#' @param filename a csv file
+#' @param dialect specification of the csv's dialect
+#' @return a table schema
+#' @md
+default_schema <- function(filename, dialect) {
+  data_sample <- readr::read_csv(filename, n_max=10, col_names=dialect$header, col_types=readr::cols())
+  if(!dialect$header) {
+    names(data_sample) <- paste0("_col.", 1:ncol(data_sample))
+  }
+  derive_table_schema(data_sample)
+}
+
+#' CSVW default dialect
+#'
+#' The [CSVW Default Dialect specification](https://w3c.github.io/csvw/metadata/#dialect-descriptions)
+#' described in [CSV Dialect Description Format](http://dataprotocols.org/csv-dialect/).
+#'
+#' @return a list specifying a default csv dialect
+default_dialect <- list(
+  encoding="utf-8",
+  lineTerminators=c("\r\n","\n"),
+  quoteChar="\"",
+  doubleQuote=T,
+  skipRows=0,
+  commentPrefix="#",
+  header=T,
+  headerRowCount=1,
+  delimiter=",",
+  skipColumns=0,
+  skipBlankRows=F,
+  skipInitialSpace=F,
+  trim=F
+)
 
 #' Create tabular metadata from a list of tables
 #'
@@ -566,19 +616,15 @@ render_cell <- function(cell) {
 }
 
 #' @importFrom magrittr %>%
-table_to_list <- function(table, default_schema) {
+table_to_list <- function(table, group_schema, dialect) {
   table <- purrr::lmap_if(table, is_non_core_annotation, json_ld_to_json, .else=identity)
-  schema <- if(is.null(table$tableSchema)) {
-    default_schema # TODO: check that normalize doesn't obviate this
-  } else {
-    table$tableSchema
-  }
+  schema <- table$tableSchema %||% group_schema # TODO: check that normalize doesn't obviate this
+  header_row_count <- (dialect %||% default_dialect)$headerRowCount
   row_num <- 0
   table$row <- purrr::pmap(table$dataframe, list) %>%
     purrr::map(function(r) {
       row_num <<- row_num + 1
-      # ought to check for header, this is row num on original table
-      url <- paste0(table$url, "#row=", row_num+1)
+      url <- paste0(table$url, "#row=", row_num + header_row_count)
       names(r) <- schema$columns$name
       r <- lapply(r, render_cell)
       if(!is.null(schema$aboutUrl)) {
@@ -600,7 +646,7 @@ table_to_list <- function(table, default_schema) {
 #' csvw_to_list(read_csvw("example.csv")))
 #' }
 csvw_to_list <- function(csvw) {
-  list(tables=lapply(csvw$tables, table_to_list, default_schema=csvw$tableSchema))
+  list(tables=lapply(csvw$tables, table_to_list, group_schema=csvw$tableSchema, dialect=csvw$dialect))
 }
 
 #csvw_triples <- function(csvw) # returns vector of triples/ s-p-o data.frame
