@@ -90,14 +90,18 @@ datatype_to_type <- function(datatypes) {
     if(is.list(datatype)) {
       # complex types (list)
       switch(datatype$base,
-             date = readr::col_date(format=transform_date_format(datatype$format)))
+             date = readr::col_date(format=transform_date_format(datatype$format)),
+             stop("unrecognised complex datatype: ", datatype))
     } else {
       # simple types (string)
       switch(datatype,
              integer = readr::col_integer(),
              double = readr::col_double(),
+             number = readr::col_double(),
              string = readr::col_character(),
-             date = readr::col_date())
+             date = readr::col_date(),
+             gYear = readr::col_date(format="%Y"),
+             stop("unrecognised simple datatype: ", datatype))
     }
   })
 }
