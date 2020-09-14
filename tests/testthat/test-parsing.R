@@ -108,6 +108,15 @@ test_that("Date Formats may be transformed", {
     expect_equal(unname(strptime(!!e["eg"], format=!!fmt)), as.POSIXlt("2015-03-22"))
   })
 })
+
+
+test_that("coalesce", {
+  expect_true(coalesce_truth(T))
+  expect_false(coalesce_truth(NULL))
+  expect_false(coalesce_truth(F))
+
+  expect_equal(coalesce_truth(c(T,F,NA)), c(T,F,F))
+})
 # test:
 # - unit test type coercion
 # - multiple tables

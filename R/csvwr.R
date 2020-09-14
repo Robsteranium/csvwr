@@ -160,15 +160,19 @@ add_dataframe <- function(table, filename, dialect, group_schema) {
     table$tableSchema <- schema <- default_schema(filename, dialect)
   }
   dialect <- dialect %||% default_dialect
-  column_names <- schema$columns$name
-  column_types <- datatype_to_type(schema$columns$datatype)
   csv_url <- locate_table(filename, table$url)
+
+  table_columns <- schema$columns[!coalesce_truth(schema$columns$virtual), ]
+  column_names <- table_columns$name
+  column_types <- datatype_to_type(table_columns$datatype)
+
   dtf <- readr::read_csv(csv_url,
                          trim_ws=T,
                          skip=dialect$headerRowCount,
                          col_names=column_names,
                          col_types=column_types)
   table$dataframe <- dtf
+
   table
 }
 
@@ -472,16 +476,30 @@ parse_columns <- function(columns) {
   if(is.null(d$required)) {
     d$required <- F
   } else {
-    d$required <- sapply(d$required, function(x) ifelse(is.null(x),F,x))
+    d$required <- sapply(d$required, function(x) ifelse(is.null(x) || is.na(x),F,x))
   }
 
   if(is.null(d$datatype)) {
     d$datatype <- "string"
   } else {
-    d$datatype <- lapply(d$datatype, function(x) if(is.null(x)) { "string" } else { x })
+    d$datatype <- lapply(d$datatype, function(x) if(is.null(x) || is.na(x)) { "string" } else { x })
   }
 
   d
+}
+
+#' Coalesce value to truthiness
+#'
+#' Determineness whether the input is true, with missing values being interpreted as false.
+#'
+#' @x logical, `NA` or `NULL`
+#' @return `FALSE` if x is anything but `TRUE`
+coalesce_truth <- function(x) {
+  if(is.null(x)) {
+    F
+  } else {
+    ifelse(is.na(x), F, x)
+  }
 }
 
 #' Parse list of lists specification into a data frame
@@ -493,6 +511,8 @@ list_of_lists_to_df <- function(ll) {
   nms <- ll %>% purrr::map(names) %>% purrr::reduce(union)
 
   purrr::transpose(ll, .names=nms) %>%
+    # coalesce missing specifications to NA
+    purrr::map(function(l) { lapply(l, function(x) { if(is.null(x)) { NA } else { x }}) }) %>%
     purrr::simplify_all() %>%
     # prevents lists being split into columns (allows cells to be lists)
     purrr::map_if(is.list, I) %>%
@@ -603,7 +623,7 @@ is_blank <- function(value) {
 }
 
 is_non_core_annotation <- function(property) {
-  !any(names(property) %in% c("tables","tableScheme","url","@context"))
+  !any(names(property) %in% c("tables","tableScheme","url","@context","columns"))
 }
 
 #' Convert json-ld annotation to json
@@ -660,7 +680,7 @@ table_to_list <- function(table, group_schema, dialect) {
     purrr::map(function(r) {
       row_num <<- row_num + 1
       url <- paste0(table$url, "#row=", row_num + header_row_count)
-      names(r) <- schema$columns$name
+      names(r) <- schema$columns[!coalesce_truth(schema$columns$virtual), ]$name
       r <- lapply(r, render_cell)
       if(!is.null(schema$aboutUrl)) {
         template <- paste0("{+url}",schema$aboutUrl)
