@@ -49,28 +49,30 @@ base_uri <- function() {
   getOption("csvwr_base_uri", "http://example.net/")
 }
 
-#' Transform date format string from
+#' Transform date/time format string from
 #'
 #' As per the [csvw specification for date and time
 #' formats](https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#h-formats-for-dates-and-times)
 #' we accept format strings using the [date field symbols defined in unicode
 #' TR35](www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table).
 #' These are converted to POSIX 1003.1 date format strings for use in
-#' [base::strptime()] or [readr::parse_date()].
+#' [base::strptime()] or [readr::parse_date()]/[readr::parse_datetime()].
 #'
 #' @param format_string a UAX35 date format string
 #' @return a POSIX date format string
 #' @examples
-#' fmt <- transform_date_format("dd.MM.yyyy")
+#' fmt <- transform_datetime_format("dd.MM.yyyy")
 #' strptime("01.01.2001", format=fmt)
 #' @md
-transform_date_format <- function(format_string) {
+transform_datetime_format <- function(format_string) {
   format_string %>%
     gsub("yyyy", "%Y", .) %>%
     gsub("dd", "%d", .) %>%
     gsub("MM", "%m", .) %>%
     gsub("(?<!%)d", "%d", ., perl=T) %>%
-    gsub("(?<!%)M", "%m", ., perl=T)
+    gsub("(?<!%)M", "%m", ., perl=T) %>%
+    gsub("HH", "%H", .) %>%
+    gsub("mm", "%M", .)
 }
 
 
@@ -90,7 +92,8 @@ datatype_to_type <- function(datatypes) {
     if(is.list(datatype)) {
       # complex types (list)
       switch(datatype$base,
-             date = readr::col_date(format=transform_date_format(datatype$format)),
+             date = readr::col_date(format=transform_datetime_format(datatype$format)),
+             datetime = readr::col_datetime(format=transform_datetime_format(datatype$format)),
              stop("unrecognised complex datatype: ", datatype))
     } else {
       # simple types (string)
@@ -100,7 +103,8 @@ datatype_to_type <- function(datatypes) {
              number = readr::col_double(),
              string = readr::col_character(),
              date = readr::col_date(),
-             gYear = readr::col_date(format="%Y"),
+             gYear = readr::col_character(), # TODO xsd datatypes
+             anyURI = readr::col_character(),
              stop("unrecognised simple datatype: ", datatype))
     }
   })
@@ -614,8 +618,10 @@ compact_json_ld <- function(value) {
 #' @param cell a typed value
 #' @return a representation comparable with the JSON representation (typically a string)
 render_cell <- function(cell) {
-  switch(class(cell),
+  switch(class(cell)[1],
          Date = strftime(cell),
+         POSIXct = strftime(cell),
+         POSIXlt = strftime(cell),
          cell)
 }
 

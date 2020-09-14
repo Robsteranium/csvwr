@@ -87,7 +87,7 @@ test_that("URI Templates may be rendered", {
 })
 
 test_that("Date Formats may be transformed", {
-  expect_equal(transform_date_format("M/d/yyyy"), "%m/%d/%Y")
+  expect_equal(transform_datetime_format("M/d/yyyy"), "%m/%d/%Y")
   examples <- list(
     c(fmt="yyyy-MM-dd",  eg="2015-03-22"),
     c(fmt="yyyyMMdd",  eg="20150322"),
@@ -104,7 +104,7 @@ test_that("Date Formats may be transformed", {
     c(fmt="MM.dd.yyyy",  eg="03.22.2015"),
     c(fmt="M.d.yyyy",  eg="3.22.2015"))
   lapply(examples, function(e) {
-    fmt <- transform_date_format(e["fmt"])
+    fmt <- transform_datetime_format(e["fmt"])
     expect_equal(unname(strptime(!!e["eg"], format=!!fmt)), as.POSIXlt("2015-03-22"))
   })
 })
