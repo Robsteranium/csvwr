@@ -160,9 +160,9 @@ add_dataframe <- function(table, filename, dialect, group_schema) {
     table$tableSchema <- schema <- default_schema(filename, dialect)
   }
   dialect <- dialect %||% default_dialect
-  csv_url <- filename # or table$url
   column_names <- schema$columns$name
   column_types <- datatype_to_type(schema$columns$datatype)
+  csv_url <- locate_table(filename, table$url)
   dtf <- readr::read_csv(csv_url,
                          trim_ws=T,
                          skip=dialect$headerRowCount,
@@ -201,8 +201,11 @@ locate_metadata <- function(filename, metadata) {
   if(!is.null(metadata)) {
     # overriding metadata
     metadata <- read_metadata(metadata)
+  } else if(stringr::str_ends(filename,"\\.json")) {
+    # file itself is the metadata
+    metadata <- read_metadata(filename)
   } else {
-    # retreive file references by link header (TODO)
+    # retrieve file references by link header (TODO)
 
     # attempt to locate via defaults/ configuration
     location <- find_metadata(filename)
@@ -217,6 +220,22 @@ locate_metadata <- function(filename, metadata) {
   }
   return(metadata)
 }
+
+#' Locate csv data table
+#'
+#' @param filename the file passed to `read_csvw` in the first place (could be the csv or json annotations)
+#' @param url the location of the the table as defined in the metadata
+locate_table <- function(filename, url) {
+  if(stringr::str_ends(filename, "\\.csv")) {
+    # table was passed to read_csvw
+    filename
+  } else {
+    # finding table from metadata
+    # first attempt to locate locally
+    local_filename <- paste(dirname(filename), basename(url), sep="/")
+    find_existing_file(local_filename) %||% url
+  }
+} # TODO: unit test me!
 
 #' Set the base of a URI template
 #'
@@ -275,16 +294,9 @@ location_configuration <- function(filename) {
   default_locations
 }
 
-#' Find metadata for a tabular file
-#'
-#' Searches through the default locations attempting to locate metadata.
-#'
-#' @param filename a csv file
-#' @return a uri for the metadata, or null if none were found
-find_metadata <- function(filename) {
-  candidates <- render_uri_templates(location_configuration(filename), url=filename)
 
-  for(candidate in candidates) {
+find_existing_file <- function(filenames) {
+  for(candidate in filenames) {
     if(file.exists(candidate)) {
       found <- candidate
       break
@@ -296,6 +308,19 @@ find_metadata <- function(filename) {
   } else {
     return(NULL)
   }
+}
+
+
+#' Find metadata for a tabular file
+#'
+#' Searches through the default locations attempting to locate metadata.
+#'
+#' @param filename a csv file
+#' @return a uri for the metadata, or null if none were found
+find_metadata <- function(filename) {
+  candidates <- render_uri_templates(location_configuration(filename), url=filename)
+
+  find_existing_file(candidates)
 }
 
 #' Read and parse CSVW Metadata
