@@ -58,6 +58,23 @@ test_that("Metadata may be found from a filename", {
   expect_equal(metadata, "test011/tree-ops.csv-metadata.json")
 })
 
+test_that("Tables may be located", {
+  csvw_test_path <- "../csvw-tests"
+  orig_dir <- setwd(csvw_test_path)
+  on.exit(setwd(orig_dir), add=T, after=F)
+
+  csvw <- read_csvw("test034/csv-metadata.json")
+  lapply(csvw$tables, function(table) {
+    if(inherits(table$dataframe,"data.frame")) {
+      # attached successfully
+      expect_true(inherits(table$dataframe, "data.frame"))
+    } else {
+      # failed (test report error)
+      expect_null(table$dataframe$error$message)
+    }
+  })
+})
+
 test_that("URI Templates may be rendered", {
   # https://w3c.github.io/csvw/syntax/#default-locations-and-site-wide-location-configuration
   expect_equal(render_uri_templates(c("{+url}-metadata.json", "csv-metadata.json"),

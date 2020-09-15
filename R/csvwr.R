@@ -137,10 +137,12 @@ read_csvw <- function(filename, metadata=NULL) {
   metadata <- locate_metadata(filename, metadata)
 
   metadata$tables <- lapply(metadata$tables,
-                            add_dataframe,
+                            try_add_dataframe,
                             filename=filename,
                             dialect=metadata$dialect,
                             group_schema=metadata$tableSchema)
+
+  metadata <- normalise_metadata(metadata, location=filename)
 
   return(metadata)
 }
@@ -174,6 +176,17 @@ add_dataframe <- function(table, filename, dialect, group_schema) {
   table$dataframe <- dtf
 
   table
+}
+
+#' Try to add a dataframe to the table
+#'
+#' If this fails, a list describing the error is added instead
+try_add_dataframe <- function(table, ...) {
+  tryCatch(add_dataframe(table, ...),
+           error=function(e) {
+             table$dataframe <- list("error"=e, ...)
+             table
+            })
 }
 
 #' Read a data frame from the first table in a csvw
@@ -230,15 +243,12 @@ locate_metadata <- function(filename, metadata) {
 #' @param filename the file passed to `read_csvw` in the first place (could be the csv or json annotations)
 #' @param url the location of the the table as defined in the metadata
 locate_table <- function(filename, url) {
-  if(stringr::str_ends(filename, "\\.csv")) {
-    # table was passed to read_csvw
-    filename
-  } else {
-    # finding table from metadata
-    # first attempt to locate locally
-    local_filename <- paste(dirname(filename), basename(url), sep="/")
-    find_existing_file(local_filename) %||% url
-  }
+  # attempt to locate locally
+  local_filename <- paste(dirname(filename), url, sep="/")
+  # if argument to read_csvw was a csv use that, otherwise use the table's `csvw:url`
+  location <- ifelse(stringr::str_ends(filename, "\\.csv"), filename, url)
+
+  find_existing_file(local_filename) %||% location
 } # TODO: unit test me!
 
 #' Set the base of a URI template
@@ -335,7 +345,7 @@ find_metadata <- function(filename) {
 #' @return csvw metdata list
 read_metadata <- function(filename) {
   metadata <- jsonlite::read_json(filename)
-  metadata <- normalise_metadata(metadata, location=filename)
+  metadata <- parse_metadata(metadata, location=filename)
   metadata$tables <- lapply(metadata$tables, function(t) {
     if(!is.null(t$tableSchema)) {
       t$tableSchema$columns <- parse_columns(t$tableSchema$columns)
@@ -443,8 +453,7 @@ normalise_property <- function(property, base_url) {
 #' @return metadata coerced into a
 #'   [table group description](https://www.w3.org/TR/tabular-metadata/#dfn-table-group-description)
 #' @md
-normalise_metadata <- function(metadata, location) {
-  metadata <- purrr::lmap(metadata, normalise_property, base_url=base_url(metadata, dirname(location)))
+parse_metadata <- function(metadata, location) {
   # coerce to table group description
   if(is.null(metadata$tables)) {
     if(is.null(metadata$url)) {
@@ -457,6 +466,22 @@ normalise_metadata <- function(metadata, location) {
                        tables=list(metadata[names(metadata) != "@context"]))
     }
   }
+
+  # retrieve linked tableSchema
+  metadata$tables <- lapply(metadata$tables, function(table) {
+    # read list in place if is a link (not a list itself)
+    if(class(table$tableSchema)=="character") {
+      table$tableSchema <- jsonlite::read_json(file.path(dirname(location), table$tableSchema))
+    }
+    table
+  })
+
+  metadata
+}
+
+normalise_metadata <- function(metadata, location) {
+  # normalise annotations
+  metadata <- purrr::lmap(metadata, normalise_property, base_url=base_url(metadata, dirname(location)))
 
   # normalise url's in each table
   metadata$tables <- lapply(metadata$tables, function(table) {
