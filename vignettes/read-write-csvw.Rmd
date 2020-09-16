@@ -31,14 +31,14 @@ Practically speaking, you annotate a csv file by providing an accompanying json 
 
 - the csv dialect (i.e. the choice of field separator or quoting characters) is explicitly defined, helping to avoid parsing mistakes
 - columns can be given syntactically-valid variable names (while retaining human-readable labels for display)
-- cell type are declared, obviating the need to e.g. parse dates (and figure-out formatting strings)
+- cell types are declared, obviating the need to e.g. parse dates (and figure-out formatting strings)
 
 This package includes some example csv and json for you to explore. Here is the csv file:
 
 ```{r setup}
 library(csvwr)
 
-compsci_csv <- system.file("extdata", "computer-scientists.csv", package = "csvwr", mustWork = TRUE)
+compsci_csv <- csvwr_example("computer-scientists.csv")
 
 cat(readLines(compsci_csv),sep="\n")
 ```
@@ -46,7 +46,7 @@ cat(readLines(compsci_csv),sep="\n")
 Here is the annotation:
 
 ```{r}
-compsci_json <- system.file("extdata", "computer-scientists.json", package = "csvwr", mustWork = TRUE)
+compsci_json <- csvwr_example("computer-scientists.json")
 
 cat(readLines(compsci_json),sep="\n")
 ```
@@ -69,15 +69,17 @@ knitr::kable(d)
 ```
 
 
-This function assumes that you're only interested in one table, and that you don't want to work with the csvw metadata itself. The metadata vocabulary allows us to describe groups of tables (useful to lookup tables). You can get the complete annotations using the [read_csvw](../help/read_csvw) function:
+This function assumes that you're only interested in one table, and that you don't want to work with the csvw metadata itself. The metadata vocabulary allows us to describe groups of tables (useful for lookup tables). You can get the table and annotations using the [read_csvw](../help/read_csvw) function:
 
 ```{r}
 csvw <- read_csvw(compsci_csv, compsci_json)
 ```
 
-This returns a nested list, which broadly follows the structure of the metadata.
+This returns a nested list, which broadly follows the structure of the csvw metadata.
 
-As you can see from the json above, the `tables` element provides a list of tables and the annotation for each table provides a `url` (this can be used to locate csv files from the json metadata alone) and a `tableSchema`. Within the `tableSchema` we have annotations for each column. We parse this into a data frame (instead of a list of lists which is how the `jsonlite` library would ordinarily interpret a json array of objects). This is much more idiomatic for manipulation in R.
+As you can see from the json above, the `tables` element provides a list of tables and the annotation for each table provides a `url` (this can be used to locate csv files from the json metadata alone) and a `tableSchema`.
+
+Within the `tableSchema` we have annotations for each column. We parse these into a data frame (instead of a list of lists which is how the `jsonlite` library would ordinarily interpret a json array of objects). This is much more idiomatic for manipulation in R.
 
 ```{r}
 csvw$tables[[1]]$tableSchema$columns

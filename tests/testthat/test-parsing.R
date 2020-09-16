@@ -8,11 +8,9 @@ test_that("Basic parsing works", {
   expect_equal(result[5, ]$Surname, "Maggie")
 })
 
-compsci_csv <- system.file("extdata", "computer-scientists.csv", package = "csvwr", mustWork = TRUE)
-compsci_json <- system.file("extdata", "computer-scientists.json", package = "csvwr", mustWork = TRUE)
-
 test_that("Target features", {
-  result <- read_csvw_dataframe(compsci_csv, metadata=compsci_json)
+  result <- read_csvw_dataframe(csvwr_example("computer-scientists.csv"),
+                                metadata=csvwr_example("computer-scientists.json"))
 
   expect_s3_class(result, "data.frame")
 

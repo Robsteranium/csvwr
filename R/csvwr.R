@@ -730,3 +730,25 @@ csvw_to_list <- function(csvw) {
 }
 
 #csvw_triples <- function(csvw) # returns vector of triples/ s-p-o data.frame
+
+#' Get path to csvwr example
+#'
+#' The csvwr package includes some example csvw files in it's `inst/extdata` directory.
+#' You can use this function to find them.
+#'
+#' Inspired by [readr::readr_example()]
+#'
+#' @param path The filename. If `NULL`, the example files will be listed.
+#' @return either a file path or a vector of filenames
+#' @examples
+#' csvwr_example()
+#' csvwr_example("computer-scientists.csv")
+#' @md
+csvwr_example <- function(path=NULL) {
+  if (is.null(path)) {
+    dir(system.file("extdata", package = "csvwr"))
+  }
+  else {
+    system.file("extdata", path, package = "csvwr", mustWork = TRUE)
+  }
+}
