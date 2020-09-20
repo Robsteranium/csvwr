@@ -12,10 +12,8 @@ normalise_metadata(metadata, location)
 \item{location}{the location of the metadata}
 }
 \value{
-metadata coerced into a
-\href{https://www.w3.org/TR/tabular-metadata/#dfn-table-group-description}{table group description}
+metadata with normalised properties
 }
 \description{
 The spec defines a \href{https://w3c.github.io/csvw/metadata/#normalization}{normalisation process}.
-So far this function just coerces the metadata to ensure it describes a table group.
 }

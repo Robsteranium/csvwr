@@ -371,6 +371,9 @@ read_metadata <- function(filename) {
 #'  @md
 property_type <- function(property) {
   stopifnot(length(property)==1)
+  if(is.null(names(property))) {
+    return("atomic") # can't determine type of unnamed property, must be atomic
+  }
   switch(names(property),
          "tables"="array",
          "transformations"="array",
@@ -433,8 +436,8 @@ normalise_url <- function(property, base_url) {
 #' @return a property (list) a
 normalise_property <- function(property, base_url) {
   normalised_property <- switch(property_type(property),
-         link = normalise_url(property, base_url),
-         property)
+    link = normalise_url(property, base_url),
+    property)
   if(is.list(normalised_property)) {
     normalised_property
   } else {
@@ -443,10 +446,10 @@ normalise_property <- function(property, base_url) {
   }
 }
 
-#' Normalise metadata
+#' Parse metadata
 #'
-#' The spec defines a [normalisation process](https://w3c.github.io/csvw/metadata/#normalization).
-#' So far this function just coerces the metadata to ensure it describes a table group.
+#' Coerces the metadata to ensure it describes a table group.
+#' Retreives any linked tableSchema.
 #'
 #' @param metadata a csvw metadata list
 #' @param location the location of the metadata
@@ -479,14 +482,18 @@ parse_metadata <- function(metadata, location) {
   metadata
 }
 
+#' Normalise metadata
+#'
+#' The spec defines a [normalisation process](https://w3c.github.io/csvw/metadata/#normalization).
+#'
+#' @param metadata a csvw metadata list
+#' @param location the location of the metadata
+#' @return metadata with normalised properties
+#' @md
 normalise_metadata <- function(metadata, location) {
   # normalise annotations
-  metadata <- purrr::lmap(metadata, normalise_property, base_url=base_url(metadata, dirname(location)))
+  metadata <- rlmap(metadata, normalise_property, base_url=base_url(metadata, dirname(location)))
 
-  # normalise url's in each table
-  metadata$tables <- lapply(metadata$tables, function(table) {
-    purrr::lmap(table, normalise_property, base_url=base_url(metadata, dirname(location)))
-  })
   metadata
 }
 
@@ -517,7 +524,7 @@ parse_columns <- function(columns) {
 #'
 #' Determineness whether the input is true, with missing values being interpreted as false.
 #'
-#' @x logical, `NA` or `NULL`
+#' @param x logical, `NA` or `NULL`
 #' @return `FALSE` if x is anything but `TRUE`
 coalesce_truth <- function(x) {
   if(is.null(x)) {
@@ -705,7 +712,7 @@ table_to_list <- function(table, group_schema, dialect) {
     purrr::map(function(r) {
       row_num <<- row_num + 1
       url <- paste0(table$url, "#row=", row_num + header_row_count)
-      names(r) <- schema$columns[!coalesce_truth(schema$columns$virtual), ]$name
+      names(r) <- schema$columns[!suppressWarnings(coalesce_truth(schema$columns$virtual)), ]$name
       r <- lapply(r, render_cell)
       if(!is.null(schema$aboutUrl)) {
         template <- paste0("{+url}",schema$aboutUrl)
