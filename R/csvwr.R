@@ -552,9 +552,6 @@ list_of_lists_to_df <- function(ll) {
 }
 
 
-validate_csvw <- function(csvw) {
-  T
-}
 
 
 #' Derive csvw metadata from a csv file

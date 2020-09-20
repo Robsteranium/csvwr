@@ -73,6 +73,22 @@ test_that("Tables may be located", {
   })
 })
 
+test_that("Annotation properties may be normalised", {
+  orig_op <- options(csvwr_base_uri="http://example.net/")
+  on.exit(options(orig_op), add=T, after=F)
+
+  metadata <- list(tables=list(
+    list(url="data.csv",
+         tableSchema=list(foreignKeys=list(
+           list(columnReference="id",
+                reference=list(resource="lookup.csv",
+                               columnReference="id")))))))
+  table <- normalise_metadata(metadata, "data.json")$tables[[1]]
+
+  expect_equal(table$url, "http://example.net/data.csv")
+  expect_equal(table$tableSchema$foreignKeys[[1]]$reference$resource, "http://example.net/lookup.csv")
+})
+
 test_that("URI Templates may be rendered", {
   # https://w3c.github.io/csvw/syntax/#default-locations-and-site-wide-location-configuration
   expect_equal(render_uri_templates(c("{+url}-metadata.json", "csv-metadata.json"),
