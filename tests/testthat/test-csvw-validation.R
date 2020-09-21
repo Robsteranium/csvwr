@@ -30,7 +30,7 @@ describe("CSVW Validation Tests", {
   on.exit(setwd(orig_dir), add=T, after=F)
 
   test_manifest <- jsonlite::read_json(file.path(csvw_test_path, "manifest-validation.jsonld"))
-  entries <- test_manifest$entries[1:25]
+  entries <- test_manifest$entries[1:29]
 
   lapply(entries, test_validation)
 })

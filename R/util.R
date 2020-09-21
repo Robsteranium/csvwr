@@ -17,6 +17,33 @@ rmap <- function(.x, .f) {
   purrr::lmap(.x, m)
 }
 
+#' Calculate depth of vector safely
+#'
+#' Like `purrr::vec_depth` but doesn't attempt to descend into errors
+#'
+#' @param x a vector
+#' @return An integer
+#' @md
+vec_depth <- function (x)
+{
+  if (rlang::is_null(x)) {
+    0L
+  }
+  else if (rlang::is_atomic(x)) {
+    1L
+  }
+  else if (inherits(x, "error")) {
+    1L
+  }
+  else if (rlang::is_list(x)) {
+    depths <- purrr::map_int(x, vec_depth)
+    1L + max(depths, 0L)
+  }
+  else {
+    abort("`x` must be a vector")
+  }
+}
+
 #' Recursive lmap
 #'
 #' Applies function `.f` to each list-element in `.x` as per `purrr::lmap`.
@@ -25,7 +52,7 @@ rmap <- function(.x, .f) {
 #' If `.f` modifies the name, it is thrown away and replaced by the original name.
 rlmap <- function(.x, .f, ...) {
   m <- function(le) {
-    r <- if(purrr::vec_depth(le[[1]])==1) {
+    r <- if(vec_depth(le[[1]])==1) {
       .f(le, ...)[[1]]
     } else {
       purrr::lmap(le[[1]], m)

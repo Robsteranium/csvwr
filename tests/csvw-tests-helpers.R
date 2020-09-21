@@ -36,7 +36,7 @@ run_entry_in_dev <- function(n=NULL, id=NULL) {
   orig_dir <- setwd(csvw_test_path)
   on.exit(setwd(orig_dir), add=T, after=F)
 
-  test_manifest <- jsonlite::read_json("manifest-json.jsonld")
+  test_manifest <- jsonlite::read_json("manifest-validation.jsonld")
   if(!is.null(id)) {
     n <- which(sapply(test_manifest$entries, function(x) x$id == id))
   }
