@@ -6,6 +6,12 @@
 \usage{
 compact_json_ld(value)
 }
+\arguments{
+\item{value}{an element from a list (could be a vector or another list)}
+}
+\value{
+A compacted value.
+}
 \description{
 Follows the \href{https://w3c.github.io/csvw/csv2json/#json-ld-to-json}{rules for JSON-LD to JSON conversion set out in the csv2json standard}.
 }

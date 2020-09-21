@@ -8,6 +8,8 @@ normalise_property(property, base_url)
 }
 \arguments{
 \item{property}{an annotation property (a list)}
+
+\item{base_url}{the base URL for normalisation}
 }
 \value{
 a property (list) a

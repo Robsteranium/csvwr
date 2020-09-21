@@ -11,6 +11,8 @@ add_dataframe(table, filename, dialect, group_schema)
 
 \item{filename}{a filename/ URL for the csv table}
 
+\item{dialect}{a list describing the dialect for reading the csv file}
+
 \item{group_schema}{a fallback tableSchema from the table group}
 }
 \value{

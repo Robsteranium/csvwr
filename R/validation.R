@@ -15,6 +15,12 @@ validate_csvw <- function(csvw) {
   report
 }
 
+#' Validate the referential integrity of a csvw table group
+#'
+#' Fails if foreign keys aren't found in the referenced tables
+#'
+#' @param csvw the metadata annotation
+#' @return a list specifying any foreign key violations
 validate_referential_integrity <- function(csvw) {
   table_checks <- lapply(csvw$tables, function(table) {
     fk_checks <- lapply(table$tableSchema$foreignKeys, function(fk) {
@@ -38,6 +44,12 @@ validate_referential_integrity <- function(csvw) {
   purrr::compact(table_checks)
 }
 
+#' Extract a referenced table from CSVW metadata
+#'
+#' @param csvw the metadata
+#' @param reference a foreign key reference expressed as a list containing either a
+#' reference attribute or a schemaReference attribute
+#' @return a csvw table
 extract_table <- function(csvw, reference) {
   if(!is.null(reference$resource) & !is.null(reference$schemaReference)) {
     stop("The foreignKey reference must not have both a schemaReference and a resource")

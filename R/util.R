@@ -3,6 +3,10 @@
 #' Applies function `.f` to each element in `.x` as per `purrr::map`.
 #' If the value of the element is itself a list, then the function is applied to that in turn.
 #' The process is followed recursively until an atomic value at the leaf nodes of the list is found.
+#'
+#' @param .x a list
+#' @param .f a function (called with elements of `.x` as the first argument)
+#' @return A list
 rmap <- function(.x, .f) {
   m <- function(le) {
     v <- le[[1]]
@@ -11,7 +15,7 @@ rmap <- function(.x, .f) {
     } else {
       purrr::lmap(v, m)
     }
-    setNames(list(r), names(le))
+    stats::setNames(list(r), names(le))
   }
 
   purrr::lmap(.x, m)
@@ -40,7 +44,7 @@ vec_depth <- function (x)
     1L + max(depths, 0L)
   }
   else {
-    abort("`x` must be a vector")
+    rlang::abort("`x` must be a vector")
   }
 }
 
@@ -50,6 +54,11 @@ vec_depth <- function (x)
 #' If the value of the list-element is itself a list, then the function is applied to that in turn.
 #' The process is followed recursively until an atomic value at the leaf nodes of the list is found.
 #' If `.f` modifies the name, it is thrown away and replaced by the original name.
+#'
+#' @param .x a list
+#' @param .f a function (called with elements of `.x` as the first argument)
+#' @param ... further arguments passed to the function `.f`
+#' @return A list
 rlmap <- function(.x, .f, ...) {
   m <- function(le) {
     r <- if(vec_depth(le[[1]])==1) {
@@ -57,7 +66,7 @@ rlmap <- function(.x, .f, ...) {
     } else {
       purrr::lmap(le[[1]], m)
     }
-    setNames(list(r), names(le))
+    stats::setNames(list(r), names(le))
   }
 
   purrr::lmap(.x, m)

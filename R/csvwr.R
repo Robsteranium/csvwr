@@ -151,6 +151,7 @@ read_csvw <- function(filename, metadata=NULL) {
 #'
 #' @param table a `csvw:Table` annotation
 #' @param filename a filename/ URL for the csv table
+#' @param dialect a list describing the dialect for reading the csv file
 #' @param group_schema a fallback tableSchema from the table group
 #' @return a table annotation with a `dataframe` attribute added with data frame
 #' holding the contents of the table
@@ -181,6 +182,12 @@ add_dataframe <- function(table, filename, dialect, group_schema) {
 #' Try to add a dataframe to the table
 #'
 #' If this fails, a list describing the error is added instead
+#'
+#' @param table a `csvw:Table` annotation
+#' @param ... arguments to `add_dataframe`
+#' @return A table annotation with a `dataframe` attribute added with data frame
+#' holding the contents of the table or an error.
+#' @md
 try_add_dataframe <- function(table, ...) {
   tryCatch(add_dataframe(table, ...),
            error=function(e) {
@@ -284,8 +291,8 @@ set_uri_base <- function(t, url) {
 #' @examples
 #' render_uri_templates("{+url}/resource?query=value", list(url="http://example.net"))
 #' render_uri_templates("{+url}", url="http://example.net")
-#' @importFrom string str_replace
-#' @importFrom string str_glue_data
+#' @importFrom stringr str_replace
+#' @importFrom stringr str_glue_data
 #' @md
 render_uri_templates <- function(templates, bindings=NULL, ...) {
   bindings <- c(bindings, list(...))
@@ -308,7 +315,12 @@ location_configuration <- function(filename) {
   default_locations
 }
 
-
+#' Find the first existing file from a set of candidates
+#'
+#' @param filenames a vector of candidates
+#' @return
+#' If one of the filenames passed is found, then the first is returned.
+#' If none of the filenames exist, `NULL` is returned
 find_existing_file <- function(filenames) {
   for(candidate in filenames) {
     if(file.exists(candidate)) {
@@ -364,11 +376,11 @@ read_metadata <- function(filename) {
 #' [metadata descriptor diagram](https://w3c.github.io/csvw/metadata/properties.svg)
 #' provides a succinct summary of the types of each property and how they fit together
 #'
-#'  @param property a named list element
-#'  @return a string defining the property type
-#'  @examples
-#'  property_type(list(url="http://example.net"))
-#'  @md
+#' @param property a named list element
+#' @return a string defining the property type
+#' @examples
+#' property_type(list(url="http://example.net"))
+#' @md
 property_type <- function(property) {
   stopifnot(length(property)==1)
   if(is.null(names(property))) {
@@ -401,6 +413,11 @@ property_type <- function(property) {
          "atomic")
 }
 
+#' Determine the base URL for CSVW metadata
+#'
+#' @param metadata the csvw metadata
+#' @param location where the metadata was originally located
+#' @return A string containing the base URL
 base_url <- function(metadata, location) {
   context <- metadata$`@context`
   base <- if(is.list(context)) {
@@ -413,12 +430,24 @@ base_url <- function(metadata, location) {
   url
 }
 
+#' Resolve one URL against another
+#'
+#' @param url1 the base url
+#' @param url2 a relative url
+#' @return A single absolute url
 resolve_url <- function(url1, url2) {
   sep <- ifelse(stringr::str_ends(url1,"/"),"","/")
   combined <- paste(url1, url2, sep=sep)
   combined %>% stringr::str_replace("/./","/")
 }
 
+#' Normalise URL of link annotations
+#'
+#' Such that it specified absolutely with reference to a base
+#'
+#' @param property a link annotation (single list element)
+#' @param base_url the base_url to use for normalisation
+#' @return A link annotation with a normalised URL
 normalise_url <- function(property, base_url) {
   # do nothing if the property already includes a URL scheme
   if(grepl("://", property)) {
@@ -433,6 +462,7 @@ normalise_url <- function(property, base_url) {
 #' This follows the [normalisation](https://w3c.github.io/csvw/metadata/#normalization)
 #' process set out in the csvw specification.
 #' @param property an annotation property (a list)
+#' @param base_url the base URL for normalisation
 #' @return a property (list) a
 normalise_property <- function(property, base_url) {
   normalised_property <- switch(property_type(property),
@@ -514,7 +544,7 @@ parse_columns <- function(columns) {
   if(is.null(d$datatype)) {
     d$datatype <- "string"
   } else {
-    d$datatype <- lapply(d$datatype, function(x) if(is.null(x) || is.na(x)) { "string" } else { x })
+    d$datatype <- lapply(d$datatype, function(x) if(any(is.null(x) | is.na(x))) { "string" } else { x })
   }
 
   d
@@ -651,6 +681,12 @@ is_blank <- function(value) {
   is.na(value) | (value=="")
 }
 
+#' Determine if an annotation is non-core
+#'
+#' Checks if the annotation is non-core, and should thus be treated as a json-ld note.
+#'
+#' @param property a list element
+#' @return `TRUE` the annotation is core, `FALSE` otherwise
 is_non_core_annotation <- function(property) {
   !any(names(property) %in% c("tables","tableScheme","url","@context","columns"))
 }
@@ -659,6 +695,9 @@ is_non_core_annotation <- function(property) {
 #'
 #' Follows the [rules for JSON-LD to JSON conversion set out in the csv2json
 #' standard](https://w3c.github.io/csvw/csv2json/#json-ld-to-json).
+#'
+#' @param property a json-ld annotation (single list element)
+#' @return A compacted list element
 #' @md
 json_ld_to_json <- function(property) {
   stopifnot(length(property)==1)
@@ -673,6 +712,9 @@ json_ld_to_json <- function(property) {
 #'
 #' Follows the [rules for JSON-LD to JSON conversion set out in the csv2json
 #' standard](https://w3c.github.io/csvw/csv2json/#json-ld-to-json).
+#'
+#' @param value an element from a list (could be a vector or another list)
+#' @return A compacted value.
 #' @md
 compact_json_ld <- function(value) {
   if(is.list(value)) {
@@ -699,6 +741,13 @@ render_cell <- function(cell) {
          cell)
 }
 
+#' Convert a table to a list
+#'
+#' Follows the pattern for csv2json
+#' @param table the csvw table
+#' @param group_schema a default schema
+#' @param dialect the dialect for reading the table from the csv file
+#' @return a list representation of the table's contents
 #' @importFrom magrittr %>%
 table_to_list <- function(table, group_schema, dialect) {
   table <- purrr::lmap_if(table, is_non_core_annotation, json_ld_to_json, .else=identity)

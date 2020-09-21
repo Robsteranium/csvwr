@@ -6,6 +6,12 @@
 \usage{
 json_ld_to_json(property)
 }
+\arguments{
+\item{property}{a json-ld annotation (single list element)}
+}
+\value{
+A compacted list element
+}
 \description{
 Follows the \href{https://w3c.github.io/csvw/csv2json/#json-ld-to-json}{rules for JSON-LD to JSON conversion set out in the csv2json standard}.
 }

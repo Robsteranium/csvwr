@@ -6,6 +6,16 @@
 \usage{
 rlmap(.x, .f, ...)
 }
+\arguments{
+\item{.x}{a list}
+
+\item{.f}{a function (called with elements of `.x` as the first argument)}
+
+\item{...}{further arguments passed to the function `.f`}
+}
+\value{
+A list
+}
 \description{
 Applies function `.f` to each list-element in `.x` as per `purrr::lmap`.
 If the value of the list-element is itself a list, then the function is applied to that in turn.

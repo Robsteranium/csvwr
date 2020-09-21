@@ -6,15 +6,17 @@
 \usage{
 property_type(property)
 }
+\arguments{
+\item{property}{a named list element}
+}
+\value{
+a string defining the property type
+}
 \description{
 This can be done from the name of the property. The
-[metadata descriptor diagram](https://w3c.github.io/csvw/metadata/properties.svg)
+\href{https://w3c.github.io/csvw/metadata/properties.svg}{metadata descriptor diagram}
 provides a succinct summary of the types of each property and how they fit together
 }
-\details{
-@param property a named list element
- @return a string defining the property type
- @examples
- property_type(list(url="http://example.net"))
- @md
+\examples{
+property_type(list(url="http://example.net"))
 }
