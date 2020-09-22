@@ -140,6 +140,19 @@ test_that("Date Formats may be transformed", {
   })
 })
 
+test_that("lists of lists may be parsed to dataframes", {
+  ll <- list(
+    list(char="a", logi=T),
+    list(num=1),
+    list(li=list(foo="bar"))
+  )
+  d <- data.frame(char=c("a", NA, NA),
+                  logi=c(T, NA, NA),
+                  num=c(NA, 1, NA),
+                  li=I(list(NA, NA, list(foo="bar"))),
+                  stringsAsFactors = F)
+  expect_equal(list_of_lists_to_df(ll),d)
+})
 
 test_that("coalesce", {
   expect_true(coalesce_truth(T))

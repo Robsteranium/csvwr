@@ -564,6 +564,23 @@ coalesce_truth <- function(x) {
   }
 }
 
+#' Unlist unless the list-elements are themselves lists
+#'
+#' Convert a list of elements to a vector. Unlike `base::unlist` this doesn't
+#' convert the elements of inner lists to vector elements. Thus only a list a single
+#' layer deep is flattened to a vector.
+#'
+#' @param l a list
+#' @return A list of lists or a vector
+unlist1 <- function(l) {
+  is_list <- vapply(l, is.list, logical(1))
+  if(!any(is_list)) {
+    unlist(l)
+  } else {
+    l
+  }
+}
+
 #' Parse list of lists specification into a data frame
 #'
 #' @param ll a list of lists
@@ -575,7 +592,8 @@ list_of_lists_to_df <- function(ll) {
   purrr::transpose(ll, .names=nms) %>%
     # coalesce missing specifications to NA
     purrr::map(function(l) { lapply(l, function(x) { if(is.null(x)) { NA } else { x }}) }) %>%
-    purrr::simplify_all() %>%
+    # convert single-depth lists into vectors
+    purrr::map(unlist1) %>%
     # prevents lists being split into columns (allows cells to be lists)
     purrr::map_if(is.list, I) %>%
     as.data.frame(stringsAsFactors=F, col.names=nms)
