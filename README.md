@@ -66,11 +66,11 @@ Broadly speaking, the objectives are as follows:
 
 - basic csvw parsing, with names and types (partly implemented)
 - associating csv tables and json files according to the conventions set out in the csvw standard (partly implemented)
-- support for validating a table according to a metadata document (not implemented)
-- support for multiple tables (not implemented)
+- support for validating a table according to a metadata document (not yet implemented)
+- support for multiple tables (mostly implemented)
 - tools for writing csvw metadata, given an R data frame (partly implemented)
 - vignettes and documentation (partly implemented)
-- scripts for running the most useful tools from the command line (not implemented)
+- scripts for running the most useful tools from the command line (not yet implemented)
 
 It's not an urgent objective for the library to perform csv2rdf or csv2json translation although some support for csv2json is provided as this is used to test the parsing is done correctly.
 
@@ -80,7 +80,7 @@ In terms of the csvw test cases provided by the standard, the following areas ne
 - validations (many)
 - propagation of inherited properties
 - http retrieval (link, dialect, content-type headers etc)
-- referential integrity
+- referential integrity (a foundation for this is in place)
 - json nesting
 
 ### Testing
