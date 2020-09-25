@@ -133,6 +133,7 @@ datatype_to_type <- function(datatypes) {
 #' read_csvw("metadata.json")
 #' read_csvw("table.csv", "metadata.json")
 #' }
+#' @md
 read_csvw <- function(filename, metadata=NULL) {
   metadata <- locate_metadata(filename, metadata)
 
@@ -219,7 +220,7 @@ read_csvw_dataframe <- function(filename, metadata=NULL) {
 #'
 #' @param filename a path for a csv table or a json metadata document
 #' @param metadata optional user metadata
-#' @return csvw metdata list
+#' @return csvw metadata list
 #' @md
 locate_metadata <- function(filename, metadata) {
   if(!is.null(metadata)) {
@@ -249,6 +250,7 @@ locate_metadata <- function(filename, metadata) {
 #'
 #' @param filename the file passed to `read_csvw` in the first place (could be the csv or json annotations)
 #' @param url the location of the the table as defined in the metadata
+#' @return The location of the table
 locate_table <- function(filename, url) {
   # attempt to locate locally
   local_filename <- paste(dirname(filename), url, sep="/")

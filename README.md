@@ -45,7 +45,7 @@ j <- jsonlite::toJSON(m)
 cat(j, file="metadata.json")
 ```
 
-For a complete introduction to the library please see the vignette [Read and Write CSVW in R](vignettes/read-write-csvw.html).
+For a complete introduction to the library please see the `vignette("read-write-csvw")`.
 
 
 ## Installation
@@ -87,21 +87,22 @@ In terms of the csvw test cases provided by the standard, the following areas ne
 
 The project currently incorporates two main parts of the [csvw test](https://w3c.github.io/csvw/tests/) suite:
 
-- [Parsing with JSON output](tests/testthat/test-csvw-parsing-json.R)
-- [Validation](tests/testthat/test-csvw-validation.R)
+- [Parsing with JSON output](https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-csvw-parsing-json.R)
+- [Validation](https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-csvw-validation.R)
 
 In each case, we're running only that subset of test entries that can be expected to pass given that part of the standard that has thus far been implemented. Some entries will be skipped (either permanently or) while other prioritites are implemented.
 
 You can find out what needs to be implemented next by widening the subset to include the next entry.
 
-During development, you may find it convenient to recreate a one of the test entries for exploration. There is a convenience function in `tests/csvw-tests-helpers.R`. This isn't exported by the package so you'll need to evaluate it explicitly. You can then use it as follows:
+During development, you may find it convenient to recreate a one of the test entries for exploration. There is a convenience function in [tests/csvw-tests-helpers.R](https://github.com/Robsteranium/csvwr/tree/master/tests/csvw-tests-helpers.R). This isn't exported by the package so you'll need to evaluate it explicitly. You can then use it as follows:
 
 ```r
 run_entry_in_dev(16) # index number in the list of entries
 run_entry_in_dev(id="manifest-json#test023") # identifier for the test
 ```
 
-There are also some more [in-depth unit tests](tests/testthat/test-parsing.R) written for this library.
+
+There are also some more [in-depth unit tests](https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-parsing.R) written for this library.
 
 ### Workflow
 
@@ -110,7 +111,7 @@ You can use `devtools::load_all()` (`CTRL + SHIFT + L` in RStudio) to load updat
 In order to check the vignettes, you need to do `devtools::install(build_vignettes=T)`. Then you can open e.g. `vignette("read-write-csvw")`.
 
 
-### License
+## License
 
 GPL-3
 

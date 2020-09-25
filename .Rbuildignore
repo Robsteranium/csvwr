@@ -6,3 +6,6 @@ csvwr.Rproj
 tests/csvw-tests/reports/.earl
 ^doc$
 ^Meta$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

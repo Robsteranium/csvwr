@@ -3,7 +3,7 @@ Type: Package
 Title: Read and write CSV on the Web (csvw) tables and metadata
 Version: 0.1.0
 Author: Robin Gower
-Maintainer: The package maintainer <csvw@infonomics.ltd.uk>
+Maintainer: Robin Gower <csvw@infonomics.ltd.uk>
 Description: Provide functions for reading and writing csvw - i.e. csv tables and json metadata.
     The metadata helps interpret csv by setting the types and variable names. 
 License: GPL-3
