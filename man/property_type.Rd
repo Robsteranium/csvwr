@@ -18,5 +18,7 @@ This can be done from the name of the property. The
 provides a succinct summary of the types of each property and how they fit together
 }
 \examples{
+\dontrun{
 property_type(list(url="http://example.net"))
+}
 }

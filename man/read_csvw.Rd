@@ -12,21 +12,21 @@ read_csvw(filename, metadata = NULL)
 \item{metadata}{optional user metadata}
 }
 \value{
-csvw metdata list, with a `dataframe` property added to each table
+csvw metdata list, with a \code{dataframe} property added to each table
 }
 \description{
-If the argument to `filename` is a json metadata document, this will be used to find csv files for
-each table using the value of `csvw:url`.
+If the argument to \code{filename} is a json metadata document, this will be used to find csv files for
+each table using the value of \code{csvw:url}.
 }
 \details{
-If the argument to `filename` is a csv file, and no `metadata` is provided, an attempt is made to
+If the argument to \code{filename} is a csv file, and no \code{metadata} is provided, an attempt is made to
 derive metadata.
 
-If the argument to `filename` is a csv file, and the `metadata` is provided, then the given csv will
-override the value of `csvw:url`.
+If the argument to \code{filename} is a csv file, and the \code{metadata} is provided, then the given csv will
+override the value of \code{csvw:url}.
 
 The csvw metadata is returned as a list. In each table in the table group, an element named
-`dataframe` is added which provides the contents of the csv table parsed into a data frame using
+\code{dataframe} is added which provides the contents of the csv table parsed into a data frame using
 the table schema.
 }
 \examples{

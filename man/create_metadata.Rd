@@ -16,3 +16,8 @@ a list describing a tabular metadata annotation
 The table annotations should each be a list with keys for `url` and `tableSchema`.
 You can use `derive_table_schema` to derive a schema from a data frame.
 }
+\examples{
+d <- data.frame(foo="bar")
+table <- list(url="filename.csv", tableSchema=derive_table_schema(d))
+create_metadata(tables=list(table))
+}

@@ -6,6 +6,7 @@
 #' @param csvw a csvw metadata specification (a list)
 #' @return a validation report (list)
 #' @md
+#' @export
 validate_csvw <- function(csvw) {
   # TODO: primary key check, table/tablegroup/ schema compatibility, cell errors
   # https://w3c.github.io/csvw/metadata/#dfn-validator
@@ -21,6 +22,7 @@ validate_csvw <- function(csvw) {
 #'
 #' @param csvw the metadata annotation
 #' @return a list specifying any foreign key violations
+#' @export
 validate_referential_integrity <- function(csvw) {
   table_checks <- lapply(csvw$tables, function(table) {
     fk_checks <- lapply(table$tableSchema$foreignKeys, function(fk) {
@@ -50,6 +52,7 @@ validate_referential_integrity <- function(csvw) {
 #' @param reference a foreign key reference expressed as a list containing either a
 #' reference attribute or a schemaReference attribute
 #' @return a csvw table
+#' @export
 extract_table <- function(csvw, reference) {
   if(!is.null(reference$resource) & !is.null(reference$schemaReference)) {
     stop("The foreignKey reference must not have both a schemaReference and a resource")

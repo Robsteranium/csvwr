@@ -61,8 +61,10 @@ base_uri <- function() {
 #' @param format_string a UAX35 date format string
 #' @return a POSIX date format string
 #' @examples
+#' \dontrun{
 #' fmt <- transform_datetime_format("dd.MM.yyyy")
 #' strptime("01.01.2001", format=fmt)
+#' }
 #' @md
 transform_datetime_format <- function(format_string) {
   format_string %>%
@@ -84,8 +86,10 @@ transform_datetime_format <- function(format_string) {
 #' @param datatypes a list of csvw datatypes
 #' @return a `readr::cols` specification - a list of collectors
 #' @examples
+#' \dontrun{
 #' cspec <- datatype_to_type(list("double", list(base="date", format="yyyy-MM-dd")))
 #' readr::read_csv(readr::readr_example("challenge.csv"), col_types=cspec)
+#' }
 #' @md
 datatype_to_type <- function(datatypes) {
   datatypes %>% purrr::map(function(datatype) {
@@ -133,6 +137,7 @@ datatype_to_type <- function(datatypes) {
 #' read_csvw("metadata.json")
 #' read_csvw("table.csv", "metadata.json")
 #' }
+#' @export
 #' @md
 read_csvw <- function(filename, metadata=NULL) {
   metadata <- locate_metadata(filename, metadata)
@@ -202,7 +207,8 @@ try_add_dataframe <- function(table, ...) {
 #' Wrapper around `read_csvw` convenient when you're only interested in the data and there's only one table
 #' @param filename a path for a csv table or a json metadata document
 #' @param metadata optional user metadata
-#' @return a data frame parsed using the table schema
+#' @return A data frame parsed using the table schema
+#' @export
 read_csvw_dataframe <- function(filename, metadata=NULL) {
   read_csvw(filename, metadata)$tables[[1]]$dataframe
 }
@@ -295,6 +301,7 @@ set_uri_base <- function(t, url) {
 #' render_uri_templates("{+url}", url="http://example.net")
 #' @importFrom stringr str_replace
 #' @importFrom stringr str_glue_data
+#' @export
 #' @md
 render_uri_templates <- function(templates, bindings=NULL, ...) {
   bindings <- c(bindings, list(...))
@@ -381,7 +388,9 @@ read_metadata <- function(filename) {
 #' @param property a named list element
 #' @return a string defining the property type
 #' @examples
+#' \dontrun{
 #' property_type(list(url="http://example.net"))
+#' }
 #' @md
 property_type <- function(property) {
   stopifnot(length(property)==1)
@@ -609,9 +618,8 @@ list_of_lists_to_df <- function(ll) {
 #' @param filename a csv file
 #' @return a list of csvw metadata
 #' @examples
-#' \dontrun{
-#' derive_metadata("example.csv")
-#' }
+#' derive_metadata(csvwr_example("computer-scientists.csv"))
+#' @export
 derive_metadata <- function(filename) {
   schema <- default_schema(filename, list(header=T))
   create_metadata(tables=list(
@@ -624,9 +632,8 @@ derive_metadata <- function(filename) {
 #' @param d a data frame
 #' @return a list describing a `csvw:tableSchema`
 #' @examples
-#' \dontrun{
 #' derive_table_schema(data.frame(a=1,b=2))
-#' }
+#' @export
 derive_table_schema <- function(d) {
   # TODO: derive snake-case names, datatypes from column types
   cols <- colnames(d)
@@ -682,6 +689,11 @@ default_dialect <- list(
 #'
 #' @param tables a list of `csvw:table` annotations
 #' @return a list describing a tabular metadata annotation
+#' @examples
+#' d <- data.frame(foo="bar")
+#' table <- list(url="filename.csv", tableSchema=derive_table_schema(d))
+#' create_metadata(tables=list(table))
+#' @export
 create_metadata <- function(tables) {
   list("@context"="http://www.w3.org/ns/csvw", tables = tables)
 }
@@ -798,6 +810,7 @@ table_to_list <- function(table, group_schema, dialect) {
 #' \dontrun{
 #' csvw_to_list(read_csvw("example.csv")))
 #' }
+#' @export
 csvw_to_list <- function(csvw) {
   list(tables=lapply(csvw$tables, table_to_list, group_schema=csvw$tableSchema, dialect=csvw$dialect))
 }
@@ -816,6 +829,7 @@ csvw_to_list <- function(csvw) {
 #' @examples
 #' csvwr_example()
 #' csvwr_example("computer-scientists.csv")
+#' @export
 #' @md
 csvwr_example <- function(path=NULL) {
   if (is.null(path)) {

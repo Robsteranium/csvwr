@@ -16,7 +16,5 @@ a list of csvw metadata
 Derive csvw metadata from a csv file
 }
 \examples{
-\dontrun{
-derive_metadata("example.csv")
-}
+derive_metadata(csvwr_example("computer-scientists.csv"))
 }

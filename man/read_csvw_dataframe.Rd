@@ -12,7 +12,7 @@ read_csvw_dataframe(filename, metadata = NULL)
 \item{metadata}{optional user metadata}
 }
 \value{
-a data frame parsed using the table schema
+A data frame parsed using the table schema
 }
 \description{
 Wrapper around `read_csvw` convenient when you're only interested in the data and there's only one table

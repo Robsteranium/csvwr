@@ -11,6 +11,9 @@ locate_table(filename, url)
 
 \item{url}{the location of the the table as defined in the metadata}
 }
+\value{
+The location of the table
+}
 \description{
 Locate csv data table
 }

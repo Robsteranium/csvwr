@@ -16,7 +16,5 @@ a list describing a `csvw:tableSchema`
 Derive csvw table schema from a data frame
 }
 \examples{
-\dontrun{
 derive_table_schema(data.frame(a=1,b=2))
-}
 }

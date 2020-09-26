@@ -12,7 +12,7 @@ locate_metadata(filename, metadata)
 \item{metadata}{optional user metadata}
 }
 \value{
-csvw metdata list
+csvw metadata list
 }
 \description{
 Follows the procedure defined in the \href{https://w3c.github.io/csvw/syntax/#locating-metadata}{csvw model}:

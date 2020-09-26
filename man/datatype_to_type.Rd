@@ -17,6 +17,8 @@ Translate \href{https://www.w3.org/TR/tabular-metadata/#datatypes}{csvw datatype
 This implementation currently targets \link[readr:cols]{readr::cols} column specifications.
 }
 \examples{
+\dontrun{
 cspec <- datatype_to_type(list("double", list(base="date", format="yyyy-MM-dd")))
 readr::read_csv(readr::readr_example("challenge.csv"), col_types=cspec)
+}
 }

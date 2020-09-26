@@ -19,6 +19,8 @@ These are converted to POSIX 1003.1 date format strings for use in
 \code{\link[base:strptime]{base::strptime()}} or \code{\link[readr:parse_datetime]{readr::parse_date()}}/\code{\link[readr:parse_datetime]{readr::parse_datetime()}}.
 }
 \examples{
+\dontrun{
 fmt <- transform_datetime_format("dd.MM.yyyy")
 strptime("01.01.2001", format=fmt)
+}
 }
