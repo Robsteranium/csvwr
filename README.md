@@ -64,22 +64,22 @@ devtools::install_github("Robsteranium/csvwr")
 
 Broadly speaking, the objectives are as follows:
 
-- basic csvw parsing, with names and types (partly implemented)
-- associating csv tables and json files according to the conventions set out in the csvw standard (partly implemented)
-- support for validating a table according to a metadata document (not yet implemented)
+- parse csvw, creating dataframes with specified names and types (mostly implemented)
+- connecting associated csv tables and json files according to the conventions set out in the csvw standard (partly implemented)
+- support for validating a table according to a metadata document (a little implemented)
 - support for multiple tables (mostly implemented)
 - tools for writing csvw metadata, given an R data frame (partly implemented)
-- vignettes and documentation (partly implemented)
+- vignettes and documentation (mostly implemented)
 - scripts for running the most useful tools from the command line (not yet implemented)
 
 It's not an urgent objective for the library to perform csv2rdf or csv2json translation although some support for csv2json is provided as this is used to test the parsing is done correctly.
 
-In terms of the csvw test cases provided by the standard, the following areas need to be address (in rough priority order):
+In terms of the csvw test cases provided by the standard, the following areas need to be addressed (in rough priority order):
 
 - datatypes
-- validations (many)
+- validations (there are a lot of these 😊)
 - propagation of inherited properties
-- http retrieval (link, dialect, content-type headers etc)
+- http retrieval (`readr::read_csv` (and indeed `utils::read.csv`) accepts URIs, but the spec also involves link, dialect, and content-type headers)
 - referential integrity (a foundation for this is in place)
 - json nesting
 
@@ -115,4 +115,14 @@ In order to check the vignettes, you need to do `devtools::install(build_vignett
 
 GPL-3
 
-To discuss other licensing terms, please get in contact.
+To discuss other licensing terms, please [get in contact](mailto:csvw@infonomics.ltd.uk).
+
+## Alternatives
+
+There's another R implementation of csvw in the package [rcsvw](https://github.com/davideceolin/rcsvw).
+
+If you're interesting in csvw more generally, then [RDF::Tabular](https://github.com/ruby-rdf/rdf-tabular/) provides one of the more robust and comprehensive implementations, supporting both translation and validation.
+
+If you're specifically interested in validation, the take a look at the [ODI](https://theodi.org/)'s [csvlint](https://github.com/Data-Liberation-Front/csvlint.rb) which implements csvw and also the [OKFN](https://okfn.org/)'s [frictionless data table schemas](https://specs.frictionlessdata.io/).
+
+If you want rdf translation, then you might like to check out [Swirrl](https://www.swirrl.com/)'s [csv2rdf](https://github.com/Swirrl/csv2rdf/) and also [table2qb](https://github.com/swirrl/table2qb) which generates csvw annotations from csv files to describe [RDF Data Cubes](https://www.w3.org/TR/vocab-data-cube/).

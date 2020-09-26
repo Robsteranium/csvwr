@@ -146,21 +146,21 @@
 <a href="#roadmap" class="anchor"></a>Roadmap</h3>
 <p>Broadly speaking, the objectives are as follows:</p>
 <ul>
-<li>basic csvw parsing, with names and types (partly implemented)</li>
-<li>associating csv tables and json files according to the conventions set out in the csvw standard (partly implemented)</li>
-<li>support for validating a table according to a metadata document (not yet implemented)</li>
+<li>parse csvw, creating dataframes with specified names and types (mostly implemented)</li>
+<li>connecting associated csv tables and json files according to the conventions set out in the csvw standard (partly implemented)</li>
+<li>support for validating a table according to a metadata document (a little implemented)</li>
 <li>support for multiple tables (mostly implemented)</li>
 <li>tools for writing csvw metadata, given an R data frame (partly implemented)</li>
-<li>vignettes and documentation (partly implemented)</li>
+<li>vignettes and documentation (mostly implemented)</li>
 <li>scripts for running the most useful tools from the command line (not yet implemented)</li>
 </ul>
 <p>It’s not an urgent objective for the library to perform csv2rdf or csv2json translation although some support for csv2json is provided as this is used to test the parsing is done correctly.</p>
-<p>In terms of the csvw test cases provided by the standard, the following areas need to be address (in rough priority order):</p>
+<p>In terms of the csvw test cases provided by the standard, the following areas need to be addressed (in rough priority order):</p>
 <ul>
 <li>datatypes</li>
-<li>validations (many)</li>
+<li>validations (there are a lot of these 😊)</li>
 <li>propagation of inherited properties</li>
-<li>http retrieval (link, dialect, content-type headers etc)</li>
+<li>http retrieval (<code><a href="https://rdrr.io/pkg/readr/man/read_delim.html">readr::read_csv</a></code> (and indeed <code><a href="https://rdrr.io/r/utils/read.table.html">utils::read.csv</a></code>) accepts URIs, but the spec also involves link, dialect, and content-type headers)</li>
 <li>referential integrity (a foundation for this is in place)</li>
 <li>json nesting</li>
 </ul>
@@ -193,7 +193,15 @@
 <h2 class="hasAnchor">
 <a href="#license" class="anchor"></a>License</h2>
 <p>GPL-3</p>
-<p>To discuss other licensing terms, please get in contact.</p>
+<p>To discuss other licensing terms, please <a href="mailto:csvw@infonomics.ltd.uk">get in contact</a>.</p>
+</div>
+<div id="alternatives" class="section level2">
+<h2 class="hasAnchor">
+<a href="#alternatives" class="anchor"></a>Alternatives</h2>
+<p>There’s another R implementation of csvw in the package <a href="https://github.com/davideceolin/rcsvw">rcsvw</a>.</p>
+<p>If you’re interesting in csvw more generally, then <a href="https://github.com/ruby-rdf/rdf-tabular/">RDF::Tabular</a> provides one of the more robust and comprehensive implementations, supporting both translation and validation.</p>
+<p>If you’re specifically interested in validation, the take a look at the <a href="https://theodi.org/">ODI</a>’s <a href="https://github.com/Data-Liberation-Front/csvlint.rb">csvlint</a> which implements csvw and also the <a href="https://okfn.org/">OKFN</a>’s <a href="https://specs.frictionlessdata.io/">frictionless data table schemas</a>.</p>
+<p>If you want rdf translation, then you might like to check out <a href="https://www.swirrl.com/">Swirrl</a>’s <a href="https://github.com/Swirrl/csv2rdf/">csv2rdf</a> and also <a href="https://github.com/swirrl/table2qb">table2qb</a> which generates csvw annotations from csv files to describe <a href="https://www.w3.org/TR/vocab-data-cube/">RDF Data Cubes</a>.</p>
 </div>
 </div>
   </div>
