@@ -1,4 +1,4 @@
-# CSV on the Web R Package (csvwr)
+# CSV on the Web R Package (csvwr) <img src="man/figures/logo.png" align="right" height="139" />
 
 Read and write CSV on the Web.
 

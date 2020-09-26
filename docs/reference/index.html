@@ -8,6 +8,13 @@
 
 <title>Function reference • csvwr</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -40,6 +47,7 @@
 
 
 <meta property="og:title" content="Function reference" />
+<meta property="og:image" content="/logo.png" />
 
 
 
@@ -100,7 +108,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/Robsteranium/csvwr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -155,6 +168,12 @@
           <p><code><a href="csvwr_example.html">csvwr_example()</a></code> </p>
         </td>
         <td><p>Get path to csvwr example</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="extract_table.html">extract_table()</a></code> </p>
+        </td>
+        <td><p>Extract a referenced table from CSVW metadata</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -186,6 +205,31 @@
           <p><code><a href="derive_metadata.html">derive_metadata()</a></code> </p>
         </td>
         <td><p>Derive csvw metadata from a csv file</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-validating-table-annotations" class="hasAnchor"><a href="#section-validating-table-annotations" class="anchor"></a>Validating table annotations</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="validate_csvw.html">validate_csvw()</a></code> </p>
+        </td>
+        <td><p>Validate CSVW specification</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="validate_referential_integrity.html">validate_referential_integrity()</a></code> </p>
+        </td>
+        <td><p>Validate the referential integrity of a csvw table group</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -226,7 +270,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Robin Gower.</p>
+  <p>Developed by <a href='http://infonomics.ltd.uk'>Robin Gower</a>.</p>
 </div>
 
 <div class="pkgdown">

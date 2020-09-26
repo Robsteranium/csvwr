@@ -8,6 +8,13 @@
 
 <title>Map csvw datatypes to R types — datatype_to_type • csvwr</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -42,6 +49,7 @@
 <meta property="og:title" content="Map csvw datatypes to R types — datatype_to_type" />
 <meta property="og:description" content="Translate csvw datatypes to R types.
 This implementation currently targets readr::cols column specifications." />
+<meta property="og:image" content="/logo.png" />
 
 
 
@@ -102,7 +110,12 @@ This implementation currently targets readr::cols column specifications." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/Robsteranium/csvwr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -117,7 +130,7 @@ This implementation currently targets readr::cols column specifications." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Map csvw datatypes to R types</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/Robsteranium/csvwr/blob/master/R/csvwr.R'><code>R/csvwr.R</code></a></small>
     <div class="hidden name"><code>datatype_to_type.Rd</code></div>
     </div>
 
@@ -142,22 +155,11 @@ This implementation currently targets <a href='https://rdrr.io/pkg/readr/man/col
     <p>a <code><a href='https://rdrr.io/pkg/readr/man/cols.html'>readr::cols</a></code> specification - a list of collectors</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>cspec</span> <span class='op'>&lt;-</span> <span class='fu'>datatype_to_type</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"double"</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(base=<span class='st'>"date"</span>, format=<span class='st'>"yyyy-MM-dd"</span>)))
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>cspec</span> <span class='op'>&lt;-</span> <span class='fu'>datatype_to_type</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"double"</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(base=<span class='st'>"date"</span>, format=<span class='st'>"yyyy-MM-dd"</span>)))
 <span class='kw'>readr</span>::<span class='fu'><a href='https://rdrr.io/pkg/readr/man/read_delim.html'>read_csv</a></span>(<span class='kw'>readr</span>::<span class='fu'><a href='https://rdrr.io/pkg/readr/man/readr_example.html'>readr_example</a></span>(<span class='st'>"challenge.csv"</span>), col_types=<span class='kw'>cspec</span>)
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 2,000 x 2</span><span>
-#&gt;        x y         
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>   404 </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  </span><span style='text-decoration: underline;'>4</span><span>172 </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  </span><span style='text-decoration: underline;'>3</span><span>004 </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>   787 </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>    37 </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>332 </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  </span><span style='text-decoration: underline;'>2</span><span>489 </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  </span><span style='text-decoration: underline;'>1</span><span>449 </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  </span><span style='text-decoration: underline;'>3</span><span>665 </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  </span><span style='text-decoration: underline;'>3</span><span>863 </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #949494;'># … with 1,990 more rows</span><span></div></span></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -169,7 +171,7 @@ This implementation currently targets <a href='https://rdrr.io/pkg/readr/man/col
 
       <footer>
       <div class="copyright">
-  <p>Developed by Robin Gower.</p>
+  <p>Developed by <a href='http://infonomics.ltd.uk'>Robin Gower</a>.</p>
 </div>
 
 <div class="pkgdown">

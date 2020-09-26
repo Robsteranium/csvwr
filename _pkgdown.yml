@@ -1,17 +1,25 @@
 template:
   params:
     bootswatch: yeti
+authors:
+  Robin Gower:
+    href: http://infonomics.ltd.uk
 reference:
 - title: "Reading annotated tables"
   contents:
   - read_csvw
   - read_csvw_dataframe
   - csvwr_example
+  - extract_table
 - title: "Writing table annotations"
   contents:
   - derive_table_schema
   - create_metadata
   - derive_metadata
+- title: "Validating table annotations"
+  contents:
+  - validate_csvw
+  - validate_referential_integrity
 - title: "Utility functions"
   contents:
   - render_uri_templates

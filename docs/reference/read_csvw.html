@@ -8,6 +8,13 @@
 
 <title>Read CSV on the Web — read_csvw • csvwr</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -40,8 +47,9 @@
 
 
 <meta property="og:title" content="Read CSV on the Web — read_csvw" />
-<meta property="og:description" content="If the argument to `filename` is a json metadata document, this will be used to find csv files for
-each table using the value of `csvw:url`." />
+<meta property="og:description" content="If the argument to filename is a json metadata document, this will be used to find csv files for
+each table using the value of csvw:url." />
+<meta property="og:image" content="/logo.png" />
 
 
 
@@ -102,7 +110,12 @@ each table using the value of `csvw:url`." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/Robsteranium/csvwr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -117,13 +130,13 @@ each table using the value of `csvw:url`." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Read CSV on the Web</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/Robsteranium/csvwr/blob/master/R/csvwr.R'><code>R/csvwr.R</code></a></small>
     <div class="hidden name"><code>read_csvw.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>If the argument to `filename` is a json metadata document, this will be used to find csv files for
-each table using the value of `csvw:url`.</p>
+    <p>If the argument to <code>filename</code> is a json metadata document, this will be used to find csv files for
+each table using the value of <code>csvw:url</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>read_csvw</span>(<span class='kw'>filename</span>, metadata = <span class='kw'>NULL</span>)</pre>
@@ -143,15 +156,15 @@ each table using the value of `csvw:url`.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>csvw metdata list, with a `dataframe` property added to each table</p>
+    <p>csvw metdata list, with a <code>dataframe</code> property added to each table</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If the argument to `filename` is a csv file, and no `metadata` is provided, an attempt is made to
+    <p>If the argument to <code>filename</code> is a csv file, and no <code>metadata</code> is provided, an attempt is made to
 derive metadata.</p>
-<p>If the argument to `filename` is a csv file, and the `metadata` is provided, then the given csv will
-override the value of `csvw:url`.</p>
+<p>If the argument to <code>filename</code> is a csv file, and the <code>metadata</code> is provided, then the given csv will
+override the value of <code>csvw:url</code>.</p>
 <p>The csvw metadata is returned as a list. In each table in the table group, an element named
-`dataframe` is added which provides the contents of the csv table parsed into a data frame using
+<code>dataframe</code> is added which provides the contents of the csv table parsed into a data frame using
 the table schema.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -171,7 +184,7 @@ the table schema.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Robin Gower.</p>
+  <p>Developed by <a href='http://infonomics.ltd.uk'>Robin Gower</a>.</p>
 </div>
 
 <div class="pkgdown">
