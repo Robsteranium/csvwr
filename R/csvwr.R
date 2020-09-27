@@ -94,23 +94,41 @@ transform_datetime_format <- function(format_string) {
 datatype_to_type <- function(datatypes) {
   datatypes %>% purrr::map(function(datatype) {
     if(is.list(datatype)) {
-      # complex types (list)
+      # complex types (specified with a list)
       switch(datatype$base,
              date = readr::col_date(format=transform_datetime_format(datatype$format)),
              datetime = readr::col_datetime(format=transform_datetime_format(datatype$format)),
              stop("unrecognised complex datatype: ", datatype))
     } else {
-      # simple types (string)
+      # simple types (specified with a string)
       switch(datatype,
-             integer = readr::col_integer(),
+             integer = readr::col_integer(), # TODO: more variants
              double = readr::col_double(),
+             float = readr::col_double(),
              number = readr::col_double(),
-             string = readr::col_character(),
+             decimal = readr::col_double(),
+             string = readr::col_character(), # TODO: more variants
+             boolean = readr::col_logical(),
              date = readr::col_date(),
-             gYear = readr::col_character(), # TODO xsd datatypes
+             datetime = readr::col_datetime(),
+             time = readr::col_time(),
+             duration = readr::col_character(),
+             gDay = readr::col_character(), # TODO: xsd datatypes
+             gMonth = readr::col_character(),
+             gMonthDay = readr::col_character(),
+             gYear = readr::col_character(),
+             gYearMonth = readr::col_character(),
+             xml = readr::col_character(),
+             html = readr::col_character(),
+             json = readr::col_character(),
+             binary = readr::col_character(), # Base 64
+             hexBinary = readr::col_character(),
+             QName = readr::col_character(),
              anyURI = readr::col_character(),
+             any = readr::col_character(),
              stop("unrecognised simple datatype: ", datatype))
     }
+    # TODO: value and length constraints
   })
 }
 
