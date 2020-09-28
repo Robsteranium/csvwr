@@ -36,11 +36,14 @@ run_entry_in_dev <- function(n=NULL, id=NULL) {
   orig_dir <- setwd(csvw_test_path)
   on.exit(setwd(orig_dir), add=T, after=F)
 
-  test_manifest <- jsonlite::read_json("manifest-validation.jsonld")
+  entries <- c("manifest-json.jsonld","manifest-validation.jsonld") %>%
+    purrr::map(function(f) { jsonlite::read_json(f)$entries }) %>%
+    do.call(what="c")
+
   if(!is.null(id)) {
-    n <- which(sapply(test_manifest$entries, function(x) x$id == id))
+    n <- which(sapply(entries, function(x) x$id == id))
   }
-  entry <- test_manifest$entries[[n]]
+  entry <- entries[[n]]
 
   print(entry$name)
   print(entry$comment)
