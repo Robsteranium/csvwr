@@ -132,6 +132,29 @@ datatype_to_type <- function(datatypes) {
   })
 }
 
+
+#' Map R types to csvw datatype
+#'
+#' Translate R types to [csvw datatypes](https://www.w3.org/TR/tabular-metadata/#datatypes).
+#' Acts as an inverse of `datatype_to_type` but doesn't provide a 1:1 correspondance.
+#'
+#' @param types a list of R types
+#' @return a list of csvw datatypes
+#' @md
+type_to_datatype <- function(types) {
+  types %>% purrr::map(function(type) {
+    switch(type[[1]],
+           numeric = "number",
+           integer = "integer",
+           double = "double",
+           character = "string",
+           factor = "string",
+           logical = "boolean",
+           Date = "date",
+           "string")
+  })
+}
+
 #' Read CSV on the Web
 #'
 #' If the argument to `filename` is a json metadata document, this will be used to find csv files for
@@ -653,11 +676,18 @@ derive_metadata <- function(filename) {
 #' derive_table_schema(data.frame(a=1,b=2))
 #' @export
 derive_table_schema <- function(d) {
-  # TODO: derive snake-case names, datatypes from column types
-  cols <- colnames(d)
-  list(
-    columns=data.frame(name=cols, titles=cols, datatype="string", stringsAsFactors = F)
-  )
+  cols <- colnames(d) # TODO: derive snake-case names instead of make.names dots
+
+  types <- if(coalesce_truth(getOption("csvwr_compatibility_mode"))) {
+    "string"
+  } else {
+    type_to_datatype(unname(lapply(d,class))) %>% purrr::simplify()
+  }
+
+  columns <- data.frame(name=cols, titles=cols, stringsAsFactors = F)
+  columns$datatype <- types # list in constructor would've led to a variable per list element
+
+  list(columns=columns)
 }
 
 

@@ -29,7 +29,8 @@ find_entry <- function(id) {
 
 # convenience function for loading-up an entry to explore a failing test
 run_entry_in_dev <- function(n=NULL, id=NULL) {
-  orig_op <- options(csvwr_base_uri="http://www.w3.org/2013/csvw/tests/")
+  orig_op <- options(csvwr_base_uri="http://www.w3.org/2013/csvw/tests/",
+                     csvwr_compatibility_mode=T)
   on.exit(options(orig_op), add=T, after=F)
 
   csvw_test_path <- "tests/csvw-tests"

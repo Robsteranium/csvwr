@@ -157,7 +157,7 @@
 <p>It’s not an urgent objective for the library to perform csv2rdf or csv2json translation although some support for csv2json is provided as this is used to test the parsing is done correctly.</p>
 <p>In terms of the csvw test cases provided by the standard, the following areas need to be addressed (in rough priority order):</p>
 <ul>
-<li>datatypes</li>
+<li>datatypes (most of simple datatypes and some complex ones are supported, but there are more types and constraints too)</li>
 <li>validations (there are a lot of these 😊)</li>
 <li>propagation of inherited properties</li>
 <li>http retrieval (<code><a href="https://rdrr.io/pkg/readr/man/read_delim.html">readr::read_csv</a></code> (and indeed <code><a href="https://rdrr.io/r/utils/read.table.html">utils::read.csv</a></code>) accepts URIs, but the spec also involves link, dialect, and content-type headers)</li>

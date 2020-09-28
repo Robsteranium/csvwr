@@ -25,26 +25,65 @@ test_that("Target features", {
   })
 })
 
-test_that("Metadata can be derived from a csv", {
+test_that("Table schema may be derived", {
+  d <- data.frame(char=c("a"),
+                  logi=c(T),
+                  num=c(1),
+                  stringsAsFactors = F)
+
+  result <- derive_table_schema(d)
+  expected <- list(
+    columns=data.frame(name=c("char","logi","num"),
+                       titles=c("char","logi","num"),
+                       datatype=c("string","boolean","number"),
+                       stringsAsFactors = F))
+  expect_equal(result, expected)
+})
+
+describe("Metadata can be derived from a csv", {
   orig_dir <- setwd(system.file("extdata", ".", package = "csvwr", mustWork = TRUE))
   on.exit(setwd(orig_dir), add=T, after=F)
 
-  metadata <- derive_metadata("computer-scientists.csv")
-  expected <- list(
-    "@context"="http://www.w3.org/ns/csvw",
-    tables=list(
-      list(
-        url="http://example.net/computer-scientists.csv",
-        tableSchema=list(
-          columns=data.frame(name=c("Name","Date Of Birth"),
-                             titles=c("Name","Date Of Birth"),
-                             datatype="string",
-                             stringsAsFactors = F)
+  test_that("Table schema has string-types (as per spec)", {
+    orig_op <- options(csvwr_compatibility_mode=T)
+    on.exit(options(orig_op), add=T, after=F)
+
+    metadata <- derive_metadata("computer-scientists.csv")
+    expected <- list(
+      "@context"="http://www.w3.org/ns/csvw",
+      tables=list(
+        list(
+          url="http://example.net/computer-scientists.csv",
+          tableSchema=list(
+            columns=data.frame(name=c("Name","Date Of Birth"),
+                               titles=c("Name","Date Of Birth"),
+                               datatype="string",
+                               stringsAsFactors = F)
+          )
         )
       )
     )
-  )
-  expect_equal(metadata, expected)
+    expect_equal(metadata, expected)
+  })
+
+  test_that("Table schema has guessed-types", {
+    metadata <- derive_metadata("computer-scientists.csv")
+    expected <- list(
+      "@context"="http://www.w3.org/ns/csvw",
+      tables=list(
+        list(
+          url="http://example.net/computer-scientists.csv",
+          tableSchema=list(
+            columns=data.frame(name=c("Name","Date Of Birth"),
+                               titles=c("Name","Date Of Birth"),
+                               datatype=c("string","date"),
+                               stringsAsFactors = F)
+          )
+        )
+      )
+    )
+    expect_equal(metadata, expected)
+  })
 })
 
 test_that("Metadata may be found from a filename", {

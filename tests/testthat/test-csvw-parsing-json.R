@@ -11,7 +11,8 @@ test_parsing <- function(entry) {
 describe("CSVW Parsing Tests (JSON)", {
   # https://w3c.github.io/csvw/tests/
 
-  orig_op <- options(csvwr_base_uri="http://www.w3.org/2013/csvw/tests/")
+  orig_op <- options(csvwr_base_uri="http://www.w3.org/2013/csvw/tests/",
+                     csvwr_compatibility_mode=T)
   on.exit(options(orig_op), add=T, after=F)
 
   csvw_test_path <- "../csvw-tests"

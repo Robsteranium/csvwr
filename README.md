@@ -76,7 +76,7 @@ It's not an urgent objective for the library to perform csv2rdf or csv2json tran
 
 In terms of the csvw test cases provided by the standard, the following areas need to be addressed (in rough priority order):
 
-- datatypes
+- datatypes (most of simple datatypes and some complex ones are supported, but there are more types and constraints too)
 - validations (there are a lot of these 😊)
 - propagation of inherited properties
 - http retrieval (`readr::read_csv` (and indeed `utils::read.csv`) accepts URIs, but the spec also involves link, dialect, and content-type headers)
