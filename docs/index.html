@@ -90,28 +90,34 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#csv-on-the-web-r-package-csvwr-" class="anchor"></a>CSV on the Web R Package (csvwr) <img src="reference/figures/logo.png" align="right" height="139">
 </h1></div>
-<p>Read and write CSV on the Web.</p>
-<p>The <a href="https://w3c.github.io/csvw/syntax/">csvw model for tabular data</a> standard describes how to annotate a group of csv tables to ensure they are interpreted correctly.</p>
+<p>Read and write csv tables annotated with metadata according to the “CSV on the Web” standard (CSVW).</p>
+<p>The <a href="https://w3c.github.io/csvw/syntax/">csvw model for tabular data</a> describes how to annotate a group of csv tables to ensure they are interpreted correctly.</p>
 <p>This package uses the <a href="https://w3c.github.io/csvw/metadata">csvw metadata schema</a> to find tables, identify column names and cast values to the correct types.</p>
 <p>The aim is to reduce the amount of manual work needed to parse and prepare data before it can be used in analysis.</p>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
+<div id="reading-csvw" class="section level3">
+<h3 class="hasAnchor">
+<a href="#reading-csvw" class="anchor"></a>Reading CSVW</h3>
 <p>You can use <code>csvwr</code> to read a csv table with json annotations into a data frame:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Robsteranium/csvwr">csvwr</a></span>)
 
-<span class="co"># To load a csvw metadata and parse the table:</span>
+<span class="co"># Parse a csv table using json metadata :</span>
 <span class="kw">csvw</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_csvw.html">read_csvw</a></span>(<span class="st">"data.csv"</span>, <span class="st">"metadata.json"</span>)
 
 <span class="co"># To extract the parsed table (with syntactic variable names and typed-columns):</span>
 <span class="kw">csvw</span><span class="op">$</span><span class="kw">tables</span>[[<span class="fl">1</span>]]<span class="op">$</span><span class="kw">dataframe</span>
-
-<span class="co"># To load the csvw metadata and extract the table in one call:</span>
-<span class="fu"><a href="reference/read_csvw_dataframe.html">read_csvw_dataframe</a></span>(<span class="st">"data.csv"</span>, <span class="st">"metadata.json"</span>)
 </pre></div>
+<p>Alternatively, you can jump straight to the parsed table in one call:</p>
+<pre><code><a href="reference/read_csvw_dataframe.html">read_csvw_dataframe("data.csv", "metadata.json")</a></code></pre>
+</div>
+<div id="writing-csvw" class="section level3">
+<h3 class="hasAnchor">
+<a href="#writing-csvw" class="anchor"></a>Writing CSVW</h3>
 <p>You can also prepare annotations for a data frame:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
+<div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="co"># Given a data frame</span>
 <span class="kw">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(x=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>), y=<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>)
 
@@ -129,18 +135,19 @@
 </pre></div>
 <p>For a complete introduction to the library please see the <code><a href="articles/read-write-csvw.html">vignette("read-write-csvw")</a></code>.</p>
 </div>
+</div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You’ll need to use devtools to install this package from github:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
+<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
 <span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"Robsteranium/csvwr"</span>)
 </pre></div>
 </div>
-<div id="development" class="section level2">
+<div id="contributing" class="section level2">
 <h2 class="hasAnchor">
-<a href="#development" class="anchor"></a>Development</h2>
+<a href="#contributing" class="anchor"></a>Contributing</h2>
 <div id="roadmap" class="section level3">
 <h3 class="hasAnchor">
 <a href="#roadmap" class="anchor"></a>Roadmap</h3>
@@ -154,7 +161,7 @@
 <li>vignettes and documentation (mostly implemented)</li>
 <li>scripts for running the most useful tools from the command line (not yet implemented)</li>
 </ul>
-<p>It’s not an urgent objective for the library to perform csv2rdf or csv2json translation although some support for csv2json is provided as this is used to test the parsing is done correctly.</p>
+<p>It’s not an urgent objective for the library to perform csv2rdf or csv2json translation although some support for csv2json is provided as this is used to test that the parsing is done correctly.</p>
 <p>In terms of the csvw test cases provided by the standard, the following areas need to be addressed (in rough priority order):</p>
 <ul>
 <li>datatypes (most of simple datatypes and some complex ones are supported, but there are more types and constraints too)</li>
@@ -173,10 +180,10 @@
 <li><a href="https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-csvw-parsing-json.R">Parsing with JSON output</a></li>
 <li><a href="https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-csvw-validation.R">Validation</a></li>
 </ul>
-<p>In each case, we’re running only that subset of test entries that can be expected to pass given that part of the standard that has thus far been implemented. Some entries will be skipped (either permanently or) while other prioritites are implemented.</p>
+<p>In each case, we’re running only that subset of test entries that can be expected to pass given that part of the standard that has thus far been implemented. Some entries will be skipped (either permanently or) while other priorities are implemented.</p>
 <p>You can find out what needs to be implemented next by widening the subset to include the next entry.</p>
-<p>During development, you may find it convenient to recreate a one of the test entries for exploration. There is a convenience function in <a href="https://github.com/Robsteranium/csvwr/tree/master/tests/csvw-tests-helpers.R">tests/csvw-tests-helpers.R</a>. This isn’t exported by the package so you’ll need to evaluate it explicitly. You can then use it as follows:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
+<p>During development, you may find it convenient to recreate one of the test entries for exploration. There is a convenience function in <a href="https://github.com/Robsteranium/csvwr/tree/master/tests/csvw-tests-helpers.R">tests/csvw-tests-helpers.R</a>. This isn’t exported by the package so you’ll need to evaluate it explicitly. You can then use it as follows:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="fu">run_entry_in_dev</span>(<span class="fl">16</span>) <span class="co"># index number in the list of entries</span>
 <span class="fu">run_entry_in_dev</span>(id=<span class="st">"manifest-json#test023"</span>) <span class="co"># identifier for the test</span>
 </pre></div>
@@ -195,12 +202,12 @@
 <p>GPL-3</p>
 <p>To discuss other licensing terms, please <a href="mailto:csvw@infonomics.ltd.uk">get in contact</a>.</p>
 </div>
-<div id="alternatives" class="section level2">
+<div id="other-csvw-tools" class="section level2">
 <h2 class="hasAnchor">
-<a href="#alternatives" class="anchor"></a>Alternatives</h2>
+<a href="#other-csvw-tools" class="anchor"></a>Other CSVW tools</h2>
 <p>There’s another R implementation of csvw in the package <a href="https://github.com/davideceolin/rcsvw">rcsvw</a>.</p>
-<p>If you’re interesting in csvw more generally, then <a href="https://github.com/ruby-rdf/rdf-tabular/">RDF::Tabular</a> provides one of the more robust and comprehensive implementations, supporting both translation and validation.</p>
-<p>If you’re specifically interested in validation, the take a look at the <a href="https://theodi.org/">ODI</a>’s <a href="https://github.com/Data-Liberation-Front/csvlint.rb">csvlint</a> which implements csvw and also the <a href="https://okfn.org/">OKFN</a>’s <a href="https://specs.frictionlessdata.io/">frictionless data table schemas</a>.</p>
+<p>If you’re interested in csvw more generally, then <a href="https://github.com/ruby-rdf/rdf-tabular/">RDF::Tabular</a> provides one of the more robust and comprehensive implementations, supporting both translation and validation.</p>
+<p>If you’re specifically interested in validation, take a look at the <a href="https://theodi.org/">ODI</a>’s <a href="https://github.com/Data-Liberation-Front/csvlint.rb">csvlint</a> which implements csvw and also the <a href="https://okfn.org/">OKFN</a>’s <a href="https://specs.frictionlessdata.io/">frictionless data table schemas</a>.</p>
 <p>If you want rdf translation, then you might like to check out <a href="https://www.swirrl.com/">Swirrl</a>’s <a href="https://github.com/Swirrl/csv2rdf/">csv2rdf</a> and also <a href="https://github.com/swirrl/table2qb">table2qb</a> which generates csvw annotations from csv files to describe <a href="https://www.w3.org/TR/vocab-data-cube/">RDF Data Cubes</a>.</p>
 </div>
 </div>
