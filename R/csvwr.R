@@ -856,7 +856,7 @@ table_to_list <- function(table, group_schema, dialect) {
 #' @return a list following the csv2json translation rules
 #' @examples
 #' \dontrun{
-#' csvw_to_list(read_csvw("example.csv")))
+#' csvw_to_list(read_csvw("example.csv"))
 #' }
 #' @export
 csvw_to_list <- function(csvw) {

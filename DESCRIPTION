@@ -7,7 +7,7 @@ Maintainer: Robin Gower <csvw@infonomics.ltd.uk>
 Description: Provide functions for reading and writing csvw - i.e. csv tables and json metadata.
     The metadata helps interpret csv by setting the types and variable names. 
 License: GPL-3
-URL: https://github.com/Robsteranium/csvwr
+URL: https://robsteranium.github.io/csvwr, https://github.com/Robsteranium/csvwr
 BugReports: https://github.com/Robsteranium/csvwr/issues
 Encoding: UTF-8
 LazyData: true

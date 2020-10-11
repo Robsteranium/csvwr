@@ -17,6 +17,6 @@ Convert a csvw metadata to a list (csv2json)
 }
 \examples{
 \dontrun{
-csvw_to_list(read_csvw("example.csv")))
+csvw_to_list(read_csvw("example.csv"))
 }
 }

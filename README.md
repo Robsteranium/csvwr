@@ -125,7 +125,7 @@ To discuss other licensing terms, please [get in contact](mailto:csvw@infonomics
 
 There's another R implementation of csvw in the package [rcsvw](https://github.com/davideceolin/rcsvw).
 
-If you're interested in csvw more generally, then [RDF::Tabular](https://github.com/ruby-rdf/rdf-tabular/) provides one of the more robust and comprehensive implementations, supporting both translation and validation.
+If you're interested in csvw more generally, then the [RDF::Tabular](https://github.com/ruby-rdf/rdf-tabular/) ruby gem provides one of the more robust and comprehensive implementations, supporting both translation and validation.
 
 If you're specifically interested in validation, take a look at the [ODI](https://theodi.org/)'s [csvlint](https://github.com/Data-Liberation-Front/csvlint.rb) which implements csvw and also the [OKFN](https://okfn.org/)'s [frictionless data table schemas](https://specs.frictionlessdata.io/).
 
