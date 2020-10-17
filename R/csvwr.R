@@ -95,13 +95,14 @@ datatype_to_type <- function(datatypes) {
   datatypes %>% purrr::map(function(datatype) {
     if(is.list(datatype)) {
       # complex types (specified with a list)
-      switch(datatype$base,
+      switch(datatype$base %||% "string",
              date = readr::col_date(format=transform_datetime_format(datatype$format)),
              datetime = readr::col_datetime(format=transform_datetime_format(datatype$format)),
+             string = readr::col_character(), # TODO: use format regex in validation
              stop("unrecognised complex datatype: ", datatype))
     } else {
       # simple types (specified with a string)
-      switch(datatype,
+      switch(datatype %||% "string",
              integer = readr::col_integer(), # TODO: more variants
              double = readr::col_double(),
              float = readr::col_double(),
