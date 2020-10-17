@@ -213,7 +213,7 @@ add_dataframe <- function(table, filename, dialect, group_schema) {
   dialect <- dialect %||% default_dialect
   csv_url <- locate_table(filename, table$url)
 
-  table_columns <- schema$columns[!coalesce_truth(schema$columns$virtual), ]
+  table_columns <- schema$columns[!coalesce_truth(schema$columns[["virtual"]]), ]
   column_names <- table_columns$name
   column_types <- datatype_to_type(table_columns$datatype)
 
@@ -239,7 +239,7 @@ add_dataframe <- function(table, filename, dialect, group_schema) {
 try_add_dataframe <- function(table, ...) {
   tryCatch(add_dataframe(table, ...),
            error=function(e) {
-             table$dataframe <- list("error"=e, ...)
+             table$dataframe <- list(error=e,  ...)
              table
             })
 }
@@ -300,12 +300,11 @@ locate_metadata <- function(filename, metadata) {
 #' @param url the location of the the table as defined in the metadata
 #' @return The location of the table
 locate_table <- function(filename, url) {
-  # attempt to locate locally
-  local_filename <- paste(dirname(filename), url, sep="/")
-  # if argument to read_csvw was a csv use that, otherwise use the table's `csvw:url`
-  location <- ifelse(stringr::str_ends(filename, "\\.csv"), filename, url)
+  # append table's url to location of filename
+  url_relative_to_filename <- paste(dirname(filename), url, sep="/")
 
-  find_existing_file(local_filename) %||% location
+  # if argument to read_csvw was a csv use that, otherwise use the table's `csvw:url`
+  ifelse(stringr::str_ends(filename, "\\.csv"), filename, url_relative_to_filename)
 } # TODO: unit test me!
 
 #' Set the base of a URI template
