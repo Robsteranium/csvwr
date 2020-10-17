@@ -2,18 +2,18 @@
 % Please edit documentation in R/csvwr.R
 \name{normalise_url}
 \alias{normalise_url}
-\title{Normalise URL of link annotations}
+\title{Normalise a URL}
 \usage{
-normalise_url(property, base_url)
+normalise_url(url, base)
 }
 \arguments{
-\item{property}{a link annotation (single list element)}
+\item{url}{a string}
 
-\item{base_url}{the base_url to use for normalisation}
+\item{base}{the base to use for normalisation}
 }
 \value{
-A link annotation with a normalised URL
+A string containing a normalised URL
 }
 \description{
-Such that it specified absolutely with reference to a base
+Ensures that a url is specified absolutely with reference to a base
 }

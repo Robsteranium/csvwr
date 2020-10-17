@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get path to csvwr example — csvwr_example • csvwr</title>
+<title>Does the string provide an absolute URL — is_absolute_url • csvwr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,8 @@
 
 
 
-<meta property="og:title" content="Get path to csvwr example — csvwr_example" />
-<meta property="og:description" content="The csvwr package includes some example csvw files in it's inst/extdata directory.
-You can use this function to find them." />
+<meta property="og:title" content="Does the string provide an absolute URL — is_absolute_url" />
+<meta property="og:description" content="Does the string provide an absolute URL" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -129,38 +128,30 @@ You can use this function to find them." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get path to csvwr example</h1>
+    <h1>Does the string provide an absolute URL</h1>
     <small class="dont-index">Source: <a href='https://github.com/Robsteranium/csvwr/blob/master/R/csvwr.R'><code>R/csvwr.R</code></a></small>
-    <div class="hidden name"><code>csvwr_example.Rd</code></div>
+    <div class="hidden name"><code>is_absolute_url.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The csvwr package includes some example csvw files in it's <code>inst/extdata</code> directory.
-You can use this function to find them.</p>
+    <p>Does the string provide an absolute URL</p>
     </div>
 
-    <pre class="usage"><span class='fu'>csvwr_example</span>(path = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>is_absolute_url</span>(<span class='kw'>string</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
-      <td><p>The filename. If <code>NULL</code>, the example files will be listed.</p></td>
+      <th>string</th>
+      <td><p>the url, path or template</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>either a file path or a vector of filenames</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>true if the string is an absolute url</p>
 
-    <p>Inspired by <code><a href='https://rdrr.io/pkg/readr/man/readr_example.html'>readr::readr_example()</a></code></p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>csvwr_example</span>()
-</div><div class='output co'>#&gt; [1] "computer-scientists.csv"  "computer-scientists.json"</div><div class='input'><span class='fu'>csvwr_example</span>(<span class='st'>"computer-scientists.csv"</span>)
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpMyJYA5/temp_libpath4da81bbf0908/csvwr/extdata/computer-scientists.csv"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

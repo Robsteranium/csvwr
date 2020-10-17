@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Normalise URL of link annotations — normalise_url • csvwr</title>
+<title>Normalise a URL — normalise_url • csvwr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Normalise URL of link annotations — normalise_url" />
-<meta property="og:description" content="Such that it specified absolutely with reference to a base" />
+<meta property="og:title" content="Normalise a URL — normalise_url" />
+<meta property="og:description" content="Ensures that a url is specified absolutely with reference to a base" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -128,33 +128,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Normalise URL of link annotations</h1>
+    <h1>Normalise a URL</h1>
     <small class="dont-index">Source: <a href='https://github.com/Robsteranium/csvwr/blob/master/R/csvwr.R'><code>R/csvwr.R</code></a></small>
     <div class="hidden name"><code>normalise_url.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Such that it specified absolutely with reference to a base</p>
+    <p>Ensures that a url is specified absolutely with reference to a base</p>
     </div>
 
-    <pre class="usage"><span class='fu'>normalise_url</span>(<span class='kw'>property</span>, <span class='kw'>base_url</span>)</pre>
+    <pre class="usage"><span class='fu'>normalise_url</span>(<span class='kw'>url</span>, <span class='kw'>base</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>property</th>
-      <td><p>a link annotation (single list element)</p></td>
+      <th>url</th>
+      <td><p>a string</p></td>
     </tr>
     <tr>
-      <th>base_url</th>
-      <td><p>the base_url to use for normalisation</p></td>
+      <th>base</th>
+      <td><p>the base to use for normalisation</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A link annotation with a normalised URL</p>
+    <p>A string containing a normalised URL</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

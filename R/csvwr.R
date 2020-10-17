@@ -479,7 +479,7 @@ base_url <- function(metadata, location) {
   if(is.null(base)) {
     base <- base_uri()
   }
-  url <- resolve_url(base, location)
+  url <- normalise_url(location, base)
   url
 }
 
@@ -494,19 +494,28 @@ resolve_url <- function(url1, url2) {
   combined %>% stringr::str_replace("/./","/")
 }
 
-#' Normalise URL of link annotations
+#' Does the string provide an absolute URL
 #'
-#' Such that it specified absolutely with reference to a base
+#' @param string the url, path or template
+#' @return true if the string is an absolute url
+is_absolute_url <- function(string) {
+  #grepl("://", string) # contains a URL scheme
+  grepl(":", string) # works with cURIes
+}
+
+#' Normalise a URL
 #'
-#' @param property a link annotation (single list element)
-#' @param base_url the base_url to use for normalisation
-#' @return A link annotation with a normalised URL
-normalise_url <- function(property, base_url) {
-  # do nothing if the property already includes a URL scheme
-  if(grepl("://", property)) {
-    property
+#' Ensures that a url is specified absolutely with reference to a base
+#'
+#' @param url a string
+#' @param base the base to use for normalisation
+#' @return A string containing a normalised URL
+normalise_url <- function(url, base) {
+  # do nothing if the url is already absolute
+  if(is_absolute_url(url)) {
+    url
   } else {
-    resolve_url(base_url, property)
+    resolve_url(base, url)
   }
 }
 
@@ -557,7 +566,7 @@ parse_metadata <- function(metadata, location) {
   metadata$tables <- lapply(metadata$tables, function(table) {
     # read list in place if is a link (not a list itself)
     if(class(table$tableSchema)=="character") {
-      table$tableSchema <- jsonlite::read_json(file.path(dirname(location), table$tableSchema))
+      table$tableSchema <- jsonlite::read_json(normalise_url(table$tableSchema,dirname(location)))
     }
     table
   })
