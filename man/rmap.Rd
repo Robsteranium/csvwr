@@ -9,13 +9,13 @@ rmap(.x, .f)
 \arguments{
 \item{.x}{a list}
 
-\item{.f}{a function (called with elements of `.x` as the first argument)}
+\item{.f}{a function (called with elements of \code{.x} as the first argument)}
 }
 \value{
 A list
 }
 \description{
-Applies function `.f` to each element in `.x` as per `purrr::map`.
+Applies function \code{.f} to each element in \code{.x} as per \code{purrr::map}.
 If the value of the element is itself a list, then the function is applied to that in turn.
 The process is followed recursively until an atomic value at the leaf nodes of the list is found.
 }

@@ -20,18 +20,18 @@ The best place to start is the
 \section{Reading annotated tables}{
 
 \itemize{
-  \item \code{\link{read_csvw}} Parse a table group
-  \item \code{\link{read_csvw_dataframe}} Parse a table group and extract the first
-    data frame
+\item \code{\link{read_csvw}} Parse a table group
+\item \code{\link{read_csvw_dataframe}} Parse a table group and extract the first
+data frame
 }
 }
 
 \section{Writing table annotations}{
 
 \itemize{
-  \item \code{\link{derive_table_schema}} Derive table schema from a data frame
-  \item \code{\link{create_metadata}} Create a table group annotation
-  \item \code{\link{derive_metadata}} Derive an annotation from a csv file
+\item \code{\link{derive_table_schema}} Derive table schema from a data frame
+\item \code{\link{create_metadata}} Create a table group annotation
+\item \code{\link{derive_metadata}} Derive an annotation from a csv file
 }
 }
 

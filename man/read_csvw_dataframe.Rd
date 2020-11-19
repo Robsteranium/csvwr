@@ -15,5 +15,5 @@ read_csvw_dataframe(filename, metadata = NULL)
 A data frame parsed using the table schema
 }
 \description{
-Wrapper around `read_csvw` convenient when you're only interested in the data and there's only one table
+Wrapper around \code{read_csvw} convenient when you're only interested in the data and there's only one table
 }

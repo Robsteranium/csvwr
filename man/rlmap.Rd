@@ -9,16 +9,16 @@ rlmap(.x, .f, ...)
 \arguments{
 \item{.x}{a list}
 
-\item{.f}{a function (called with elements of `.x` as the first argument)}
+\item{.f}{a function (called with elements of \code{.x} as the first argument)}
 
-\item{...}{further arguments passed to the function `.f`}
+\item{...}{further arguments passed to the function \code{.f}}
 }
 \value{
 A list
 }
 \description{
-Applies function `.f` to each list-element in `.x` as per `purrr::lmap`.
+Applies function \code{.f} to each list-element in \code{.x} as per \code{purrr::lmap}.
 If the value of the list-element is itself a list, then the function is applied to that in turn.
 The process is followed recursively until an atomic value at the leaf nodes of the list is found.
-If `.f` modifies the name, it is thrown away and replaced by the original name.
+If \code{.f} modifies the name, it is thrown away and replaced by the original name.
 }

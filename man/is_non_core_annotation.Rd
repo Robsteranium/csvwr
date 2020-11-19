@@ -10,7 +10,7 @@ is_non_core_annotation(property)
 \item{property}{a list element}
 }
 \value{
-`TRUE` the annotation is core, `FALSE` otherwise
+\code{TRUE} the annotation is core, \code{FALSE} otherwise
 }
 \description{
 Checks if the annotation is non-core, and should thus be treated as a json-ld note.

@@ -15,6 +15,6 @@ normalise_property(property, base_url)
 a property (list) a
 }
 \description{
-This follows the [normalisation](https://w3c.github.io/csvw/metadata/#normalization)
+This follows the \href{https://w3c.github.io/csvw/metadata/#normalization}{normalisation}
 process set out in the csvw specification.
 }

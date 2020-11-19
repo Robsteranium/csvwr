@@ -7,10 +7,10 @@
 coalesce_truth(x)
 }
 \arguments{
-\item{x}{logical, `NA` or `NULL`}
+\item{x}{logical, \code{NA} or \code{NULL}}
 }
 \value{
-`FALSE` if x is anything but `TRUE`
+\code{FALSE} if x is anything but \code{TRUE}
 }
 \description{
 Determineness whether the input is true, with missing values being interpreted as false.

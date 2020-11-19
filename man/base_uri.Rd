@@ -7,7 +7,7 @@
 base_uri()
 }
 \value{
-returns the value of `csvwr_base_uri` option, defaulting to `example.net`
+returns the value of \code{csvwr_base_uri} option, defaulting to \code{example.net}
 }
 \description{
 Retreive the base URI from configuration

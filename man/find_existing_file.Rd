@@ -11,7 +11,7 @@ find_existing_file(filenames)
 }
 \value{
 If one of the filenames passed is found, then the first is returned.
-If none of the filenames exist, `NULL` is returned
+If none of the filenames exist, \code{NULL} is returned
 }
 \description{
 Find the first existing file from a set of candidates

@@ -7,14 +7,14 @@
 create_metadata(tables)
 }
 \arguments{
-\item{tables}{a list of `csvw:table` annotations}
+\item{tables}{a list of \code{csvw:table} annotations}
 }
 \value{
 a list describing a tabular metadata annotation
 }
 \description{
-The table annotations should each be a list with keys for `url` and `tableSchema`.
-You can use `derive_table_schema` to derive a schema from a data frame.
+The table annotations should each be a list with keys for \code{url} and \code{tableSchema}.
+You can use \code{derive_table_schema} to derive a schema from a data frame.
 }
 \examples{
 d <- data.frame(foo="bar")

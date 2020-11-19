@@ -7,7 +7,7 @@
 locate_table(filename, url)
 }
 \arguments{
-\item{filename}{the file passed to `read_csvw` in the first place (could be the csv or json annotations)}
+\item{filename}{the file passed to \code{read_csvw} in the first place (could be the csv or json annotations)}
 
 \item{url}{the location of the the table as defined in the metadata}
 }

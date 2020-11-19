@@ -13,7 +13,7 @@ is_blank(value)
 a logical indicating if the value is blank
 }
 \description{
-Is the value NA or an empty string `""`?
+Is the value NA or an empty string \code{""}?
 }
 \examples{
 \dontrun{

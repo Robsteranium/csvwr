@@ -13,7 +13,7 @@ unlist1(l)
 A list of lists or a vector
 }
 \description{
-Convert a list of elements to a vector. Unlike `base::unlist` this doesn't
+Convert a list of elements to a vector. Unlike \code{base::unlist} this doesn't
 convert the elements of inner lists to vector elements. Thus only a list a single
 layer deep is flattened to a vector.
 }
