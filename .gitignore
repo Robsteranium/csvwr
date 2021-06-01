@@ -6,4 +6,5 @@ csvwr.Rproj
 packrat/lib*/
 inst/doc
 doc
+docs
 Meta
