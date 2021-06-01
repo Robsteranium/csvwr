@@ -16,15 +16,16 @@ on:
 
 jobs:
   build:
-    runs-on: [ubuntu-latest, windows-latest, macOS-latest]
+    runs-on:
+      - ubuntu-latest
     strategy:
       matrix:
-        r-version: [3.5, 3.6]
+        r-version: '3.6'
 
     steps:
       - uses: actions/checkout@v2
       - name: Set up R ${{ matrix.r-version }}
-        uses: r-lib/actions/setup-r@ffe45a39586f073cc2e9af79c4ba563b657dc6e3
+        uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.r-version }}
       - name: Install dependencies
