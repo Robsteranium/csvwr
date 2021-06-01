@@ -17,8 +17,6 @@ on:
 jobs:
   build:
     runs-on:
-      - ubuntu-latest
-      - windows-latest
       - macOS-latest
     strategy:
       matrix:
