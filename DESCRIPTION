@@ -1,7 +1,7 @@
 Package: csvwr
 Type: Package
 Title: Read and write CSV on the Web (csvw) tables and metadata
-Version: 0.1.0
+Version: 0.1.1
 Author: Robin Gower
 Maintainer: Robin Gower <csvw@infonomics.ltd.uk>
 Description: Provide functions for reading and writing csvw - i.e. csv tables and json metadata.
