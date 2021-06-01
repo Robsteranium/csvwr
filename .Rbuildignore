@@ -11,3 +11,4 @@ tests/csvw-tests/reports/.earl
 ^docs$
 ^pkgdown$
 ^packrat/
+^.github$
