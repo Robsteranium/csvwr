@@ -1,5 +1,6 @@
 ^packrat$
 ^\.Rprofile$
+^\.Rhistory$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 csvwr.Rproj
@@ -9,3 +10,4 @@ tests/csvw-tests/reports/.earl
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^packrat/
