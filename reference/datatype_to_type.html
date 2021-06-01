@@ -89,7 +89,7 @@ This implementation currently targets readr::cols column specifications." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -112,7 +112,7 @@ This implementation currently targets readr::cols column specifications." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Robsteranium/csvwr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -136,10 +136,10 @@ This implementation currently targets readr::cols column specifications." />
 
     <div class="ref-description">
     <p>Translate <a href='https://www.w3.org/TR/tabular-metadata/#datatypes'>csvw datatypes</a> to R types.
-This implementation currently targets <a href='https://rdrr.io/pkg/readr/man/cols.html'>readr::cols</a> column specifications.</p>
+This implementation currently targets <a href='https://readr.tidyverse.org/reference/cols.html'>readr::cols</a> column specifications.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>datatype_to_type</span>(<span class='kw'>datatypes</span>)</pre>
+    <pre class="usage"><span class='fu'>datatype_to_type</span><span class='op'>(</span><span class='va'>datatypes</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,13 +152,13 @@ This implementation currently targets <a href='https://rdrr.io/pkg/readr/man/col
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code><a href='https://rdrr.io/pkg/readr/man/cols.html'>readr::cols</a></code> specification - a list of collectors</p>
+    <p>a <code><a href='https://readr.tidyverse.org/reference/cols.html'>readr::cols</a></code> specification - a list of collectors</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>cspec</span> <span class='op'>&lt;-</span> <span class='fu'>datatype_to_type</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"double"</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(base=<span class='st'>"date"</span>, format=<span class='st'>"yyyy-MM-dd"</span>)))
-<span class='kw'>readr</span>::<span class='fu'><a href='https://rdrr.io/pkg/readr/man/read_delim.html'>read_csv</a></span>(<span class='kw'>readr</span>::<span class='fu'><a href='https://rdrr.io/pkg/readr/man/readr_example.html'>readr_example</a></span>(<span class='st'>"challenge.csv"</span>), col_types=<span class='kw'>cspec</span>)
-}
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>cspec</span> <span class='op'>&lt;-</span> <span class='fu'>datatype_to_type</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"double"</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>base<span class='op'>=</span><span class='st'>"date"</span>, format<span class='op'>=</span><span class='st'>"yyyy-MM-dd"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/readr_example.html'>readr_example</a></span><span class='op'>(</span><span class='st'>"challenge.csv"</span><span class='op'>)</span>, col_types<span class='op'>=</span><span class='va'>cspec</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

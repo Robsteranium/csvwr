@@ -47,7 +47,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -70,7 +70,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/Robsteranium/csvwr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -101,15 +101,14 @@
 <h3 class="hasAnchor">
 <a href="#reading-csvw" class="anchor"></a>Reading CSVW</h3>
 <p>You can use <code>csvwr</code> to read a csv table with json annotations into a data frame:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://robsteranium.github.io/csvwr">csvwr</a></span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://robsteranium.github.io/csvwr">csvwr</a></span><span class="op">)</span>
 
 <span class="co"># Parse a csv table using json metadata :</span>
-<span class="kw">csvw</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_csvw.html">read_csvw</a></span>(<span class="st">"data.csv"</span>, <span class="st">"metadata.json"</span>)
+<span class="va">csvw</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_csvw.html">read_csvw</a></span><span class="op">(</span><span class="st">"data.csv"</span>, <span class="st">"metadata.json"</span><span class="op">)</span>
 
 <span class="co"># To extract the parsed table (with syntactic variable names and typed-columns):</span>
-<span class="kw">csvw</span><span class="op">$</span><span class="kw">tables</span>[[<span class="fl">1</span>]]<span class="op">$</span><span class="kw">dataframe</span>
-</pre></div>
+<span class="va">csvw</span><span class="op">$</span><span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">dataframe</span></code></pre></div>
 <p>Alternatively, you can jump straight to the parsed table in one call:</p>
 <pre><code><a href="reference/read_csvw_dataframe.html">read_csvw_dataframe("data.csv", "metadata.json")</a></code></pre>
 </div>
@@ -117,22 +116,21 @@
 <h3 class="hasAnchor">
 <a href="#writing-csvw" class="anchor"></a>Writing CSVW</h3>
 <p>You can also prepare annotations for a data frame:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># Given a data frame</span>
-<span class="kw">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(x=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>), y=<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Given a data frame</span>
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span><span class="op">)</span>, y<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
 
 <span class="co"># Derive a schema</span>
-<span class="kw">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/derive_table_schema.html">derive_table_schema</a></span>(<span class="kw">d</span>)
+<span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/derive_table_schema.html">derive_table_schema</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
 
 <span class="co"># Create metadata (as a list)</span>
-<span class="kw">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_metadata.html">create_metadata</a></span>(tables=<span class="kw">s</span>)
+<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_metadata.html">create_metadata</a></span><span class="op">(</span>tables<span class="op">=</span><span class="va">s</span><span class="op">)</span>
 
 <span class="co"># Serialise the metadata to JSON</span>
-<span class="kw">j</span> <span class="op">&lt;-</span> <span class="kw">jsonlite</span>::<span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">toJSON</a></span>(<span class="kw">m</span>)
+<span class="va">j</span> <span class="op">&lt;-</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">toJSON</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
 
 <span class="co"># Write the json to a file</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw">j</span>, file=<span class="st">"metadata.json"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">j</span>, file<span class="op">=</span><span class="st">"metadata.json"</span><span class="op">)</span></code></pre></div>
 <p>For a complete introduction to the library please see the <code><a href="articles/read-write-csvw.html">vignette("read-write-csvw")</a></code>.</p>
 </div>
 </div>
@@ -140,10 +138,9 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You’ll need to use devtools to install this package from github:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
-<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"Robsteranium/csvwr"</span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Robsteranium/csvwr"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="contributing" class="section level2">
 <h2 class="hasAnchor">
@@ -167,7 +164,7 @@
 <li>datatypes (most of simple datatypes and some complex ones are supported, but there are more types and constraints too)</li>
 <li>validations (there are a lot of these 😊)</li>
 <li>propagation of inherited properties</li>
-<li>http retrieval (<code><a href="https://rdrr.io/pkg/readr/man/read_delim.html">readr::read_csv</a></code> (and indeed <code><a href="https://rdrr.io/r/utils/read.table.html">utils::read.csv</a></code>) accepts URIs, but the spec also involves link, dialect, and content-type headers)</li>
+<li>http retrieval (<code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_csv</a></code> (and indeed <code><a href="https://rdrr.io/r/utils/read.table.html">utils::read.csv</a></code>) accepts URIs, but the spec also involves link, dialect, and content-type headers)</li>
 <li>referential integrity (a foundation for this is in place)</li>
 <li>json nesting</li>
 </ul>
@@ -183,17 +180,16 @@
 <p>In each case, we’re running only that subset of test entries that can be expected to pass given that part of the standard that has thus far been implemented. Some entries will be skipped (either permanently or) while other priorities are implemented.</p>
 <p>You can find out what needs to be implemented next by widening the subset to include the next entry.</p>
 <p>During development, you may find it convenient to recreate one of the test entries for exploration. There is a convenience function in <a href="https://github.com/Robsteranium/csvwr/tree/master/tests/csvw-tests-helpers.R">tests/csvw-tests-helpers.R</a>. This isn’t exported by the package so you’ll need to evaluate it explicitly. You can then use it as follows:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu">run_entry_in_dev</span>(<span class="fl">16</span>) <span class="co"># index number in the list of entries</span>
-<span class="fu">run_entry_in_dev</span>(id=<span class="st">"manifest-json#test023"</span>) <span class="co"># identifier for the test</span>
-</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">run_entry_in_dev</span><span class="op">(</span><span class="fl">16</span><span class="op">)</span> <span class="co"># index number in the list of entries</span>
+<span class="fu">run_entry_in_dev</span><span class="op">(</span>id<span class="op">=</span><span class="st">"manifest-json#test023"</span><span class="op">)</span> <span class="co"># identifier for the test</span></code></pre></div>
 <p>There are also some more <a href="https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-parsing.R">in-depth unit tests</a> written for this library.</p>
 </div>
 <div id="workflow" class="section level3">
 <h3 class="hasAnchor">
 <a href="#workflow" class="anchor"></a>Workflow</h3>
-<p>You can use <code><a href="https://devtools.r-lib.org//reference/load_all.html">devtools::load_all()</a></code> (<code>CTRL + SHIFT + L</code> in RStudio) to load updates and <code><a href="https://rdrr.io/pkg/testthat/man/test_package.html">testthat::test_local()</a></code> (<code>CTRL + SHIFT + T</code>) to run the tests.</p>
-<p>In order to check the vignettes, you need to do <code><a href="https://devtools.r-lib.org//reference/install.html">devtools::install(build_vignettes=T)</a></code>. Then you can open e.g. <code><a href="articles/read-write-csvw.html">vignette("read-write-csvw")</a></code>.</p>
+<p>You can use <code>devtools::load_all()</code> (<code>CTRL + SHIFT + L</code> in RStudio) to load updates and <code><a href="https://testthat.r-lib.org/reference/test_package.html">testthat::test_local()</a></code> (<code>CTRL + SHIFT + T</code>) to run the tests.</p>
+<p>In order to check the vignettes, you need to do <code>devtools::install(build_vignettes=T)</code>. Then you can open e.g. <code><a href="articles/read-write-csvw.html">vignette("read-write-csvw")</a></code>.</p>
 </div>
 </div>
 <div id="license" class="section level2">
