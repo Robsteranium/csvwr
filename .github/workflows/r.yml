@@ -10,13 +10,16 @@ name: R
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, gh-workflows ]
   pull_request:
     branches: [ master ]
 
 jobs:
   build:
-    runs-on: [ubuntu-latest, windows-latest, macOS-latest]
+    runs-on:
+      - ubuntu-latest
+      - windows-latest
+      - macOS-latest
     strategy:
       matrix:
         r-version: [3.5, 3.6]
