@@ -1,5 +1,8 @@
 # CSV on the Web R Package (csvwr) <img src="man/figures/logo.png" align="right" height="139" />
 
+[![build](https://github.com/Robsteranium/csvwr/actions/workflows/r.yml/badge.svg)](https://github.com/Robsteranium/csvwr/actions/workflows/r.yml)
+[![pkgdown](https://github.com/Robsteranium/csvwr/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/Robsteranium/csvwr/actions/workflows/pkgdown.yml)
+
 Read and write csv tables annotated with metadata according to the "CSV on the Web" standard (CSVW).
 
 The [csvw model for tabular data](https://w3c.github.io/csvw/syntax/) describes how to annotate a group of csv tables to ensure they are interpreted correctly.
