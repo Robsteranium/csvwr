@@ -2,7 +2,7 @@
 % Please edit documentation in R/csvwr.R
 \name{base_uri}
 \alias{base_uri}
-\title{Retreive the base URI from configuration}
+\title{Retrieve the base URI from configuration}
 \usage{
 base_uri()
 }
@@ -10,7 +10,7 @@ base_uri()
 returns the value of \code{csvwr_base_uri} option, defaulting to \code{example.net}
 }
 \description{
-Retreive the base URI from configuration
+Retrieve the base URI from configuration
 }
 \examples{
 \dontrun{

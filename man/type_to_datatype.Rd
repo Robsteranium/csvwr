@@ -14,5 +14,5 @@ a list of csvw datatypes
 }
 \description{
 Translate R types to \href{https://www.w3.org/TR/tabular-metadata/#datatypes}{csvw datatypes}.
-Acts as an inverse of \code{datatype_to_type} but doesn't provide a 1:1 correspondance.
+Acts as an inverse of \code{datatype_to_type} but doesn't provide a 1:1 correspondence.
 }

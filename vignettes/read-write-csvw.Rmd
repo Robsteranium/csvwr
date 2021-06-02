@@ -91,7 +91,7 @@ We also introduce another element to each table, named `dataframe`. This provide
 csvw$tables[[1]]$dataframe
 ```
 
-The function [read_csvw_dataframe](../help/read_csvw_dataframe) is just a convience wrapper for calling [read_csvw](../help/read_csvw) and extracting this data frame.
+The function [read_csvw_dataframe](../help/read_csvw_dataframe) is just a convenience wrapper for calling [read_csvw](../help/read_csvw) and extracting this data frame.
 
 ## How do I create CSVW table annotations?
 

@@ -13,5 +13,5 @@ coalesce_truth(x)
 \code{FALSE} if x is anything but \code{TRUE}
 }
 \description{
-Determineness whether the input is true, with missing values being interpreted as false.
+Determine whether the input is true, with missing values being interpreted as false.
 }

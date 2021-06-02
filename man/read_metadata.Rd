@@ -10,7 +10,7 @@ read_metadata(filename)
 \item{filename}{a path for a json metadata document}
 }
 \value{
-csvw metdata list
+csvw metadata list
 }
 \description{
 Reads in a json document as a list, transforming columns specifications into a dataframe.

@@ -35,7 +35,7 @@ NULL # roxygen needs to document something! https://r-pkgs.org/man.html#man-pack
 # > no visible binding for global variable ‘.’
 globalVariables(".")
 
-#' Retreive the base URI from configuration
+#' Retrieve the base URI from configuration
 #'
 #' @return returns the value of `csvwr_base_uri` option, defaulting to `example.net`
 #' @examples
@@ -137,7 +137,7 @@ datatype_to_type <- function(datatypes) {
 #' Map R types to csvw datatype
 #'
 #' Translate R types to [csvw datatypes](https://www.w3.org/TR/tabular-metadata/#datatypes).
-#' Acts as an inverse of `datatype_to_type` but doesn't provide a 1:1 correspondance.
+#' Acts as an inverse of `datatype_to_type` but doesn't provide a 1:1 correspondence.
 #'
 #' @param types a list of R types
 #' @return a list of csvw datatypes
@@ -173,7 +173,7 @@ type_to_datatype <- function(types) {
 #'
 #' @param filename a path for a csv table or a json metadata document
 #' @param metadata optional user metadata
-#' @return csvw metdata list, with a `dataframe` property added to each table
+#' @return csvw metadata list, with a `dataframe` property added to each table
 #' @examples
 #' \dontrun{
 #' read_csvw("metadata.json")
@@ -404,7 +404,7 @@ find_metadata <- function(filename) {
 #' Reads in a json document as a list, transforming columns specifications into a dataframe.
 #'
 #' @param filename a path for a json metadata document
-#' @return csvw metdata list
+#' @return csvw metadata list
 read_metadata <- function(filename) {
   metadata <- jsonlite::read_json(filename)
   metadata <- parse_metadata(metadata, location=filename)
@@ -540,7 +540,7 @@ normalise_property <- function(property, base_url) {
 #' Parse metadata
 #'
 #' Coerces the metadata to ensure it describes a table group.
-#' Retreives any linked tableSchema.
+#' Retrieves any linked tableSchema.
 #'
 #' @param metadata a csvw metadata list
 #' @param location the location of the metadata
@@ -613,7 +613,7 @@ parse_columns <- function(columns) {
 
 #' Coalesce value to truthiness
 #'
-#' Determineness whether the input is true, with missing values being interpreted as false.
+#' Determine whether the input is true, with missing values being interpreted as false.
 #'
 #' @param x logical, `NA` or `NULL`
 #' @return `FALSE` if x is anything but `TRUE`

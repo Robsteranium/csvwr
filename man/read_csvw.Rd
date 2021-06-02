@@ -12,7 +12,7 @@ read_csvw(filename, metadata = NULL)
 \item{metadata}{optional user metadata}
 }
 \value{
-csvw metdata list, with a \code{dataframe} property added to each table
+csvw metadata list, with a \code{dataframe} property added to each table
 }
 \description{
 If the argument to \code{filename} is a json metadata document, this will be used to find csv files for

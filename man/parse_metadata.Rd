@@ -17,5 +17,5 @@ metadata coerced into a
 }
 \description{
 Coerces the metadata to ensure it describes a table group.
-Retreives any linked tableSchema.
+Retrieves any linked tableSchema.
 }
