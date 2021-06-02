@@ -1,13 +1,13 @@
 Package: csvwr
 Type: Package
-Title: Read and write CSV on the Web (csvw) tables and metadata
+Title: Read and Write CSV on the Web (CSVW) Tables and Metadata
 Version: 0.1.2
 Author: Robin Gower
 Maintainer: Robin Gower <csvwr@infonomics.ltd.uk>
-Description: Provide functions for reading and writing csvw - i.e. csv tables and json metadata.
-    The metadata helps interpret csv by setting the types and variable names. 
+Description: Provide functions for reading and writing CSVW - i.e. CSV tables and JSON metadata.
+    The metadata helps interpret CSV by setting the types and variable names.
 License: GPL-3
-URL: https://robsteranium.github.io/csvwr, https://github.com/Robsteranium/csvwr
+URL: https://robsteranium.github.io/csvwr/, https://github.com/Robsteranium/csvwr
 BugReports: https://github.com/Robsteranium/csvwr/issues
 Encoding: UTF-8
 LazyData: true

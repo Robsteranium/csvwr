@@ -7,7 +7,7 @@ Read and write csv tables annotated with metadata according to the "CSV on the W
 
 The [csvw model for tabular data](https://w3c.github.io/csvw/syntax/) describes how to annotate a group of csv tables to ensure they are interpreted correctly.
 
-This package uses the [csvw metadata schema](https://w3c.github.io/csvw/metadata) to find tables, identify column names and cast values to the correct types.
+This package uses the [csvw metadata schema](https://w3c.github.io/csvw/metadata/) to find tables, identify column names and cast values to the correct types.
 
 The aim is to reduce the amount of manual work needed to parse and prepare data before it can be used in analysis.
 
@@ -96,21 +96,21 @@ In terms of the csvw test cases provided by the standard, the following areas ne
 
 The project currently incorporates two main parts of the [csvw test](https://w3c.github.io/csvw/tests/) suite:
 
-- [Parsing with JSON output](https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-csvw-parsing-json.R)
-- [Validation](https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-csvw-validation.R)
+- [Parsing with JSON output](https://github.com/Robsteranium/csvwr/blob/master/tests/testthat/test-csvw-parsing-json.R)
+- [Validation](https://github.com/Robsteranium/csvwr/blob/master/tests/testthat/test-csvw-validation.R)
 
 In each case, we're running only that subset of test entries that can be expected to pass given that part of the standard that has thus far been implemented. Some entries will be skipped (either permanently or) while other priorities are implemented.
 
 You can find out what needs to be implemented next by widening the subset to include the next entry.
 
-During development, you may find it convenient to recreate one of the test entries for exploration. There is a convenience function in [tests/csvw-tests-helpers.R](https://github.com/Robsteranium/csvwr/tree/master/tests/csvw-tests-helpers.R). This isn't exported by the package so you'll need to evaluate it explicitly. You can then use it as follows:
+During development, you may find it convenient to recreate one of the test entries for exploration. There is a convenience function in [tests/csvw-tests-helpers.R](https://github.com/Robsteranium/csvwr/blob/master/tests/csvw-tests-helpers.R). This isn't exported by the package so you'll need to evaluate it explicitly. You can then use it as follows:
 
 ```r
 run_entry_in_dev(16) # index number in the list of entries
 run_entry_in_dev(id="manifest-json#test023") # identifier for the test
 ```
 
-There are also some more [in-depth unit tests](https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-parsing.R) written for this library.
+There are also some more [in-depth unit tests](https://github.com/Robsteranium/csvwr/blob/master/tests/testthat/test-parsing.R) written for this library.
 
 ### Workflow
 
