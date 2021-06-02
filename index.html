@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Read and write CSV on the Web (csvw) tables and metadata • csvwr</title>
+<title>Read and Write CSV on the Web (CSVW) Tables and Metadata • csvwr</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -17,9 +17,9 @@
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Read and write CSV on the Web (csvw) tables and metadata">
-<meta property="og:description" content="Provide functions for reading and writing csvw - i.e. csv tables and json metadata.
-    The metadata helps interpret csv by setting the types and variable names. ">
+<script src="pkgdown.js"></script><meta property="og:title" content="Read and Write CSV on the Web (CSVW) Tables and Metadata">
+<meta property="og:description" content="Provide functions for reading and writing CSVW - i.e. CSV tables and JSON metadata.
+    The metadata helps interpret CSV by setting the types and variable names.">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">csvwr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@
 
 <p>Read and write csv tables annotated with metadata according to the “CSV on the Web” standard (CSVW).</p>
 <p>The <a href="https://w3c.github.io/csvw/syntax/">csvw model for tabular data</a> describes how to annotate a group of csv tables to ensure they are interpreted correctly.</p>
-<p>This package uses the <a href="https://w3c.github.io/csvw/metadata">csvw metadata schema</a> to find tables, identify column names and cast values to the correct types.</p>
+<p>This package uses the <a href="https://w3c.github.io/csvw/metadata/">csvw metadata schema</a> to find tables, identify column names and cast values to the correct types.</p>
 <p>The aim is to reduce the amount of manual work needed to parse and prepare data before it can be used in analysis.</p>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
@@ -103,7 +103,7 @@
 <a href="#reading-csvw" class="anchor"></a>Reading CSVW</h3>
 <p>You can use <code>csvwr</code> to read a csv table with json annotations into a data frame:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://robsteranium.github.io/csvwr">csvwr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://robsteranium.github.io/csvwr/">csvwr</a></span><span class="op">)</span>
 
 <span class="co"># Parse a csv table using json metadata :</span>
 <span class="va">csvw</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_csvw.html">read_csvw</a></span><span class="op">(</span><span class="st">"data.csv"</span>, <span class="st">"metadata.json"</span><span class="op">)</span>
@@ -175,16 +175,16 @@
 <a href="#testing" class="anchor"></a>Testing</h3>
 <p>The project currently incorporates two main parts of the <a href="https://w3c.github.io/csvw/tests/">csvw test</a> suite:</p>
 <ul>
-<li><a href="https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-csvw-parsing-json.R">Parsing with JSON output</a></li>
-<li><a href="https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-csvw-validation.R">Validation</a></li>
+<li><a href="https://github.com/Robsteranium/csvwr/blob/master/tests/testthat/test-csvw-parsing-json.R">Parsing with JSON output</a></li>
+<li><a href="https://github.com/Robsteranium/csvwr/blob/master/tests/testthat/test-csvw-validation.R">Validation</a></li>
 </ul>
 <p>In each case, we’re running only that subset of test entries that can be expected to pass given that part of the standard that has thus far been implemented. Some entries will be skipped (either permanently or) while other priorities are implemented.</p>
 <p>You can find out what needs to be implemented next by widening the subset to include the next entry.</p>
-<p>During development, you may find it convenient to recreate one of the test entries for exploration. There is a convenience function in <a href="https://github.com/Robsteranium/csvwr/tree/master/tests/csvw-tests-helpers.R">tests/csvw-tests-helpers.R</a>. This isn’t exported by the package so you’ll need to evaluate it explicitly. You can then use it as follows:</p>
+<p>During development, you may find it convenient to recreate one of the test entries for exploration. There is a convenience function in <a href="https://github.com/Robsteranium/csvwr/blob/master/tests/csvw-tests-helpers.R">tests/csvw-tests-helpers.R</a>. This isn’t exported by the package so you’ll need to evaluate it explicitly. You can then use it as follows:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">run_entry_in_dev</span><span class="op">(</span><span class="fl">16</span><span class="op">)</span> <span class="co"># index number in the list of entries</span>
 <span class="fu">run_entry_in_dev</span><span class="op">(</span>id<span class="op">=</span><span class="st">"manifest-json#test023"</span><span class="op">)</span> <span class="co"># identifier for the test</span></code></pre></div>
-<p>There are also some more <a href="https://github.com/Robsteranium/csvwr/tree/master/tests/testthat/test-parsing.R">in-depth unit tests</a> written for this library.</p>
+<p>There are also some more <a href="https://github.com/Robsteranium/csvwr/blob/master/tests/testthat/test-parsing.R">in-depth unit tests</a> written for this library.</p>
 </div>
 <div id="workflow" class="section level3">
 <h3 class="hasAnchor">
