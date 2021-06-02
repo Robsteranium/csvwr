@@ -12,3 +12,4 @@ tests/csvw-tests/reports/.earl
 ^pkgdown$
 ^packrat/
 ^.github$
+cran-comments.md
