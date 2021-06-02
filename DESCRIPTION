@@ -10,7 +10,6 @@ License: GPL-3
 URL: https://robsteranium.github.io/csvwr/, https://github.com/Robsteranium/csvwr
 BugReports: https://github.com/Robsteranium/csvwr/issues
 Encoding: UTF-8
-LazyData: true
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
