@@ -13,3 +13,4 @@ tests/csvw-tests/reports/.earl
 ^packrat/
 ^.github$
 cran-comments.md
+^CRAN-RELEASE$
