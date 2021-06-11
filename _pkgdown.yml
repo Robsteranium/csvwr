@@ -22,5 +22,9 @@ reference:
   - validate_referential_integrity
 - title: "Utility functions"
   contents:
+  - base_uri
   - render_uri_templates
   - csvw_to_list
+  - type_to_datatype
+  - datatype_to_type
+  - transform_datetime_format

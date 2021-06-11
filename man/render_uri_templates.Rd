@@ -13,10 +13,15 @@ render_uri_templates(templates, bindings = NULL, ...)
 
 \item{...}{further bindings specified as named function arguments}
 }
+\value{
+a character vector with the expanded URI
+}
 \description{
-This doesn't yet implement the whole of RFC 6570, just enough to make the tests pass
+Interpolate variable bindings into a URI template.
 }
 \details{
+This doesn't yet implement the whole of RFC 6570, just enough to make the tests pass
+
 You can bind variables by passing a list to the explicit \code{bindings} argument,
 or variadically with \code{...} by naming arguments according to the variable name you wish to bind.
 }

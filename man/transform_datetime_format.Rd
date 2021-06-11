@@ -2,7 +2,7 @@
 % Please edit documentation in R/csvwr.R
 \name{transform_datetime_format}
 \alias{transform_datetime_format}
-\title{Transform date/time format string from}
+\title{Transform date/time format string from Unicode TR35 to POSIX 1003.1}
 \usage{
 transform_datetime_format(format_string)
 }
@@ -14,7 +14,7 @@ a POSIX date format string
 }
 \description{
 As per the \href{https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#h-formats-for-dates-and-times}{csvw specification for date and time formats}
-we accept format strings using the \href{www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table}{date field symbols defined in unicode TR35}.
+we accept format strings using the \href{https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table}{date field symbols defined in unicode TR35}.
 These are converted to POSIX 1003.1 date format strings for use in
 \code{\link[base:strptime]{base::strptime()}} or \code{\link[readr:parse_datetime]{readr::parse_date()}}/\code{\link[readr:parse_datetime]{readr::parse_datetime()}}.
 }

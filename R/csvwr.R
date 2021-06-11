@@ -45,16 +45,17 @@ globalVariables(".")
 #' options(csvwr_base_uri="http://www.w3.org/2013/csvw/tests/")
 #' base_uri()
 #' }
+#' @export
 base_uri <- function() {
   getOption("csvwr_base_uri", "http://example.net/")
 }
 
-#' Transform date/time format string from
+#' Transform date/time format string from Unicode TR35 to POSIX 1003.1
 #'
 #' As per the [csvw specification for date and time
 #' formats](https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#h-formats-for-dates-and-times)
 #' we accept format strings using the [date field symbols defined in unicode
-#' TR35](www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table).
+#' TR35](https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table).
 #' These are converted to POSIX 1003.1 date format strings for use in
 #' [base::strptime()] or [readr::parse_date()]/[readr::parse_datetime()].
 #'
@@ -66,6 +67,7 @@ base_uri <- function() {
 #' strptime("01.01.2001", format=fmt)
 #' }
 #' @md
+#' @export
 transform_datetime_format <- function(format_string) {
   format_string %>%
     gsub("yyyy", "%Y", .) %>%
@@ -91,6 +93,7 @@ transform_datetime_format <- function(format_string) {
 #' readr::read_csv(readr::readr_example("challenge.csv"), col_types=cspec)
 #' }
 #' @md
+#' @export
 datatype_to_type <- function(datatypes) {
   datatypes %>% purrr::map(function(datatype) {
     if(is.list(datatype)) {
@@ -142,6 +145,7 @@ datatype_to_type <- function(datatypes) {
 #' @param types a list of R types
 #' @return a list of csvw datatypes
 #' @md
+#' @export
 type_to_datatype <- function(types) {
   types %>% purrr::map(function(type) {
     switch(type[[1]],
@@ -329,6 +333,8 @@ set_uri_base <- function(t, url) {
 
 #' Render URI templates
 #'
+#' Interpolate variable bindings into a URI template.
+#'
 #' This doesn't yet implement the whole of RFC 6570, just enough to make the tests pass
 #'
 #' You can bind variables by passing a list to the explicit `bindings` argument,
@@ -337,6 +343,7 @@ set_uri_base <- function(t, url) {
 #' @param templates a character vector with URI templates
 #' @param bindings a list of variable bindings to be interpolated into templates
 #' @param ... further bindings specified as named function arguments
+#' @return a character vector with the expanded URI
 #' @examples
 #' render_uri_templates("{+url}/resource?query=value", list(url="http://example.net"))
 #' render_uri_templates("{+url}", url="http://example.net")
@@ -424,15 +431,14 @@ read_metadata <- function(filename) {
 #'
 #' This can be done from the name of the property. The
 #' [metadata descriptor diagram](https://w3c.github.io/csvw/metadata/properties.svg)
-#' provides a succinct summary of the types of each property and how they fit together
+#' provides a succinct summary of the types of each property and how they fit together.
 #'
 #' @param property a named list element
 #' @return a string defining the property type
 #' @examples
-#' \dontrun{
 #' property_type(list(url="http://example.net"))
-#' }
 #' @md
+#' @noRd
 property_type <- function(property) {
   stopifnot(length(property)==1)
   if(is.null(names(property))) {
@@ -766,6 +772,7 @@ create_metadata <- function(tables) {
 #' \dontrun{
 #' is_blank(c(NA, "", 1, TRUE, "a"))
 #' }
+#' @noRd
 is_blank <- function(value) {
   is.na(value) | (value=="")
 }
