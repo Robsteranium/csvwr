@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transform date/time format string from — transform_datetime_format • csvwr</title>
+<title>Transform date/time format string from Unicode TR35 to POSIX 1003.1 — transform_datetime_format • csvwr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,7 @@
 
 
 
-<meta property="og:title" content="Transform date/time format string from — transform_datetime_format" />
+<meta property="og:title" content="Transform date/time format string from Unicode TR35 to POSIX 1003.1 — transform_datetime_format" />
 <meta property="og:description" content="As per the csvw specification for date and time formats
 we accept format strings using the date field symbols defined in unicode TR35.
 These are converted to POSIX 1003.1 date format strings for use in
@@ -83,7 +83,7 @@ base::strptime() or readr::parse_date()/readr::parse_datetime()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">csvwr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -134,14 +134,14 @@ base::strptime() or readr::parse_date()/readr::parse_datetime()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transform date/time format string from</h1>
+    <h1>Transform date/time format string from Unicode TR35 to POSIX 1003.1</h1>
     <small class="dont-index">Source: <a href='https://github.com/Robsteranium/csvwr/blob/master/R/csvwr.R'><code>R/csvwr.R</code></a></small>
     <div class="hidden name"><code>transform_datetime_format.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>As per the <a href='https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#h-formats-for-dates-and-times'>csvw specification for date and time formats</a>
-we accept format strings using the <a href='www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table'>date field symbols defined in unicode TR35</a>.
+we accept format strings using the <a href='https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table'>date field symbols defined in unicode TR35</a>.
 These are converted to POSIX 1003.1 date format strings for use in
 <code><a href='https://rdrr.io/r/base/strptime.html'>base::strptime()</a></code> or <code><a href='https://readr.tidyverse.org/reference/parse_datetime.html'>readr::parse_date()</a></code>/<code><a href='https://readr.tidyverse.org/reference/parse_datetime.html'>readr::parse_datetime()</a></code>.</p>
     </div>
