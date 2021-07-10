@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">csvwr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.9000</span>
       </span>
     </div>
 
@@ -92,7 +92,7 @@
       <h1 data-toc-skip>Read and Write CSVW in R</h1>
                         <h4 class="author">Robin Gower</h4>
             
-            <h4 class="date">2021-06-11</h4>
+            <h4 class="date">2021-07-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robsteranium/csvwr/blob/master/vignettes/read-write-csvw.Rmd"><code>vignettes/read-write-csvw.Rmd</code></a></small>
       <div class="hidden name"><code>read-write-csvw.Rmd</code></div>
@@ -221,44 +221,71 @@
 <p>If you provide the <a href="../help/derive_table_schema">derive_table_schema</a> function with a data frame it will prepare some table annotations.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span><span class="op">)</span>, y<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
-<span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_table_schema.html">derive_table_schema</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
+<span class="op">(</span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_table_schema.html">derive_table_schema</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; $columns</span>
+<span class="co">#&gt;   name titles datatype</span>
+<span class="co">#&gt; 1    x      x   string</span>
+<span class="co">#&gt; 2    y      y  integer</span></code></pre></div>
+<p>Notice that the column names, titles, and datatypes have been derived from the data frame.</p>
+<p>You can of course refine the schema further if you wish (e.g. to declare <a href="https://w3c.github.io/csvw/syntax/#datatypes">further constraints on the datatypes</a> or to add <a href="https://w3c.github.io/csvw/metadata/#uri-template-properties">uri templates</a>).</p>
 <p>You can then pass this to <a href="../help/create_metadata">create_metadata</a> to build up a complete annotation.</p>
+<p>First we build the table description. This requires that we provide a URL for where the csv can be found.</p>
+<p>For example, if we save the data frame to a local file:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_metadata.html">create_metadata</a></span><span class="op">(</span>tables<span class="op">=</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"table.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<p>Then we can create a table description using the filename as the URL and the schema we created earlier:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>url<span class="op">=</span><span class="st">"table.csv"</span>, tableSchema<span class="op">=</span><span class="va">s</span><span class="op">)</span></code></pre></div>
+<p>Relative URLs like this make sense when the json metadata and csv table are to be found in the same place. You may instead want to unambiguously locate the file with an absolute URL like <code>https://raw.githubusercontent.com/Robsteranium/csvwr/master/inst/extdata/computer-scientists.csv</code> which will work even if the metadata and table are held in different locations.</p>
+<p>Now we can build our complete annotation:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_metadata.html">create_metadata</a></span><span class="op">(</span>tables<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">tb</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; $`@context`</span>
 <span class="co">#&gt; [1] "http://www.w3.org/ns/csvw"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $tables</span>
-<span class="co">#&gt; $tables$columns</span>
+<span class="co">#&gt; $tables[[1]]</span>
+<span class="co">#&gt; $tables[[1]]$url</span>
+<span class="co">#&gt; [1] "table.csv"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $tables[[1]]$tableSchema</span>
+<span class="co">#&gt; $tables[[1]]$tableSchema$columns</span>
 <span class="co">#&gt;   name titles datatype</span>
 <span class="co">#&gt; 1    x      x   string</span>
 <span class="co">#&gt; 2    y      y  integer</span></code></pre></div>
 <p>This can then be serialised to JSON:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">j</span> <span class="op">&lt;-</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">toJSON</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
 <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/prettify.html">prettify</a></span><span class="op">(</span><span class="va">j</span><span class="op">)</span>
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;     "@context": [</span>
 <span class="co">#&gt;         "http://www.w3.org/ns/csvw"</span>
 <span class="co">#&gt;     ],</span>
-<span class="co">#&gt;     "tables": {</span>
-<span class="co">#&gt;         "columns": [</span>
-<span class="co">#&gt;             {</span>
-<span class="co">#&gt;                 "name": "x",</span>
-<span class="co">#&gt;                 "titles": "x",</span>
-<span class="co">#&gt;                 "datatype": "string"</span>
-<span class="co">#&gt;             },</span>
-<span class="co">#&gt;             {</span>
-<span class="co">#&gt;                 "name": "y",</span>
-<span class="co">#&gt;                 "titles": "y",</span>
-<span class="co">#&gt;                 "datatype": "integer"</span>
+<span class="co">#&gt;     "tables": [</span>
+<span class="co">#&gt;         {</span>
+<span class="co">#&gt;             "url": [</span>
+<span class="co">#&gt;                 "table.csv"</span>
+<span class="co">#&gt;             ],</span>
+<span class="co">#&gt;             "tableSchema": {</span>
+<span class="co">#&gt;                 "columns": [</span>
+<span class="co">#&gt;                     {</span>
+<span class="co">#&gt;                         "name": "x",</span>
+<span class="co">#&gt;                         "titles": "x",</span>
+<span class="co">#&gt;                         "datatype": "string"</span>
+<span class="co">#&gt;                     },</span>
+<span class="co">#&gt;                     {</span>
+<span class="co">#&gt;                         "name": "y",</span>
+<span class="co">#&gt;                         "titles": "y",</span>
+<span class="co">#&gt;                         "datatype": "integer"</span>
+<span class="co">#&gt;                     }</span>
+<span class="co">#&gt;                 ]</span>
 <span class="co">#&gt;             }</span>
-<span class="co">#&gt;         ]</span>
-<span class="co">#&gt;     }</span>
+<span class="co">#&gt;         }</span>
+<span class="co">#&gt;     ]</span>
 <span class="co">#&gt; }</span>
 <span class="co">#&gt; </span></code></pre></div>
 <p>This JSON may then be written to disk:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">j</span>, file<span class="op">=</span><span class="st">"metadata.json"</span><span class="op">)</span></code></pre></div>
 </div>
   </div>

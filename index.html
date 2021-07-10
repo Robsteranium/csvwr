@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">csvwr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.9000</span>
       </span>
     </div>
 
@@ -121,14 +121,15 @@
 <a href="#writing-csvw" class="anchor"></a>Writing CSVW</h3>
 <p>You can also prepare annotations for a data frame:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Given a data frame</span>
+<code class="sourceCode R"><span class="co"># Given a data frame (saved as a csv)</span>
 <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span><span class="op">)</span>, y<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"table.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># Derive a schema</span>
 <span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/derive_table_schema.html">derive_table_schema</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
 
 <span class="co"># Create metadata (as a list)</span>
-<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_metadata.html">create_metadata</a></span><span class="op">(</span>tables<span class="op">=</span><span class="va">s</span><span class="op">)</span>
+<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_metadata.html">create_metadata</a></span><span class="op">(</span>tables<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>url<span class="op">=</span><span class="st">"table.csv"</span>, tableSchema<span class="op">=</span><span class="va">s</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Serialise the metadata to JSON</span>
 <span class="va">j</span> <span class="op">&lt;-</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">toJSON</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
@@ -217,6 +218,8 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=csvwr">https://​cloud.r-project.org/​package=csvwr</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/Robsteranium/csvwr/">https://​github.com/​Robsteranium/​csvwr/​</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/Robsteranium/csvwr/issues">https://​github.com/​Robsteranium/​csvwr/​issues</a>
