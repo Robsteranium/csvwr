@@ -101,13 +101,35 @@ If you provide the [derive_table_schema](../help/derive_table_schema) function w
 
 ```{r}
 d <- data.frame(x=c("a","b","c"), y=1:3)
-s <- derive_table_schema(d)
+(s <- derive_table_schema(d))
 ```
+
+Notice that the column names, titles, and datatypes have been derived from the data frame.
+
+You can of course refine the schema further if you wish (e.g. to declare [further constraints on the datatypes](https://w3c.github.io/csvw/syntax/#datatypes) or to add [uri templates](https://w3c.github.io/csvw/metadata/#uri-template-properties)).
 
 You can then pass this to [create_metadata](../help/create_metadata) to build up a complete annotation.
 
+First we build the table description. This requires that we provide a URL for where the csv can be found.
+
+For example, if we save the data frame to a local file:
+
+```{r eval=F}
+write.csv(d, "table.csv", row.names=FALSE)
+```
+
+Then we can create a table description using the filename as the URL and the schema we created earlier:
+
 ```{r}
-(m <- create_metadata(tables=s))
+tb <- list(url="table.csv", tableSchema=s)
+```
+
+Relative URLs like this make sense when the json metadata and csv table are to be found in the same place. You may instead want to unambiguously locate the file with an absolute URL like `https://raw.githubusercontent.com/Robsteranium/csvwr/master/inst/extdata/computer-scientists.csv` which will work even if the metadata and table are held in different locations.
+
+Now we can build our complete annotation:
+
+```{r}
+(m <- create_metadata(tables=list(tb)))
 ```
 
 This can then be serialised to JSON:
@@ -116,7 +138,6 @@ This can then be serialised to JSON:
 j <- jsonlite::toJSON(m)
 jsonlite::prettify(j)
 ```
-
 
 This JSON may then be written to disk:
 

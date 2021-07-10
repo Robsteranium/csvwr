@@ -39,14 +39,15 @@ read_csvw_dataframe("data.csv", "metadata.json")
 You can also prepare annotations for a data frame:
 
 ```r
-# Given a data frame
+# Given a data frame (saved as a csv)
 d <- data.frame(x=c("a","b","c"), y=1:3)
+write.csv(d, "table.csv", row.names=FALSE)
 
 # Derive a schema
 s <- derive_table_schema(d)
 
 # Create metadata (as a list)
-m <- create_metadata(tables=s)
+m <- create_metadata(tables=list(list(url="table.csv", tableSchema=s)))
 
 # Serialise the metadata to JSON
 j <- jsonlite::toJSON(m)

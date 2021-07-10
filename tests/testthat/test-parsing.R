@@ -112,6 +112,26 @@ test_that("Tables may be located", {
   })
 })
 
+test_that("Data frames may be round-tripped", {
+  d <- iris[sample(150,10),]
+  s <- derive_table_schema(d)
+  tb <- list(url="", tableSchema=s)
+  m <- create_metadata(tables=list(tb))
+  j <- jsonlite::toJSON(m)
+
+  d_file <- tempfile("data", fileext=".csv")
+  m_file <- tempfile("metadata", fileext=".json")
+
+  cat(j, file=m_file)
+  write.csv(d, d_file, row.names = FALSE)
+
+  d2 <- read_csvw(d_file, m_file)
+
+  expect_null(d2$error)
+
+  file.remove(d_file, m_file)
+})
+
 test_that("Annotation properties may be normalised", {
   orig_op <- options(csvwr_base_uri="http://example.net/")
   on.exit(options(orig_op), add=T, after=F)
