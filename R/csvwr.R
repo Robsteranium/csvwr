@@ -356,6 +356,8 @@ render_uri_templates <- function(templates, bindings=NULL, ...) {
   templates %>%
     purrr::map(set_uri_base, url=bindings$url) %>%
     stringr::str_replace("\\+", "") %>%
+    # https://datatracker.ietf.org/doc/html/rfc6570#section-3.2.4
+    stringr::str_replace("\\{#", "#{") %>%
     purrr::map_chr(function(t) stringr::str_glue_data(bindings, t))
 }
 
