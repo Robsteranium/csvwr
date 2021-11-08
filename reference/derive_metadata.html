@@ -156,24 +156,25 @@
     <p>a list of csvw metadata</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>derive_metadata</span><span class='op'>(</span><span class='fu'><a href='csvwr_example.html'>csvwr_example</a></span><span class='op'>(</span><span class='st'>"computer-scientists.csv"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $`@context`
-#&gt; [1] "http://www.w3.org/ns/csvw"
-#&gt; 
-#&gt; $tables
-#&gt; $tables[[1]]
-#&gt; $tables[[1]]$url
-#&gt; [1] "http://example.net//Users/runner/work/_temp/Library/csvwr/extdata/computer-scientists.csv"
-#&gt; 
-#&gt; $tables[[1]]$tableSchema
-#&gt; $tables[[1]]$tableSchema$columns
-#&gt;            name        titles datatype
-#&gt; 1          Name          Name   string
-#&gt; 2 Date Of Birth Date Of Birth     date
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>derive_metadata</span><span class='op'>(</span><span class='fu'><a href='csvwr_example.html'>csvwr_example</a></span><span class='op'>(</span><span class='st'>"computer-scientists.csv"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $`@context`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "http://www.w3.org/ns/csvw"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $tables</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $tables[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $tables[[1]]$url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "http://example.net//Users/runner/work/_temp/Library/csvwr/extdata/computer-scientists.csv"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $tables[[1]]$tableSchema</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $tables[[1]]$tableSchema$columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            name        titles datatype</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1          Name          Name   string</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 Date Of Birth Date Of Birth     date</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
