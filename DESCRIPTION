@@ -16,6 +16,7 @@ Suggests:
     markdown,
     rmarkdown
 Imports:
+    cli,
     magrittr,
     jsonlite,
     purrr,

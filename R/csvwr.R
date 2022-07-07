@@ -243,6 +243,7 @@ add_dataframe <- function(table, filename, dialect, group_schema) {
 try_add_dataframe <- function(table, ...) {
   tryCatch(add_dataframe(table, ...),
            error=function(e) {
+             cli::cli_alert_danger("Could not read data frame from {.path {table$url}} because of {e$message}")
              table$dataframe <- list(error=e,  ...)
              table
             })
