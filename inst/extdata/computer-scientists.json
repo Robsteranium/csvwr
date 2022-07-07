@@ -10,7 +10,7 @@
         "propertyUrl": "foaf:name"
       }, {
         "name": "dob",
-        "titles": "Date of Birth",
+        "titles": "Date Of Birth",
         "datatype": "date",
         "propertyUrl": "schema:birthDate"
       }],
