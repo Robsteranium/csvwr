@@ -61,7 +61,7 @@ vec_depth <- function (x)
 #' @return A list
 rlmap <- function(.x, .f, ...) {
   m <- function(le) {
-    r <- if(vec_depth(le[[1]])==1) {
+    r <- if(vec_depth(le[[1]])<=1) {
       .f(le, ...)[[1]]
     } else {
       purrr::lmap(le[[1]], m)

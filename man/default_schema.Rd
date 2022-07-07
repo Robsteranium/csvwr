@@ -4,12 +4,12 @@
 \alias{default_schema}
 \title{Create a default table schema given a csv file and dialect}
 \usage{
-default_schema(filename, dialect)
+default_schema(filename, dialect = default_dialect)
 }
 \arguments{
 \item{filename}{a csv file}
 
-\item{dialect}{specification of the csv's dialect}
+\item{dialect}{specification of the csv's dialect (default: \code{default_dialect})}
 }
 \value{
 a table schema

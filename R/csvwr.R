@@ -28,6 +28,7 @@
 #' @name csvwr
 #' @importFrom magrittr %>%
 #' @importFrom rlang %||%
+#' @importFrom methods is
 NULL # roxygen needs to document something! https://r-pkgs.org/man.html#man-packages
 
 # https://github.com/tidyverse/magrittr/issues/29
@@ -99,8 +100,10 @@ datatype_to_type <- function(datatypes) {
     if(is.list(datatype)) {
       # complex types (specified with a list)
       switch(datatype$base %||% "string",
+             boolean = readr::col_character(), # TODO: parse as logical
              date = readr::col_date(format=transform_datetime_format(datatype$format)),
              datetime = readr::col_datetime(format=transform_datetime_format(datatype$format)),
+             decimal = readr::col_double(), # TODO: validate max/min
              string = readr::col_character(), # TODO: use format regex in validation
              stop("unrecognised complex datatype: ", datatype))
     } else {
@@ -130,6 +133,7 @@ datatype_to_type <- function(datatypes) {
              QName = readr::col_character(),
              anyURI = readr::col_character(),
              any = readr::col_character(),
+             normalizedString = readr::col_character(),
              stop("unrecognised simple datatype: ", datatype))
     }
     # TODO: value and length constraints
@@ -191,8 +195,7 @@ read_csvw <- function(filename, metadata=NULL) {
   metadata$tables <- lapply(metadata$tables,
                             try_add_dataframe,
                             filename=filename,
-                            dialect=metadata$dialect,
-                            group_schema=metadata$tableSchema)
+                            group=metadata)
 
   metadata <- normalise_metadata(metadata, location=filename)
 
@@ -203,18 +206,17 @@ read_csvw <- function(filename, metadata=NULL) {
 #'
 #' @param table a `csvw:Table` annotation
 #' @param filename a filename/ URL for the csv table
-#' @param dialect a list describing the dialect for reading the csv file
-#' @param group_schema a fallback tableSchema from the table group
+#' @param group a list of metadata for the table group to use as a fallback
 #' @return a table annotation with a `dataframe` attribute added with data frame
 #' holding the contents of the table
 #' @md
-add_dataframe <- function(table, filename, dialect, group_schema) {
-  schema <- table$tableSchema %||% group_schema
+add_dataframe <- function(table, filename, group) {
+  schema <- table$tableSchema %||% group$tableSchema
+  dialect <- override_defaults(table$dialect, group$dialect, default_dialect)
   if(is.null(schema)) {
     # if we need to derive a default schema, then set this on the table itself
     table$tableSchema <- schema <- default_schema(filename, dialect)
   }
-  dialect <- dialect %||% default_dialect
   csv_url <- locate_table(filename, table$url)
 
   table_columns <- schema$columns[!coalesce_truth(schema$columns[["virtual"]]), ]
@@ -417,7 +419,9 @@ find_metadata <- function(filename) {
 #' @return csvw metadata list
 read_metadata <- function(filename) {
   metadata <- jsonlite::read_json(filename)
+
   metadata <- parse_metadata(metadata, location=filename)
+
   metadata$tables <- lapply(metadata$tables, function(t) {
     if(!is.null(t$tableSchema)) {
       t$tableSchema$columns <- parse_columns(t$tableSchema$columns)
@@ -573,7 +577,7 @@ parse_metadata <- function(metadata, location) {
   # retrieve linked tableSchema
   metadata$tables <- lapply(metadata$tables, function(table) {
     # read list in place if is a link (not a list itself)
-    if(class(table$tableSchema)=="character") {
+    if(is(table$tableSchema, "character")) {
       table$tableSchema <- jsonlite::read_json(normalise_url(table$tableSchema,dirname(location)))
     }
     table
@@ -656,7 +660,7 @@ unlist1 <- function(l) {
 #' @param ll a list of lists
 #' @return a data frame with a row per list
 list_of_lists_to_df <- function(ll) {
-  # need to get all names, not just use those from first column
+  # need to get all names, not just use those from first list per transpose
   nms <- ll %>% purrr::map(names) %>% purrr::reduce(union)
 
   purrr::transpose(ll, .names=nms) %>%
@@ -715,10 +719,10 @@ derive_table_schema <- function(d) {
 #' then this default schema will used.
 #'
 #' @param filename a csv file
-#' @param dialect specification of the csv's dialect
+#' @param dialect specification of the csv's dialect (default: `default_dialect`)
 #' @return a table schema
 #' @md
-default_schema <- function(filename, dialect) {
+default_schema <- function(filename, dialect=default_dialect) {
   data_sample <- readr::read_csv(filename, n_max=10, col_names=dialect$header, col_types=readr::cols())
   if(!dialect$header) {
     names(data_sample) <- paste0("_col.", 1:ncol(data_sample))
@@ -747,6 +751,25 @@ default_dialect <- list(
   skipInitialSpace=F,
   trim=F
 )
+
+#' Override defaults
+#'
+#' Merges two lists applying `override` values on top of the `default` values.
+#'
+#' @param ... any number of lists with configuration values
+#'
+#' @return a list with the values from the first list replacing those in the second and so on
+override_defaults <- function(...) {
+  dialect <- list()
+
+  set_value <- function(x) { dialect[names(x)] <<- x }
+
+  purrr::walk(rev(list(...)), function(l) {
+    purrr::lmap(l, set_value)
+  })
+
+  dialect
+}
 
 #' Create tabular metadata from a list of tables
 #'
@@ -844,20 +867,21 @@ render_cell <- function(cell) {
 #'
 #' Follows the pattern for csv2json
 #' @param table the csvw table
-#' @param group_schema a default schema
-#' @param dialect the dialect for reading the table from the csv file
+#' @param group list of metadata for the group used for a fallback schema and dialect
 #' @return a list representation of the table's contents
 #' @importFrom magrittr %>%
-table_to_list <- function(table, group_schema, dialect) {
+table_to_list <- function(table, group) {
   table <- purrr::lmap_if(table, is_non_core_annotation, json_ld_to_json, .else=identity)
-  schema <- table$tableSchema %||% group_schema # TODO: check that normalize doesn't obviate this
-  header_row_count <- (dialect %||% default_dialect)$headerRowCount
+  schema <- table$tableSchema %||% group$tableSchema # TODO: check that normalize doesn't obviate this
+  dialect <- override_defaults(table$dialect, group$dialect, default_dialect)
   row_num <- 0
   table$row <- purrr::pmap(table$dataframe, list) %>%
     purrr::map(function(r) {
       row_num <<- row_num + 1
-      url <- paste0(table$url, "#row=", row_num + header_row_count)
-      names(r) <- schema$columns[!suppressWarnings(coalesce_truth(schema$columns$virtual)), ]$name
+      url <- paste0(table$url, "#row=", row_num + dialect$headerRowCount)
+      suppressWarnings(
+        names(r) <- schema$columns[!suppressWarnings(coalesce_truth(schema$columns$virtual)), ]$name
+      )
       r <- lapply(r, render_cell)
       if(!is.null(schema$aboutUrl)) {
         template <- paste0("{+url}",schema$aboutUrl)
@@ -879,7 +903,7 @@ table_to_list <- function(table, group_schema, dialect) {
 #' }
 #' @export
 csvw_to_list <- function(csvw) {
-  list(tables=lapply(csvw$tables, table_to_list, group_schema=csvw$tableSchema, dialect=csvw$dialect))
+  list(tables=lapply(csvw$tables, table_to_list, group=csvw))
 }
 
 #csvw_triples <- function(csvw) # returns vector of triples/ s-p-o data.frame

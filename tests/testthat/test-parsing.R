@@ -115,7 +115,7 @@ test_that("Tables may be located", {
 test_that("Data frames may be round-tripped", {
   d <- iris[sample(150,10),]
   s <- derive_table_schema(d)
-  tb <- list(url="", tableSchema=s)
+  tb <- list(url=NULL, tableSchema=s)
   m <- create_metadata(tables=list(tb))
   j <- jsonlite::toJSON(m)
 
@@ -130,6 +130,29 @@ test_that("Data frames may be round-tripped", {
   expect_null(d2$error)
 
   file.remove(d_file, m_file)
+})
+
+test_that("Dialect defaults may be overridden", {
+  overrides <- list(commentPrefix=NULL, trim=T, foo="bar")
+  dialect <- override_defaults(overrides, default_dialect)
+
+  # overrides defaults
+  expect_null(dialect$commentPrefix)
+  expect_true(dialect$trim)
+
+  # unspecified defaults are retained
+  expect_equal(dialect$encoding, "utf-8")
+
+  # newly introduced values are retained
+  expect_equal(dialect$foo, "bar")
+
+  # names are unique (doesn't keep default alongside override)
+  expect_equal(length(names(dialect)), length(unique(names(dialect))))
+
+  test_that("arbitrary number of fallbacks permitted", {
+    dialect <- override_defaults(list(foo=1), list(foo=2), list(foo=3))
+    expect_equal(dialect$foo, 1)
+  })
 })
 
 test_that("Annotation properties may be normalised", {
@@ -155,7 +178,8 @@ test_that("URI Templates may be rendered", {
                c("http://example.org/south-west/devon.csv-metadata.json",
                  "http://example.org/south-west/csv-metadata.json"))
 
-  expect_equal(render_uri_templates(c("{+url}.json", "csvm.json", "/csvm?file={url}.json"), # last is modified from spec
+  # last is modified from spec
+  expect_equal(render_uri_templates(c("{+url}.json", "csvm.json", "/csvm?file={url}.json"),
                                     url="http://example.org/south-west/devon.csv"),
                c("http://example.org/south-west/devon.csv.json",
                  "http://example.org/south-west/csvm.json",

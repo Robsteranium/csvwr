@@ -40,6 +40,10 @@ test_that("rlmap doesn't attempt to map into errors", {
 #                uppercase_values_and_names)
 # })
 
+test_that("rlmap returns NULL unaltered", {
+  expect_null(rlmap(list(foo=NULL), function(x) x)$foo)
+})
+
 test_that("vec_depth doesn't attempt to measure the depth of errors", {
   err <- tryCatch(stop("oops"), error=function(e) {e})
   expect_error(purrr::vec_depth(err))
