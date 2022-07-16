@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,23 +40,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">csvwr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -71,7 +67,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/Robsteranium/csvwr/">
+  <a href="https://github.com/Robsteranium/csvwr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -90,25 +86,25 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Read and Write CSVW in R</h1>
-                        <h4 class="author">Robin Gower</h4>
+                        <h4 data-toc-skip class="author">Robin Gower</h4>
             
-            <h4 class="date">2021-11-10</h4>
+            <h4 data-toc-skip class="date">2022-07-16</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/Robsteranium/csvwr/blob/master/vignettes/read-write-csvw.Rmd"><code>vignettes/read-write-csvw.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Robsteranium/csvwr/blob/HEAD/vignettes/read-write-csvw.Rmd" class="external-link"><code>vignettes/read-write-csvw.Rmd</code></a></small>
       <div class="hidden name"><code>read-write-csvw.Rmd</code></div>
 
     </div>
 
     
     
-<div id="what-is-csv-on-the-web" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-is-csv-on-the-web" class="anchor"></a>What is CSV on the Web?</h2>
+<div class="section level2">
+<h2 id="what-is-csv-on-the-web">What is CSV on the Web?<a class="anchor" aria-label="anchor" href="#what-is-csv-on-the-web"></a>
+</h2>
 <p>The W3C’s CSV on the Web Working Group produced a series of recommendations for working with tabular data on the web.</p>
 <ul>
-<li>The <a href="https://w3c.github.io/csvw/syntax/">Model for Tabular Data and Metadata on the Web</a> describes how to annotate tables with metadata, and how processing applications should locate metadata and parse annotated tables.</li>
-<li>The <a href="https://w3c.github.io/csvw/metadata/">Metadata Vocabulary for Tabular Data</a> provides a specification for annotating tables with metadata at various levels, from groups of tables and how they relate to each other down to individual cells within a table.</li>
-<li>This vocabulary provides a mapping so that annotated tables can be transform from CSV to other formats: <a href="https://w3c.github.io/csvw/csv2json/">csv2json</a> and <a href="https://w3c.github.io/csvw/csv2rdf/">csv2rdf</a>
+<li>The <a href="https://w3c.github.io/csvw/syntax/" class="external-link">Model for Tabular Data and Metadata on the Web</a> describes how to annotate tables with metadata, and how processing applications should locate metadata and parse annotated tables.</li>
+<li>The <a href="https://w3c.github.io/csvw/metadata/" class="external-link">Metadata Vocabulary for Tabular Data</a> provides a specification for annotating tables with metadata at various levels, from groups of tables and how they relate to each other down to individual cells within a table.</li>
+<li>This vocabulary provides a mapping so that annotated tables can be transform from CSV to other formats: <a href="https://w3c.github.io/csvw/csv2json/" class="external-link">csv2json</a> and <a href="https://w3c.github.io/csvw/csv2rdf/" class="external-link">csv2rdf</a>
 </li>
 </ul>
 <p>The <code>csvwr</code> library implements parts of this standard in R. The overall goal of the project is to support reading and writing of annotated CSV tables, in order to ensure consistent processing and reduce the amount of manual work needed to parse and prepare data before it can be used in analysis.</p>
@@ -120,56 +116,56 @@
 </ul>
 <p>This package includes some example csv and json for you to explore. Here is the csv file:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://robsteranium.github.io/csvwr/">csvwr</a></span><span class="op">)</span>
-
-<span class="va">compsci_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csvwr_example.html">csvwr_example</a></span><span class="op">(</span><span class="st">"computer-scientists.csv"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">compsci_csv</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">"\n"</span><span class="op">)</span>
-<span class="co">#&gt; Name,Date Of Birth</span>
-<span class="co">#&gt; Barbara Liskov,1939-11-07</span>
-<span class="co">#&gt; Evelyn Boyd Granville,1924-05-01</span>
-<span class="co">#&gt; Ada Lovelace,1815-12-10</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robsteranium.github.io/csvwr/" class="external-link">csvwr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">compsci_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csvwr_example.html">csvwr_example</a></span><span class="op">(</span><span class="st">"computer-scientists.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">compsci_csv</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Name,Date Of Birth</span></span>
+<span><span class="co">#&gt; Barbara Liskov,1939-11-07</span></span>
+<span><span class="co">#&gt; Evelyn Boyd Granville,1924-05-01</span></span>
+<span><span class="co">#&gt; Ada Lovelace,1815-12-10</span></span></code></pre></div>
 <p>Here is the annotation:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">compsci_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csvwr_example.html">csvwr_example</a></span><span class="op">(</span><span class="st">"computer-scientists.json"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">compsci_json</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">"\n"</span><span class="op">)</span>
-<span class="co">#&gt; {</span>
-<span class="co">#&gt;   "@context": "http://www.w3.org/ns/csvw",</span>
-<span class="co">#&gt;   "tables": [{</span>
-<span class="co">#&gt;     "url": "computer-scientists.csv",</span>
-<span class="co">#&gt;     "tableSchema": {</span>
-<span class="co">#&gt;       "columns": [{</span>
-<span class="co">#&gt;         "name": "name",</span>
-<span class="co">#&gt;         "titles": "Name",</span>
-<span class="co">#&gt;         "datatype": "string",</span>
-<span class="co">#&gt;         "propertyUrl": "foaf:name"</span>
-<span class="co">#&gt;       }, {</span>
-<span class="co">#&gt;         "name": "dob",</span>
-<span class="co">#&gt;         "titles": "Date of Birth",</span>
-<span class="co">#&gt;         "datatype": "date",</span>
-<span class="co">#&gt;         "propertyUrl": "schema:birthDate"</span>
-<span class="co">#&gt;       }],</span>
-<span class="co">#&gt;       "aboutUrl": "http://example.org/computer-scientsts/{#name}",</span>
-<span class="co">#&gt;       "primaryKey": "name"</span>
-<span class="co">#&gt;     }</span>
-<span class="co">#&gt;   }]</span>
-<span class="co">#&gt; }</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">compsci_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csvwr_example.html">csvwr_example</a></span><span class="op">(</span><span class="st">"computer-scientists.json"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">compsci_json</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;   "@context": "http://www.w3.org/ns/csvw",</span></span>
+<span><span class="co">#&gt;   "tables": [{</span></span>
+<span><span class="co">#&gt;     "url": "computer-scientists.csv",</span></span>
+<span><span class="co">#&gt;     "tableSchema": {</span></span>
+<span><span class="co">#&gt;       "columns": [{</span></span>
+<span><span class="co">#&gt;         "name": "name",</span></span>
+<span><span class="co">#&gt;         "titles": "Name",</span></span>
+<span><span class="co">#&gt;         "datatype": "string",</span></span>
+<span><span class="co">#&gt;         "propertyUrl": "foaf:name"</span></span>
+<span><span class="co">#&gt;       }, {</span></span>
+<span><span class="co">#&gt;         "name": "dob",</span></span>
+<span><span class="co">#&gt;         "titles": "Date Of Birth",</span></span>
+<span><span class="co">#&gt;         "datatype": "date",</span></span>
+<span><span class="co">#&gt;         "propertyUrl": "schema:birthDate"</span></span>
+<span><span class="co">#&gt;       }],</span></span>
+<span><span class="co">#&gt;       "aboutUrl": "http://example.org/computer-scientsts/{#name}",</span></span>
+<span><span class="co">#&gt;       "primaryKey": "name"</span></span>
+<span><span class="co">#&gt;     }</span></span>
+<span><span class="co">#&gt;   }]</span></span>
+<span><span class="co">#&gt; }</span></span></code></pre></div>
 </div>
-<div id="how-do-i-read-a-table-annotated-with-csvw" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-do-i-read-a-table-annotated-with-csvw" class="anchor"></a>How do I read a table annotated with CSVW?</h2>
+<div class="section level2">
+<h2 id="how-do-i-read-a-table-annotated-with-csvw">How do I read a table annotated with CSVW?<a class="anchor" aria-label="anchor" href="#how-do-i-read-a-table-annotated-with-csvw"></a>
+</h2>
 <p>You can get up and running quickly using the <a href="../help/read_csvw_dataframe">read_csvw_dataframe</a> function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_csvw_dataframe.html">read_csvw_dataframe</a></span><span class="op">(</span><span class="va">compsci_csv</span>, <span class="va">compsci_json</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_csvw_dataframe.html">read_csvw_dataframe</a></span><span class="op">(</span><span class="va">compsci_csv</span>, <span class="va">compsci_json</span><span class="op">)</span></span></code></pre></div>
 <p>This parses the csvw metadata, and uses that to parse and interpret the csv file. A data frame is returned with columns that are named and typed accordingly to the specifications in the table’s schema. Here you can see the “Date Of Birth” field has been given a syntactically valid variable name, and parsed into a date vector automatically:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
-<span class="co">#&gt; tibble [3 × 2] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;  $ name: chr [1:3] "Barbara Liskov" "Evelyn Boyd Granville" "Ada Lovelace"</span>
-<span class="co">#&gt;  $ dob : Date[1:3], format: "1939-11-07" "1924-05-01" ...</span>
-
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span><span class="co">#&gt; tibble [3 × 2] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ name: chr [1:3] "Barbara Liskov" "Evelyn Boyd Granville" "Ada Lovelace"</span></span>
+<span><span class="co">#&gt;  $ dob : Date[1:3], format: "1939-11-07" "1924-05-01" ...</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">name</th>
@@ -192,101 +188,101 @@
 </table>
 <p>This function assumes that you’re only interested in one table, and that you don’t want to work with the csvw metadata itself. The metadata vocabulary allows us to describe groups of tables (useful for lookup tables). You can get the table and annotations using the <a href="../help/read_csvw">read_csvw</a> function:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">csvw</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_csvw.html">read_csvw</a></span><span class="op">(</span><span class="va">compsci_csv</span>, <span class="va">compsci_json</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">csvw</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_csvw.html">read_csvw</a></span><span class="op">(</span><span class="va">compsci_csv</span>, <span class="va">compsci_json</span><span class="op">)</span></span></code></pre></div>
 <p>This returns a nested list, which broadly follows the structure of the csvw metadata.</p>
 <p>As you can see from the json above, the <code>tables</code> element provides a list of tables and the annotation for each table provides a <code>url</code> (this can be used to locate csv files from the json metadata alone) and a <code>tableSchema</code>.</p>
 <p>Within the <code>tableSchema</code> we have annotations for each column. We parse these into a data frame (instead of a list of lists which is how the <code>jsonlite</code> library would ordinarily interpret a json array of objects). This is much more idiomatic for manipulation in R.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">csvw</span><span class="op">$</span><span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">tableSchema</span><span class="op">$</span><span class="va">columns</span>
-<span class="co">#&gt; # A tibble: 2 × 5</span>
-<span class="co">#&gt;   name  titles        datatype  propertyUrl      required</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;         &lt;list&gt;    &lt;chr&gt;            &lt;lgl&gt;   </span>
-<span class="co">#&gt; 1 name  Name          &lt;chr [1]&gt; foaf:name        FALSE   </span>
-<span class="co">#&gt; 2 dob   Date of Birth &lt;chr [1]&gt; schema:birthDate FALSE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">csvw</span><span class="op">$</span><span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">tableSchema</span><span class="op">$</span><span class="va">columns</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 5</span></span></span>
+<span><span class="co">#&gt;   name  titles        datatype  propertyUrl      required</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> name  Name          <span style="color: #949494;">&lt;chr [1]&gt;</span> foaf:name        FALSE   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> dob   Date Of Birth <span style="color: #949494;">&lt;chr [1]&gt;</span> schema:birthDate FALSE</span></span></code></pre></div>
 <p>We also introduce another element to each table, named <code>dataframe</code>. This provides the result of parsing the csv table using the schema provided in the json:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">csvw</span><span class="op">$</span><span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">dataframe</span>
-<span class="co">#&gt; # A tibble: 3 × 2</span>
-<span class="co">#&gt;   name                  dob       </span>
-<span class="co">#&gt;   &lt;chr&gt;                 &lt;date&gt;    </span>
-<span class="co">#&gt; 1 Barbara Liskov        1939-11-07</span>
-<span class="co">#&gt; 2 Evelyn Boyd Granville 1924-05-01</span>
-<span class="co">#&gt; 3 Ada Lovelace          1815-12-10</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">csvw</span><span class="op">$</span><span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">dataframe</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
+<span><span class="co">#&gt;   name                  dob       </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Barbara Liskov        1939-11-07</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Evelyn Boyd Granville 1924-05-01</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Ada Lovelace          1815-12-10</span></span></code></pre></div>
 <p>The function <a href="../help/read_csvw_dataframe">read_csvw_dataframe</a> is just a convenience wrapper for calling <a href="../help/read_csvw">read_csvw</a> and extracting this data frame.</p>
 </div>
-<div id="how-do-i-create-csvw-table-annotations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-do-i-create-csvw-table-annotations" class="anchor"></a>How do I create CSVW table annotations?</h2>
+<div class="section level2">
+<h2 id="how-do-i-create-csvw-table-annotations">How do I create CSVW table annotations?<a class="anchor" aria-label="anchor" href="#how-do-i-create-csvw-table-annotations"></a>
+</h2>
 <p>You can of course write json metadata by hand, but if you already have your table as a data frame in R then we can use this to get a head start.</p>
 <p>If you provide the <a href="../help/derive_table_schema">derive_table_schema</a> function with a data frame it will prepare some table annotations.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span><span class="op">)</span>, y<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
-<span class="op">(</span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_table_schema.html">derive_table_schema</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; $columns</span>
-<span class="co">#&gt;   name titles datatype</span>
-<span class="co">#&gt; 1    x      x   string</span>
-<span class="co">#&gt; 2    y      y  integer</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span><span class="op">)</span>, y<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_table_schema.html">derive_table_schema</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $columns</span></span>
+<span><span class="co">#&gt;   name titles datatype</span></span>
+<span><span class="co">#&gt; 1    x      x   string</span></span>
+<span><span class="co">#&gt; 2    y      y  integer</span></span></code></pre></div>
 <p>Notice that the column names, titles, and datatypes have been derived from the data frame.</p>
-<p>You can of course refine the schema further if you wish (e.g. to declare <a href="https://w3c.github.io/csvw/syntax/#datatypes">further constraints on the datatypes</a> or to add <a href="https://w3c.github.io/csvw/metadata/#uri-template-properties">uri templates</a>).</p>
+<p>You can of course refine the schema further if you wish (e.g. to declare <a href="https://w3c.github.io/csvw/syntax/#datatypes" class="external-link">further constraints on the datatypes</a> or to add <a href="https://w3c.github.io/csvw/metadata/#uri-template-properties" class="external-link">uri templates</a>).</p>
 <p>You can then pass this to <a href="../help/create_metadata">create_metadata</a> to build up a complete annotation.</p>
 <p>First we build the table description. This requires that we provide a URL for where the csv can be found.</p>
 <p>For example, if we save the data frame to a local file:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"table.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"table.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Then we can create a table description using the filename as the URL and the schema we created earlier:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>url<span class="op">=</span><span class="st">"table.csv"</span>, tableSchema<span class="op">=</span><span class="va">s</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>url<span class="op">=</span><span class="st">"table.csv"</span>, tableSchema<span class="op">=</span><span class="va">s</span><span class="op">)</span></span></code></pre></div>
 <p>Relative URLs like this make sense when the json metadata and csv table are to be found in the same place. You may instead want to unambiguously locate the file with an absolute URL like <code>https://raw.githubusercontent.com/Robsteranium/csvwr/master/inst/extdata/computer-scientists.csv</code> which will work even if the metadata and table are held in different locations.</p>
 <p>Now we can build our complete annotation:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_metadata.html">create_metadata</a></span><span class="op">(</span>tables<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">tb</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; $`@context`</span>
-<span class="co">#&gt; [1] "http://www.w3.org/ns/csvw"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $tables</span>
-<span class="co">#&gt; $tables[[1]]</span>
-<span class="co">#&gt; $tables[[1]]$url</span>
-<span class="co">#&gt; [1] "table.csv"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $tables[[1]]$tableSchema</span>
-<span class="co">#&gt; $tables[[1]]$tableSchema$columns</span>
-<span class="co">#&gt;   name titles datatype</span>
-<span class="co">#&gt; 1    x      x   string</span>
-<span class="co">#&gt; 2    y      y  integer</span></code></pre></div>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_metadata.html">create_metadata</a></span><span class="op">(</span>tables<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tb</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`@context`</span></span>
+<span><span class="co">#&gt; [1] "http://www.w3.org/ns/csvw"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $tables</span></span>
+<span><span class="co">#&gt; $tables[[1]]</span></span>
+<span><span class="co">#&gt; $tables[[1]]$url</span></span>
+<span><span class="co">#&gt; [1] "table.csv"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $tables[[1]]$tableSchema</span></span>
+<span><span class="co">#&gt; $tables[[1]]$tableSchema$columns</span></span>
+<span><span class="co">#&gt;   name titles datatype</span></span>
+<span><span class="co">#&gt; 1    x      x   string</span></span>
+<span><span class="co">#&gt; 2    y      y  integer</span></span></code></pre></div>
 <p>This can then be serialised to JSON:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">j</span> <span class="op">&lt;-</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">toJSON</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
-<span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/prettify.html">prettify</a></span><span class="op">(</span><span class="va">j</span><span class="op">)</span>
-<span class="co">#&gt; {</span>
-<span class="co">#&gt;     "@context": [</span>
-<span class="co">#&gt;         "http://www.w3.org/ns/csvw"</span>
-<span class="co">#&gt;     ],</span>
-<span class="co">#&gt;     "tables": [</span>
-<span class="co">#&gt;         {</span>
-<span class="co">#&gt;             "url": [</span>
-<span class="co">#&gt;                 "table.csv"</span>
-<span class="co">#&gt;             ],</span>
-<span class="co">#&gt;             "tableSchema": {</span>
-<span class="co">#&gt;                 "columns": [</span>
-<span class="co">#&gt;                     {</span>
-<span class="co">#&gt;                         "name": "x",</span>
-<span class="co">#&gt;                         "titles": "x",</span>
-<span class="co">#&gt;                         "datatype": "string"</span>
-<span class="co">#&gt;                     },</span>
-<span class="co">#&gt;                     {</span>
-<span class="co">#&gt;                         "name": "y",</span>
-<span class="co">#&gt;                         "titles": "y",</span>
-<span class="co">#&gt;                         "datatype": "integer"</span>
-<span class="co">#&gt;                     }</span>
-<span class="co">#&gt;                 ]</span>
-<span class="co">#&gt;             }</span>
-<span class="co">#&gt;         }</span>
-<span class="co">#&gt;     ]</span>
-<span class="co">#&gt; }</span>
-<span class="co">#&gt; </span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">j</span> <span class="op">&lt;-</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html" class="external-link">toJSON</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
+<span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/prettify.html" class="external-link">prettify</a></span><span class="op">(</span><span class="va">j</span><span class="op">)</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;     "@context": [</span></span>
+<span><span class="co">#&gt;         "http://www.w3.org/ns/csvw"</span></span>
+<span><span class="co">#&gt;     ],</span></span>
+<span><span class="co">#&gt;     "tables": [</span></span>
+<span><span class="co">#&gt;         {</span></span>
+<span><span class="co">#&gt;             "url": [</span></span>
+<span><span class="co">#&gt;                 "table.csv"</span></span>
+<span><span class="co">#&gt;             ],</span></span>
+<span><span class="co">#&gt;             "tableSchema": {</span></span>
+<span><span class="co">#&gt;                 "columns": [</span></span>
+<span><span class="co">#&gt;                     {</span></span>
+<span><span class="co">#&gt;                         "name": "x",</span></span>
+<span><span class="co">#&gt;                         "titles": "x",</span></span>
+<span><span class="co">#&gt;                         "datatype": "string"</span></span>
+<span><span class="co">#&gt;                     },</span></span>
+<span><span class="co">#&gt;                     {</span></span>
+<span><span class="co">#&gt;                         "name": "y",</span></span>
+<span><span class="co">#&gt;                         "titles": "y",</span></span>
+<span><span class="co">#&gt;                         "datatype": "integer"</span></span>
+<span><span class="co">#&gt;                     }</span></span>
+<span><span class="co">#&gt;                 ]</span></span>
+<span><span class="co">#&gt;             }</span></span>
+<span><span class="co">#&gt;         }</span></span>
+<span><span class="co">#&gt;     ]</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; </span></span></code></pre></div>
 <p>This JSON may then be written to disk:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">j</span>, file<span class="op">=</span><span class="st">"metadata.json"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">j</span>, file<span class="op">=</span><span class="st">"metadata.json"</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
@@ -301,11 +297,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="http://infonomics.ltd.uk">Robin Gower</a>.</p>
+  <p></p>
+<p>Developed by <a href="http://infonomics.ltd.uk" class="external-link">Robin Gower</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
@@ -313,6 +311,8 @@
 
   
 
+
+  
 
   </body>
 </html>
