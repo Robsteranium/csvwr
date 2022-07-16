@@ -16,3 +16,4 @@ If none of the filenames exist, \code{NULL} is returned
 \description{
 Find the first existing file from a set of candidates
 }
+\keyword{internal}

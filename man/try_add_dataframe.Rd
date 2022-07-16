@@ -18,3 +18,4 @@ holding the contents of the table or an error.
 \description{
 If this fails, a list describing the error is added instead
 }
+\keyword{internal}

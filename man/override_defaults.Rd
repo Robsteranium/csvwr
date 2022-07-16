@@ -15,3 +15,4 @@ a list with the values from the first list replacing those in the second and so 
 \description{
 Merges two lists applying \code{override} values on top of the \code{default} values.
 }
+\keyword{internal}

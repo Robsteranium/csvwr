@@ -15,3 +15,4 @@ a uri for the metadata, or null if none were found
 \description{
 Searches through the default locations attempting to locate metadata.
 }
+\keyword{internal}

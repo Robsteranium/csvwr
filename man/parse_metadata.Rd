@@ -19,3 +19,4 @@ metadata coerced into a
 Coerces the metadata to ensure it describes a table group.
 Retrieves any linked tableSchema.
 }
+\keyword{internal}

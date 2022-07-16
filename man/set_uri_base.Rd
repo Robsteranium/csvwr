@@ -17,3 +17,4 @@ a character vector of templates with base paths/ domains set appropriately
 \description{
 Set the base of a URI template
 }
+\keyword{internal}

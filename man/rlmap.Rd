@@ -22,3 +22,4 @@ If the value of the list-element is itself a list, then the function is applied 
 The process is followed recursively until an atomic value at the leaf nodes of the list is found.
 If \code{.f} modifies the name, it is thrown away and replaced by the original name.
 }
+\keyword{internal}

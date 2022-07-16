@@ -15,3 +15,4 @@ true if the string is an absolute url
 \description{
 Does the string provide an absolute URL
 }
+\keyword{internal}

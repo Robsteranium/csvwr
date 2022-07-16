@@ -17,3 +17,4 @@ A single absolute url
 \description{
 Resolve one URL against another
 }
+\keyword{internal}

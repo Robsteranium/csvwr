@@ -27,3 +27,4 @@ Follows the procedure defined in the \href{https://w3c.github.io/csvw/syntax/#lo
 
 We extend this to use the \link{derive_metadata} function to inspect the table itself.
 }
+\keyword{internal}

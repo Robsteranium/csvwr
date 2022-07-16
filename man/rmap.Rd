@@ -19,3 +19,4 @@ Applies function \code{.f} to each element in \code{.x} as per \code{purrr::map}
 If the value of the element is itself a list, then the function is applied to that in turn.
 The process is followed recursively until an atomic value at the leaf nodes of the list is found.
 }
+\keyword{internal}

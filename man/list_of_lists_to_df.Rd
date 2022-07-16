@@ -15,3 +15,4 @@ a data frame with a row per list
 \description{
 Parse list of lists specification into a data frame
 }
+\keyword{internal}

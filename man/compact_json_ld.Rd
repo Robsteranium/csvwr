@@ -15,3 +15,4 @@ A compacted value.
 \description{
 Follows the \href{https://w3c.github.io/csvw/csv2json/#json-ld-to-json}{rules for JSON-LD to JSON conversion set out in the csv2json standard}.
 }
+\keyword{internal}

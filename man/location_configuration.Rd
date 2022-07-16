@@ -15,3 +15,4 @@ a character vector of URI templates
 \description{
 Returns default locations. Will ultimately retrieve remote configuration
 }
+\keyword{internal}

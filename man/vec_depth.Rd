@@ -15,3 +15,4 @@ An integer
 \description{
 Like \code{purrr::vec_depth} but doesn't attempt to descend into errors
 }
+\keyword{internal}

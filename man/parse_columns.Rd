@@ -15,3 +15,4 @@ a data frame with a row per column specification
 \description{
 Parse columns schema
 }
+\keyword{internal}

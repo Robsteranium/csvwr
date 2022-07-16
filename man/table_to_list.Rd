@@ -9,7 +9,7 @@ table_to_list(table, group)
 \arguments{
 \item{table}{the csvw table}
 
-\item{group}{list of metadata for the group used as a fallback (schema, dialect)}
+\item{group}{list of metadata for the group used for a fallback schema and dialect}
 }
 \value{
 a list representation of the table's contents
@@ -17,3 +17,4 @@ a list representation of the table's contents
 \description{
 Follows the pattern for csv2json
 }
+\keyword{internal}

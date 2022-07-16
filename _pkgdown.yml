@@ -11,13 +11,17 @@ reference:
   - read_csvw_dataframe
   - csvwr_example
   - extract_table
+  - read_metadata
 - title: "Writing table annotations"
   contents:
   - derive_table_schema
   - create_metadata
   - derive_metadata
+  - default_dialect
+  - default_schema
 - title: "Validating table annotations"
   contents:
+  - normalise_metadata
   - validate_csvw
   - validate_referential_integrity
 - title: "Utility functions"
@@ -28,3 +32,4 @@ reference:
   - type_to_datatype
   - datatype_to_type
   - transform_datetime_format
+  - coalesce_truth

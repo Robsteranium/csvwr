@@ -15,3 +15,4 @@ is_non_core_annotation(property)
 \description{
 Checks if the annotation is non-core, and should thus be treated as a json-ld note.
 }
+\keyword{internal}

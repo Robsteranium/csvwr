@@ -17,3 +17,4 @@ Convert a list of elements to a vector. Unlike \code{base::unlist} this doesn't
 convert the elements of inner lists to vector elements. Thus only a list a single
 layer deep is flattened to a vector.
 }
+\keyword{internal}

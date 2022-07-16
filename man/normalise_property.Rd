@@ -18,3 +18,4 @@ a property (list) a
 This follows the \href{https://w3c.github.io/csvw/metadata/#normalization}{normalisation}
 process set out in the csvw specification.
 }
+\keyword{internal}

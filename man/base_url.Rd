@@ -17,3 +17,4 @@ A string containing the base URL
 \description{
 Determine the base URL for CSVW metadata
 }
+\keyword{internal}

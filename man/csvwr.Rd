@@ -3,6 +3,7 @@
 \docType{package}
 \name{csvwr}
 \alias{csvwr}
+\alias{csvwr-package}
 \title{csvwr: Read and write CSV on the Web (CSVW)}
 \description{
 Read and write csv tables annotated with
@@ -35,3 +36,13 @@ data frame
 }
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://robsteranium.github.io/csvwr/}
+  \item \url{https://github.com/Robsteranium/csvwr}
+  \item Report bugs at \url{https://github.com/Robsteranium/csvwr/issues}
+}
+
+}
+\keyword{internal}

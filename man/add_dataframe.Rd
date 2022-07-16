@@ -20,3 +20,4 @@ holding the contents of the table
 \description{
 Add data frame to csvw table annotation
 }
+\keyword{internal}

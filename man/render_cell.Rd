@@ -15,3 +15,4 @@ a representation comparable with the JSON representation (typically a string)
 \description{
 Serialise cell values for JSON representation
 }
+\keyword{internal}

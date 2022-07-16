@@ -17,3 +17,4 @@ A string containing a normalised URL
 \description{
 Ensures that a url is specified absolutely with reference to a base
 }
+\keyword{internal}

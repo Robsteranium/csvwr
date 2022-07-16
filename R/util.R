@@ -7,6 +7,7 @@
 #' @param .x a list
 #' @param .f a function (called with elements of `.x` as the first argument)
 #' @return A list
+#' @keywords internal
 rmap <- function(.x, .f) {
   m <- function(le) {
     v <- le[[1]]
@@ -28,6 +29,7 @@ rmap <- function(.x, .f) {
 #' @param x a vector
 #' @return An integer
 #' @md
+#' @keywords internal
 vec_depth <- function (x)
 {
   if (rlang::is_null(x)) {
@@ -59,6 +61,7 @@ vec_depth <- function (x)
 #' @param .f a function (called with elements of `.x` as the first argument)
 #' @param ... further arguments passed to the function `.f`
 #' @return A list
+#' @keywords internal
 rlmap <- function(.x, .f, ...) {
   m <- function(le) {
     r <- if(vec_depth(le[[1]])<=1) {
