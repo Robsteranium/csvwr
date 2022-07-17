@@ -455,7 +455,7 @@ read_metadata <- function(filename) {
 #' @examples
 #' property_type(list(url="http://example.net"))
 #' @md
-#' @keywords internal
+#' @noRd
 property_type <- function(property) {
   stopifnot(length(property)==1)
   if(is.null(names(property))) {
