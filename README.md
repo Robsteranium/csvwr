@@ -2,6 +2,7 @@
 
 [![build](https://github.com/Robsteranium/csvwr/actions/workflows/r.yml/badge.svg)](https://github.com/Robsteranium/csvwr/actions/workflows/r.yml)
 [![pkgdown](https://github.com/Robsteranium/csvwr/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/Robsteranium/csvwr/actions/workflows/pkgdown.yml)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/csvwr)](https://cran.r-project.org/package=csvwr)
 
 Read and write csv tables annotated with metadata according to the "CSV on the Web" standard (CSVW).
 
@@ -61,7 +62,12 @@ For a complete introduction to the library please see the `vignette("read-write-
 
 ## Installation
 
-You'll need to use devtools to install this package from github:
+You can install the latest release from CRAN:
+```r
+install.packages("csvwr")
+```
+
+Or for the development version you can use devtools to install `csvwr` from GitHub:
 
 ```r
 install.packages("devtools")
