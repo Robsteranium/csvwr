@@ -137,8 +137,11 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You’ll need to use devtools to install this package from github:</p>
+<p>You can install the latest release from CRAN:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"csvwr"</span><span class="op">)</span></span></code></pre></div>
+<p>Or for the development version you can use devtools to install <code>csvwr</code> from GitHub:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Robsteranium/csvwr"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -180,10 +183,13 @@
 <p>In each case, we’re running only that subset of test entries that can be expected to pass given that part of the standard that has thus far been implemented. Some entries will be skipped (either permanently or) while other priorities are implemented.</p>
 <p>You can find out what needs to be implemented next by widening the subset to include the next entry.</p>
 <p>During development, you may find it convenient to recreate one of the test entries for exploration. There is a convenience function in <a href="https://github.com/Robsteranium/csvwr/blob/master/tests/csvw-tests-helpers.R" class="external-link">tests/csvw-tests-helpers.R</a>. This isn’t exported by the package so you’ll need to evaluate it explicitly. You can then use it as follows:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">run_entry_in_dev</span><span class="op">(</span><span class="fl">16</span><span class="op">)</span> <span class="co"># index number in the list of entries</span></span>
 <span><span class="fu">run_entry_in_dev</span><span class="op">(</span>id<span class="op">=</span><span class="st">"manifest-json#test023"</span><span class="op">)</span> <span class="co"># identifier for the test</span></span></code></pre></div>
 <p>There are also some more <a href="https://github.com/Robsteranium/csvwr/blob/master/tests/testthat/test-parsing.R" class="external-link">in-depth unit tests</a> written for this library.</p>
+<p>We use GitHub actions to test the package against multiple architectures and the current, previous and development versions of R. If you need to test against the R-devel locally then you can use the <code>r-devel.Dockerfile</code>:</p>
+<pre class="shell"><code>docker build -f r-devel.Dockerfile . --tag csvw-devel
+docker run --rm "csvw-devel"</code></pre>
 </div>
 <div class="section level3">
 <h3 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
@@ -247,6 +253,7 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/Robsteranium/csvwr/actions/workflows/r.yml" class="external-link"><img src="https://github.com/Robsteranium/csvwr/actions/workflows/r.yml/badge.svg" alt="build"></a></li>
 <li><a href="https://github.com/Robsteranium/csvwr/actions/workflows/pkgdown.yml" class="external-link"><img src="https://github.com/Robsteranium/csvwr/actions/workflows/pkgdown.yml/badge.svg" alt="pkgdown"></a></li>
+<li><a href="https://cran.r-project.org/package=csvwr" class="external-link"><img src="https://www.r-pkg.org/badges/version/csvwr" alt="CRAN_Status_Badge"></a></li>
 </ul>
 </div>
 
