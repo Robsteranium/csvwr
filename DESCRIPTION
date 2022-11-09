@@ -18,7 +18,6 @@ Suggests:
 Imports:
     cli,
     magrittr,
-    methods,
     jsonlite,
     purrr,
     readr,

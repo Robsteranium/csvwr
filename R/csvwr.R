@@ -28,7 +28,6 @@
 #' @name csvwr
 #' @importFrom magrittr %>%
 #' @importFrom rlang %||%
-#' @importFrom methods is
 #' @keywords internal
 "_PACKAGE" # roxygen needs to document something! https://r-pkgs.org/man.html#man-packages
 
@@ -593,7 +592,7 @@ parse_metadata <- function(metadata, location) {
   # retrieve linked tableSchema
   metadata$tables <- lapply(metadata$tables, function(table) {
     # read list in place if is a link (not a list itself)
-    if(is(table$tableSchema, "character")) {
+    if(isa(table$tableSchema, "character")) {
       table$tableSchema <- jsonlite::read_json(normalise_url(table$tableSchema,dirname(location)))
     }
     table
