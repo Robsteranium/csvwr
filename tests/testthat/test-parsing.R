@@ -219,7 +219,7 @@ test_that("Date Formats may be transformed", {
     c(fmt="M.d.yyyy",  eg="3.22.2015"))
   lapply(examples, function(e) {
     fmt <- transform_datetime_format(e["fmt"])
-    expect_equal(unname(strptime(!!e["eg"], format=!!fmt)), as.POSIXlt("2015-03-22"))
+    expect_equal(strptime(unname(!!e["eg"]), format=!!fmt), as.POSIXlt("2015-03-22"))
   })
 })
 
