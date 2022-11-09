@@ -119,6 +119,13 @@ run_entry_in_dev(id="manifest-json#test023") # identifier for the test
 
 There are also some more [in-depth unit tests](https://github.com/Robsteranium/csvwr/blob/master/tests/testthat/test-parsing.R) written for this library.
 
+We use GitHub actions to test the package against multiple architectures and the current, previous and development versions of R. If you need to test against the R-devel locally then you can use the `r-devel.Dockerfile`:
+
+```shell
+docker build -f r-devel.Dockerfile . --tag csvw-devel
+docker run --rm "csvw-devel"
+```
+
 ### Workflow
 
 You can use `devtools::load_all()` (`CTRL + SHIFT + L` in RStudio) to load updates and `testthat::test_local()` (`CTRL + SHIFT + T`) to run the tests.

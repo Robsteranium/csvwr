@@ -14,3 +14,4 @@ tests/csvw-tests/reports/.earl
 ^.github$
 cran-comments.md
 ^CRAN-RELEASE$
+r-devel.Dockerfile
