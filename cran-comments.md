@@ -1,20 +1,29 @@
 # CRAN Comments
 
-## Update to address check failure 2021-11-08 21:51:20 CET
+## Update to address check failure 2022-11-01
 
-CRAN Package Check has picked up an update to the `glue` package which
-led to failures in two `csvwr` tests. This update fixes those failures.
+> Please see the problems shown on
+> <https://cran.r-project.org/web/checks/check_results_csvwr.html>.
+>
+> In current R-devel,
+>
+>       Experimentally, ‘balancePOSIXlt()’ and other functions returning
+>       ‘POSIXlt’ objects now set a ‘logical’ attribute ‘"balanced_lt"’
+>       with ‘NA’ meaning “filled-in”, i.e., not “ragged” and ‘TRUE’
+>       means (fully) balanced.
+
+Resolved in @efe40e1 by removing names before calling `strptime`.
 
 ## Test environments
 
 The package BUILDs and CHECKs successfully on the following platforms:
 
-- Microsoft Windows Server 2019 10.0.17763 / R 4.1.2
-- Mac OS X 10.15.7 / R 4.1.2
-- Ubuntu 20.04.3 / R 4.0.5, R 4.1.2 and development build r81152
+- Microsoft Windows Server 2022 10.0.20348 / R 4.2.2
+- Mac OS X 11 / R 4.2.2
+- Ubuntu 20.04 / R 4.1.3, R 4.2.2 and development build r83308
 
 Continuous integration result:
-  https://github.com/Robsteranium/csvwr/actions/runs/4144828415
+  https://github.com/Robsteranium/csvwr/actions/runs/3427610105
 Configuration:
   .github/workflows/r.yml
 
