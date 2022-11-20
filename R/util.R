@@ -11,7 +11,7 @@
 rmap <- function(.x, .f) {
   m <- function(le) {
     v <- le[[1]]
-    r <- if(purrr::vec_depth(v)==1) {
+    r <- if(purrr::pluck_depth(v)==1) {
       .f(v)
     } else {
       purrr::lmap(v, m)
@@ -22,33 +22,19 @@ rmap <- function(.x, .f) {
   purrr::lmap(.x, m)
 }
 
-#' Calculate depth of vector safely
+
+#' Identify csvw properties
 #'
-#' Like `purrr::vec_depth` but doesn't attempt to descend into errors
+#' Overrides the default behaviour in `purrr::pluck_depth` so that we don't descend into errors
 #'
 #' @param x a vector
-#' @return An integer
+#' @return A boolean
 #' @md
 #' @keywords internal
-vec_depth <- function (x)
-{
-  if (rlang::is_null(x)) {
-    0L
-  }
-  else if (rlang::is_atomic(x)) {
-    1L
-  }
-  else if (inherits(x, "error")) {
-    1L
-  }
-  else if (rlang::is_list(x)) {
-    depths <- purrr::map_int(x, vec_depth)
-    1L + max(depths, 0L)
-  }
-  else {
-    rlang::abort("`x` must be a vector")
-  }
+is_property <- function(x) {
+  (is.expression(x) || is.list(x)) & !inherits(x, "error")
 }
+
 
 #' Recursive lmap
 #'
@@ -64,7 +50,7 @@ vec_depth <- function (x)
 #' @keywords internal
 rlmap <- function(.x, .f, ...) {
   m <- function(le) {
-    r <- if(vec_depth(le[[1]])<=1) {
+    r <- if(purrr::pluck_depth(le[[1]], is_node=is_property)<=1) {
       .f(le, ...)[[1]]
     } else {
       purrr::lmap(le[[1]], m)
