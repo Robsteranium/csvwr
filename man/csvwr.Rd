@@ -2,8 +2,8 @@
 % Please edit documentation in R/csvwr.R
 \docType{package}
 \name{csvwr}
-\alias{csvwr}
 \alias{csvwr-package}
+\alias{csvwr}
 \title{csvwr: Read and write CSV on the Web (CSVW)}
 \description{
 Read and write csv tables annotated with
