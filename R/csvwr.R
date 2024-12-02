@@ -751,7 +751,7 @@ default_schema <- function(filename, dialect=default_dialect) {
 #' CSVW default dialect
 #'
 #' The [CSVW Default Dialect specification](https://w3c.github.io/csvw/metadata/#dialect-descriptions)
-#' described in [CSV Dialect Description Format](http://dataprotocols.org/csv-dialect/).
+#' described in [CSV Dialect Description Format](https://specs.frictionlessdata.io/csv-dialect/).
 #'
 #' @return a list specifying a default csv dialect
 default_dialect <- list(
