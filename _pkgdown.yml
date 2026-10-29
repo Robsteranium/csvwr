@@ -1,6 +1,7 @@
+url: https://robsteranium.github.io/csvwr/
 template:
-  params:
-    bootswatch: yeti
+  bootstrap: 5
+  bootswatch: yeti
 authors:
   Robin Gower:
     href: http://infonomics.ltd.uk
