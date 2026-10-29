@@ -1,7 +1,9 @@
-pandoc: 2.7.3
-pkgdown: 2.0.6
+pandoc: 3.8.3
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   read-write-csvw: read-write-csvw.html
-last_built: 2022-11-21T13:01Z
-
+last_built: 2026-10-29T16:20Z
+urls:
+  reference: https://robsteranium.github.io/csvwr/reference
+  article: https://robsteranium.github.io/csvwr/articles

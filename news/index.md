@@ -1,0 +1,26 @@
+# Changelog
+
+## csvwr 0.1.7
+
+CRAN release: 2022-11-21
+
+Fix for balanced datetimes Allow table or group dialect to override
+individual defaults Use cli to warn when data frame couldn’t be parsed
+
+## csvwr 0.1.6
+
+CRAN release: 2021-11-09
+
+Workaround for fragment expansion when rendering URI templates Docs call
+create_metadata with a table group.
+
+## csvwr 0.1.5
+
+CRAN release: 2021-06-14
+
+Exports `base_uri`, `datatype_to_type` & `transform_datetime_format`
+functions.
+
+## csvwr 0.1.4
+
+Initial release
