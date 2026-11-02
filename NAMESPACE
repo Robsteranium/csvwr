@@ -18,5 +18,7 @@ export(validate_csvw)
 export(validate_referential_integrity)
 importFrom(magrittr,"%>%")
 importFrom(rlang,"%||%")
-importFrom(stringr,str_glue_data)
-importFrom(stringr,str_replace)
+importFrom(stringr,
+  str_glue_data,
+  str_replace
+)

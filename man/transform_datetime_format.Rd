@@ -16,7 +16,7 @@ a POSIX date format string
 As per the \href{https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#h-formats-for-dates-and-times}{csvw specification for date and time formats}
 we accept format strings using the \href{https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table}{date field symbols defined in unicode TR35}.
 These are converted to POSIX 1003.1 date format strings for use in
-\code{\link[base:strptime]{base::strptime()}} or \code{\link[readr:parse_datetime]{readr::parse_date()}}/\code{\link[readr:parse_datetime]{readr::parse_datetime()}}.
+\code{\link[base:strptime]{base::strptime()}} or \code{\link[readr:parse_date]{readr::parse_date()}}/\code{\link[readr:parse_datetime]{readr::parse_datetime()}}.
 }
 \examples{
 \dontrun{
