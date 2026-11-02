@@ -1,3 +1,7 @@
+# csvwr 0.1.8
+
+Use `purrr::pluck_depth` and deprecate `csvwr:::vec_depth`.
+
 # csvwr 0.1.7
 
 Fix for balanced datetimes

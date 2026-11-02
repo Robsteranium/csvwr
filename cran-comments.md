@@ -1,34 +1,22 @@
 # CRAN Comments
 
-## Update to address check failure 2022-11-01
+## csvwr version 0.1.8
 
-> Please see the problems shown on
-> <https://cran.r-project.org/web/checks/check_results_csvwr.html>.
->
-> In current R-devel,
->
->       Experimentally, ‘balancePOSIXlt()’ and other functions returning
->       ‘POSIXlt’ objects now set a ‘logical’ attribute ‘"balanced_lt"’
->       with ‘NA’ meaning “filled-in”, i.e., not “ragged” and ‘TRUE’
->       means (fully) balanced.
-
-Resolved in @efe40e1 by removing names before calling `strptime`.
+This update removes `csvwr::vec_depth` in favour of `purrr::pluck_depth` as
+this no longer descends into errors.
 
 ## Test environments
 
 The package BUILDs and CHECKs successfully on the following platforms:
 
-- Microsoft Windows Server 2022 10.0.20348 / R 4.2.2
-- Mac OS X 11 / R 4.2.2
-- Ubuntu 20.04 / R 4.1.3, R 4.2.2 and development build r83308
+- Microsoft Windows Server 2025 10.0.26100 / R 4.6.1
+- macOS 26.6.2 / R 4.6.1
+- Ubuntu 24.04.5 / R 4.6.1, R 4.5.3 and development build 2026-11-01 r90825
 
 Continuous integration result:
-  https://github.com/Robsteranium/csvwr/actions/runs/3427610105
+  https://github.com/Robsteranium/csvwr/actions/runs/41447649530
 Configuration:
   .github/workflows/r.yml
-
-The package was also checked on R-hub and win-builder using the devtools
-package.
 
 ## R CMD Check results
 
