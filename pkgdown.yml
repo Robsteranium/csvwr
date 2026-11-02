@@ -3,7 +3,7 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   read-write-csvw: read-write-csvw.html
-last_built: 2026-10-29T16:20Z
+last_built: 2026-11-02T12:50Z
 urls:
   reference: https://robsteranium.github.io/csvwr/reference
   article: https://robsteranium.github.io/csvwr/articles
