@@ -39,3 +39,11 @@ Useful links:
 - <https://github.com/Robsteranium/csvwr>
 
 - Report bugs at <https://github.com/Robsteranium/csvwr/issues>
+
+## Author
+
+**Maintainer**: Robin Gower <csvwr@infonomics.ltd.uk>
+
+Authors:
+
+- Robin Gower <csvwr@infonomics.ltd.uk>

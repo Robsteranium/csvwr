@@ -1,5 +1,11 @@
 # Changelog
 
+## csvwr 0.1.9
+
+Use
+[`purrr::pluck_depth`](https://purrr.tidyverse.org/reference/pluck_depth.html)
+and deprecate `csvwr:::vec_depth`.
+
 ## csvwr 0.1.7
 
 CRAN release: 2022-11-21

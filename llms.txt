@@ -200,8 +200,7 @@ If you’re specifically interested in validation, take a look at the
 implements csvw and also the [OKFN](https://okfn.org/)’s [frictionless
 data table schemas](https://specs.frictionlessdata.io/).
 
-If you want rdf translation, then you might like to check out
-[Swirrl](https://www.swirrl.com/)’s
+If you want rdf translation, then you might like to check out Swirrl’s
 [csv2rdf](https://github.com/Swirrl/csv2rdf/) and also
 [table2qb](https://github.com/swirrl/table2qb) which generates csvw
 annotations from csv files to describe [RDF Data
