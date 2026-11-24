@@ -146,4 +146,4 @@ If you're interested in csvw more generally, then the [RDF::Tabular](https://git
 
 If you're specifically interested in validation, take a look at the [ODI](https://theodi.org/)'s [csvlint](https://github.com/Data-Liberation-Front/csvlint.rb) which implements csvw and also the [OKFN](https://okfn.org/)'s [frictionless data table schemas](https://specs.frictionlessdata.io/).
 
-If you want rdf translation, then you might like to check out [Swirrl](https://www.swirrl.com/)'s [csv2rdf](https://github.com/Swirrl/csv2rdf/) and also [table2qb](https://github.com/swirrl/table2qb) which generates csvw annotations from csv files to describe [RDF Data Cubes](https://www.w3.org/TR/vocab-data-cube/).
+If you want rdf translation, then you might like to check out Swirrl's [csv2rdf](https://github.com/Swirrl/csv2rdf/) and also [table2qb](https://github.com/swirrl/table2qb) which generates csvw annotations from csv files to describe [RDF Data Cubes](https://www.w3.org/TR/vocab-data-cube/).

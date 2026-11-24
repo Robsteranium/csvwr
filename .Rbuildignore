@@ -16,3 +16,10 @@ cran-comments.md
 ^CRAN-RELEASE$
 r-devel.Dockerfile
 ^CRAN-SUBMISSION$
+.gitignore
+tests/csvw-tests/.htaccess
+tests/csvw-tests/reports/.earl
+vignettes/.gitignore
+..Rcheck
+.git
+.github

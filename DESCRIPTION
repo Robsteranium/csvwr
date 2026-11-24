@@ -1,8 +1,11 @@
 Package: csvwr
 Type: Package
 Title: Read and Write CSV on the Web (CSVW) Tables and Metadata
-Version: 0.1.8
-Author: Robin Gower
+Version: 0.1.9
+Authors@R: person(given = "Robin",
+                  family = "Gower",
+                  role = c("aut", "cre"),
+                  email = "csvwr@infonomics.ltd.uk")
 Maintainer: Robin Gower <csvwr@infonomics.ltd.uk>
 Description: Provide functions for reading and writing CSVW - i.e. CSV tables and JSON metadata.
     The metadata helps interpret CSV by setting the types and variable names.
@@ -27,4 +30,4 @@ Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr, rmarkdown
 Language: en-GB
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1

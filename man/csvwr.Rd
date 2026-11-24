@@ -45,4 +45,13 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Robin Gower \email{csvwr@infonomics.ltd.uk}
+
+Authors:
+\itemize{
+  \item Robin Gower \email{csvwr@infonomics.ltd.uk}
+}
+
+}
 \keyword{internal}

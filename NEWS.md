@@ -1,4 +1,4 @@
-# csvwr 0.1.8
+# csvwr 0.1.9
 
 Use `purrr::pluck_depth` and deprecate `csvwr:::vec_depth`.
 

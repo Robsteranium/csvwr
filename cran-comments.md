@@ -1,9 +1,12 @@
 # CRAN Comments
 
-## csvwr version 0.1.8
+## Re-submission 0.1.9
 
-This update removes `csvwr::vec_depth` in favour of `purrr::pluck_depth` as
-this no longer descends into errors.
+csvwr version 0.1.8 removes `csvwr::vec_depth` in favour of
+`purrr::pluck_depth` as this no longer descends into errors.
+
+This submission 0.1.9 fixes a NOTE to add `Authors@R` to the DESCRIPTION and
+removes a dead link from the readme.
 
 ## Test environments
 
